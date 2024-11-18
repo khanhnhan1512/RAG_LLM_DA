@@ -2,8 +2,8 @@ import argparse
 import os
 
 from data_loader import DataLoader
-from temporal_walk import TemporalWalker
-from utils import load_learn_data
+from utils import load_learn_data, relation_similarity
+from openai_llm.llm_init import LLM_Model
 
 def main(args):
     data_path = args['data_path']
@@ -12,7 +12,8 @@ def main(args):
     data_dir = os.path.join(data_path, dataset)
 
     data_loader = DataLoader(data_dir)
-    ltemporal_walker = TemporalWalker(load_learn_data(data_loader, 'train'))
+    llm_instance = LLM_Model()
+    relation_similarity(llm_instance, list(data_loader.relation2id.keys()), output_path)
 
 
 if __name__ == '__main__':

@@ -23,8 +23,9 @@ def load_learn_data(data, type):
     }
     return data_map[type]
 
-def relation_similarity(embed_model, all_rels, output_dir):
-    embedding_A = embed_model.embed(all_rels)
-    embedding_B = embed_model.embed(all_rels)
+def relation_similarity(llm_instance, all_rels, output_dir):
+    embedding_A = llm_instance.run_embedding(all_rels)
+    embedding_B = llm_instance.embedding_model.run_embedding(all_rels)
     similarity = cosine_similarity(embedding_A, embedding_B)
+    np.save(os.path.join(output_dir, 'relation_similarity.npy'), similarity)
 
