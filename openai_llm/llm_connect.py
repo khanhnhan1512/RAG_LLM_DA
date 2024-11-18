@@ -10,10 +10,10 @@ def connect_llm_chat(settings):
         chat_model = ChatOpenAI(
             api_key=os.getenv("OPENAI_API_KEY"),
             model=settings["model"],
-            response_format={"type": "json_object"},
             max_retries=3,
             timeout=40,
-            max_tokens=4096
+            max_tokens=4096,
+            model_kwargs={"response_format": {"type": "json_object"}}
         )
     except Exception as e:
         print(f"Error connecting to OpenAI Chat API: {e}")
