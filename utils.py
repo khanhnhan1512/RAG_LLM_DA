@@ -1,5 +1,7 @@
 import json
 import os
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
 
 def load_json_data(file_path):
     try:
@@ -10,3 +12,19 @@ def load_json_data(file_path):
         print(f"Error loading data from {file_path}: {e}")
         data = None
     return data
+
+def load_learn_data(data, type):
+    data_map = {
+        'all': np.array(data.train_data_idx.tolist() + data.valid_data_idx.tolist() + data.test_data_idx.tolist()),
+        'train': np.array(data.train_data_idx.tolist()),
+        'valid': np.array(data.valid_data_idx.tolist()),
+        'test': np.array(data.test_data_idx.tolist()),
+        'train_valid': np.array(data.train_data_idx.tolist() + data.valid_data_idx.tolist())
+    }
+    return data_map[type]
+
+def relation_similarity(embed_model, all_rels, output_dir):
+    embedding_A = embed_model.embed(all_rels)
+    embedding_B = embed_model.embed(all_rels)
+    similarity = cosine_similarity(embedding_A, embedding_B)
+

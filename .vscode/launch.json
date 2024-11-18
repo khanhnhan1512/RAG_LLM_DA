@@ -8,15 +8,10 @@
             "name": "RuleGenerator",
             "type": "debugpy",
             "request": "launch",
-            "program": "rule_sampler.py",
+            "program": "rule_generator.py",
             "console": "integratedTerminal",
             "args": [
                 "-d", "icews14",
-                "-m", "3",
-                "-n", "200",
-                "-p", "16",
-                "-s", "12",
-                "--is_relax_time", "No"
             ]
         },
         {
