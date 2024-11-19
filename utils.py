@@ -13,6 +13,18 @@ def load_json_data(file_path):
         data = None
     return data
 
+def save_json_data(data, file_path):
+    try:
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4, ensure_ascii=False)
+        print(f"Data has been converted to JSON and saved to {file_path}")
+    except Exception as e:
+        print(f"Error saving JSON data to {file_path}")
+
+def write_to_file(content, path):
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content)
+
 def load_learn_data(data, type):
     data_map = {
         'all': np.array(data.train_data_idx.tolist() + data.valid_data_idx.tolist() + data.test_data_idx.tolist()),
@@ -23,7 +35,7 @@ def load_learn_data(data, type):
     }
     return data_map[type]
 
-def relation_similarity(llm_instance, all_rels, output_dir):
+def calculate_relation_similarity(llm_instance, all_rels, output_dir):
     embedding_A = llm_instance.run_embedding(all_rels)
     embedding_B = llm_instance.run_embedding(all_rels)
     similarity = cosine_similarity(embedding_A, embedding_B)

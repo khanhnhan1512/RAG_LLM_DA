@@ -1,3 +1,4 @@
+from tkinter import W
 import numpy as np
 
 class TemporalWalker(object):
@@ -100,6 +101,58 @@ class TemporalWalker(object):
         else:
             next_edge = []
         return next_edge
+    
+    def transition_step_with_relax_time(self, cur_node, cur_ts, prev_edge, start_node, step, L, target_cur_ts):
+        """
+        Wrapper for transition_step with relaxed time handling.
+        """
+        return self.transition_step(cur_node, cur_ts, prev_edge, start_node, step, L, target_cur_ts)
+
+    def sample_walk(self, L, rel_idx, use_relax_time=False):
+        """
+        Try to sample a cyclic temporal random walk of length L (for a rule of length L-1).
+
+        Parameters:
+            L (int): length of random walk
+            rel_idx (int): relation index
+            use_relax_time (bool): whether to use relaxed time sampling
+
+        Returns:
+            walk_successful (bool): if a cyclic temporal random walk has been successfully sampled
+            walk (dict): information about the walk (entities, relations, timestamps)
+        """
+        walk_successful = True
+        walk = dict()
+        prev_edge = self.sample_start_edge(rel_idx)
+        start_node = prev_edge[0]
+        cur_node = prev_edge[2]
+        cur_ts = prev_edge[3]
+        target_cur_ts = cur_ts
+        walk["entities"] = [start_node, cur_node]
+        walk["relations"] = [prev_edge[1]]
+        walk["timestamps"] = [cur_ts]
+
+        for step in range(1, L):
+            if use_relax_time:
+                next_edge = self.transition_step_with_relax_time(
+                    cur_node, cur_ts, prev_edge, start_node, step, L, target_cur_ts
+                )
+            else:
+                next_edge = self.transition_step(
+                    cur_node, cur_ts, prev_edge, start_node, step, L
+                )
+            
+            if len(next_edge):
+                cur_node = next_edge[2]
+                cur_ts = next_edge[3]
+                walk["entities"].append(cur_node)
+                walk["relations"].append(next_edge[1])
+                walk["timestamps"].append(cur_ts)
+                prev_edge = next_edge
+            else:
+                walk_successful = False
+                break
+        return walk_successful, walk
 
 def store_edges(quads):
     """
