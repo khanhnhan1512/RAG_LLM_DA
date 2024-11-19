@@ -29,7 +29,6 @@ def connect_llm_embeddings(settings):
         embed_model = OpenAIEmbeddings(
             api_key=os.getenv("OPENAI_API_KEY"),
             model=settings["model"],
-            chunk_size=1
         )
     except Exception as e:
         print(f"Error connecting to OpenAI Embeddings API: {e}")

@@ -14,6 +14,7 @@ def main(args):
     data_loader = DataLoader(data_dir)
     llm_instance = LLM_Model()
     relation_similarity(llm_instance, list(data_loader.relation2id.keys()), output_path)
+    
 
 
 if __name__ == '__main__':
