@@ -227,6 +227,7 @@ class Rule_Learner(object):
             if rule["conf"] or confidence:
                 self.update_rules_dict(rule)
 
+
     def create_rule_for_merge(self, walk, confidence=0, rule_without_confidence="", rules_var_dict=None,
                              is_merged=False, is_relax_time=False):
         """
@@ -376,3 +377,131 @@ class Rule_Learner(object):
                 confidence = self.rule2confidence_dict[tuple_key]
                 rule_with_confidence = rule_without_confidence + "&" + str(confidence)
         return rule_with_confidence
+    
+
+    def sort_rules_dict(self):
+        """
+        Sort the found rules for each head relation by decreasing confidence.
+
+        Parameters:
+            None
+
+        Returns:
+            None
+        """
+        for rel in self.rules_dict:
+            self.rules_dict[rel] = sorted(
+                self.rules_dict[rel], key=lambda x: x["conf"], reverse=True
+            )
+    
+
+    def save_rules(self, dt, rule_lengths, num_walks, transition_distr, seed):
+        """
+        Save all rules.
+
+        Parameters:
+            dt (str): time now
+            rule_lengths (list): rule lengths
+            num_walks (int): number of walks
+            transition_distr (str): transition distribution
+            seed (int): random seed
+
+        Returns:
+            None
+        """
+        rules_dict = {int(k): v for k, v in self.rules_dict.items()}
+        filename = f"{dt}_r{rule_lengths}_n{num_walks}_{transition_distr}_s{seed}_rules.json"
+        filename = filename.replace(" ", "")
+        with open(self.output_dir + filename, "w", encoding="utf-8") as f:
+            json.dump(rules_dict, f, indent=4)
+        
+    
+    def verbalize_rules(self):
+        rules_str = ""
+        rules_var = {}
+        for rel in self.rules_dict:
+            for rule in self.rules_dict[rel]:
+                single_rule =
+
+
+    def save_rules_verbalized(self, dt, rule_lengths, num_walks, transition_distr, seed, rel2idx, relation_regex):
+        """
+        Save all rules in a human-readable format.
+
+        Parameters:
+            dt (str): time now
+            rule_lengths (list): rule lengths
+            num_walks (int): number of walks
+            transition_distr (str): transition distribution
+            seed (int): random seed
+
+        Returns:
+            None
+        """
+
+        output_original_dir = os.path.join(self.output_dir, 'original/')
+        os.makedirs(output_original_dir, exist_ok=True)
+
+        rules_str, rules_var = self.v
+
+
+def parse_rules_for_path(lines, relations, relation_regex):
+    converted_rules = {}
+    for line in lines:
+        rule = line.strip()
+        if not rule:
+            continue
+        temp_rule = re.sub(r'\s*<-\s*', '&', rule)
+        regex_list = temp_rule.split('&')
+
+        head = ""
+        body_list = []
+        for idx, regex_item in enumerate(regex_list):
+            match = re.search(relation_regex, regex_item)
+            if match:
+                rel_name = match.group(1).strip()
+                if rel_name not in relations:
+                    raise ValueError(f"Not exist relation: {rel_name}.")
+                if idx == 0:
+                    head = rel_name
+                    paths = converted_rules.setdefault(head, [])
+                else:
+                    body_list.append(rel_name)
+        path = '|'.join(body_list)
+        paths.append(path)
+    return converted_rules
+
+
+def parse_rules_for_name(lines, relations, relation_regex):
+    rules_dict = {}
+    for rule in lines:
+        temp_rule = re.sub(r'\s*<-\s*', "&", rule)
+        regex_list = temp_rule.split("&")
+        match = re.search(relation_regex, regex_list[0])
+        if match:
+            head = match[1].strip()
+            if head not in relations:
+                raise ValueError(f"Not exist relation: {head}.")
+        else:
+            continue
+
+        if head not in rules_dict:
+            rules_dict[head] = []
+        rules_dict[head].append(rule)
+    return rules_dict
+
+
+def parse_rules_for_id(rules, rel2idx, relation_regex):
+    rules_dict = {}
+    for rule in rules:
+        temp_rule = re.sub(r'\s*<-\s*', "&", rule)
+        regex_list = temp_rule.split("&")
+        match = re.search(relation_regex, regex_list[0])
+        if match:
+            head = match[1].strip()
+            if head not in rel2idx:
+                raise ValueError(f"Not exist relation: {head}.")
+        else:
+            continue
+
+        rule_id = rule2id(rule.strip
