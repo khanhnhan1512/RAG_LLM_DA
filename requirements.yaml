@@ -1,0 +1,14 @@
+channels:  
+  - defaults  
+  - conda-forge
+
+dependencies:  
+  - python=3.10  
+  - networkx=3.2.1  
+  - numpy=1.26.3  
+  - scipy=1.12.0  
+  - pandas=2.2.2
+  - pip=23.1.2
+  - pip:
+    - -r requirements.txt
+      
