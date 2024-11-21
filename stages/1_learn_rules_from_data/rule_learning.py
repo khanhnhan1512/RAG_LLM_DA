@@ -421,7 +421,66 @@ class Rule_Learner(object):
         rules_var = {}
         for rel in self.rules_dict:
             for rule in self.rules_dict[rel]:
-                single_rule =
+                single_rule = verbalize_rule(rule, self.id2relation) + "\n"
+                part = re.split(r'\s+', single_rule.strip())
+                rule_with_confidence = f"{part[-1]}"
+                rules_var[rule_with_confidence] = rule
+                rules_str += single_rule
+        return rules_str, rules_var
+
+
+    def generate_filename(self, dt, rule_lengths, num_walks, transition_distr, seed, suffix):
+        file_name = f"{dt}_r{rule_lengths}_n{num_walks}_{transition_distr}_s{seed}_{suffix}"
+        return file_name.replace(" ", "")
+    
+
+    def remove_first_3_columns(self, input_path, output_path):
+        rule_id_content = []
+        with open(input_path, 'r') as inp_f, open(output_path, 'w') as out_f:
+            for line in inp_f:
+                columns = line.split()
+                new_line = ' '.join(columns[3:])
+                new_line_for_rule_id = ' '.join(columns[:3]) + '&' + columns[0] +'\n'
+                rule_id_content.append(new_line_for_rule_id)
+                out_f.write(new_line + '\n')
+        return rule_id_content
+
+
+    def parse_and_save_rules(self, remove_filename, keys, relation_regex, output_filename):
+        output_file_path = os.path.join(self.output_dir, output_filename)
+        with open(self.output_dir + remove_filename, 'r') as f:
+            lines = f.readlines()
+            converted_rules = parse_rules_for_path(lines, keys, relation_regex)
+        with open(output_file_path, 'w') as f:
+            for head, paths in converted_rules.items():
+                json.dump({"head": head, "paths": paths}, f)
+                f.write('\n')
+        print(f"Rules have been converted and saved to {output_file_path}.")
+        return converted_rules
+
+
+    def parse_and_save_rules_with_names(self, remove_filename, rel2idx, relation_regex, output_filename, rule_id_content):
+        input_file_path = os.path.join(self.output_dir, remove_filename)
+        output_file_path = os.path.join(self.output_dir, output_filename)
+        with open(input_file_path, 'r') as f:
+            rules_content = f.readlines()
+            rules_name_dict = parse_rules_for_name(rules_content, list(rel2idx.keys()), relation_regex)
+        with open(output_file_path, 'w') as f:
+            json.dump(rules_name_dict, f, indent=4)
+        print(f"Rules have been converted and saved to {output_file_path}.")
+
+
+    def parse_and_save_rules_with_ids(self, rule_id_content, rel2idx, relation_regex, output_filename):
+        output_file_path = os.path.join(self.output_dir, output_filename)
+        rules_id_dict = parse_rules_for_id(rule_id_content, rel2idx, relation_regex)
+        with open(output_file_path, 'w') as f:
+            json.dump(rules_id_dict, f, indent=4)
+        print(f"Rules have been converted and saved to {output_file_path}.")
+    
+
+    def save_rule_name_with_confidence(self, file_path, relation_regex, output_file_path, relations):
+        rules_dict = {}
+        
 
 
     def save_rules_verbalized(self, dt, rule_lengths, num_walks, transition_distr, seed, rel2idx, relation_regex):
@@ -504,4 +563,106 @@ def parse_rules_for_id(rules, rel2idx, relation_regex):
         else:
             continue
 
-        rule_id = rule2id(rule.strip
+        rule_id = rule2id(rule.rplit('&', 1)[0], rel2idx, relation_regex)
+        rule_id = rule_id + '&' + rule.rsplit('*', 1)[1].strip()
+        rules_dict.setdefault(head, []).append(rule_id)
+    return rules_dict
+
+
+def rule2id(rule, relation2id, relation_regex):
+    temp_rule = copy.deepcopy(rule)
+    temp_rule = re.sub(r'\s*<-\s*', '&', temp_rule)
+    temp_rule = temp_rule.split('&')
+    rule2id_str = ""
+
+    try:
+        for idx, _ in enumerate(temp_rule):
+            match = re.search(relation_regex, temp_rule[idx])
+            rel_name = match[1].strip()
+            subject = match[2].strip()
+            object = match[3].strip()
+            timestamp = match[4].strip()
+            rel_id = relation2id[rel_name]
+            full_id = f"{rel_id}({subject},{object},{timestamp})"
+            if idx == 0:
+                full_id = f"{full_id}<-"
+            else:
+                full_id = f"{full_id}&"
+            
+            rule2id_str += full_id
+    except KeyError as keyerror:
+        traceback.print_exc()
+        raise ValueError(f"Error in rule2id: {keyerror}")
+    except Exception as e:
+        raise ValueError(f"An error occured: {e}")
+    return rule2id_str[:-1]
+
+
+def verbalize_rule(rule, id2relation):
+    """
+    Verbalize the rule to be in a human-readable format.
+
+    Parameters:
+        rule (dict): rule from Rule_Learner.create_rule
+        id2relation (dict): mapping of index to relation
+
+    Returns:
+        rule_str (str): human-readable rule
+    """
+    if rule["var_constraints"]:
+        var_constraints = rule["var_constraints"]
+        constraints = [x for sublist in var_constraints for x in sublist]
+        for i in range(len(rule["body_rels"]) + 1):
+            if i not in constraints:
+                var_constraints.append([i])
+        var_constraints = sorted(var_constraints)
+    else:
+        var_constraints = [[x] for x in range(len(rule["body_rels"]) + 1)]
+    
+    rule_str = "{0:8.6f} {1:4} {2:4} {3}(X0, X{4}, T{5})<-"
+    obj_idx = [
+        idx for idx in range(len(var_constraints))
+        if len(rule["body_rels"]) in var_constraints[idx]
+    ][0]
+    rule_str = rule_str.format(
+        rule["conf"],
+        rule["rule_supp"],
+        rule["body_supp"],
+        id2relation[rule["head_rel"]],
+        obj_idx,
+        len(rule["body_rels"]),
+    )
+
+    for i in range(len(rule["body_rels"])):
+        sub_idx = [
+            idx for idx in range(len(var_constraints)) if i in var_constraints[idx]
+        ]
+        obj_idx = [
+            idx for idx in range(len(var_constraints)) if i+1 in var_constraints[idx]
+        ]
+        rule_str += "{0}(X{1}, X{2}, T{3})&".format(
+            id2relation[rule["body_rels"][i]], sub_idx, obj_idx, i 
+        )
+    return rule_str[:-1]
+
+
+def rules_statistics(rule_dict):
+    """
+    Show statistics of the rules.
+
+    Parameters:
+        rules_dict (dict): rules
+
+    Returns:
+        None
+    """
+    print(
+        "Number of relations with rules: ", len(rule_dict)
+    )
+    print("Total number of rules: ", sum([len(v) for _, v in rule_dict.items()]))
+
+    lengths = []
+    for rel in rule_dict:
+        lengths += [len(x["body_rels"]) for x in rule_dict[rel]]
+    rule_lengths = [(k, v) for k, v in Counter(lengths).items()]
+    print("Number of rules by length: ", sorted(rule_lengths))
