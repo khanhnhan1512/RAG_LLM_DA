@@ -9,7 +9,7 @@ import re
 import traceback
 from utils import save_json_data, write_to_file
 
-class Rule_Learner(object):
+class RuleLearner(object):
     def __init__(self, edges, id2relation, inv_relation_id, dataset):
         """
         Initialize rule learner object.
@@ -33,7 +33,7 @@ class Rule_Learner(object):
         self.original_found_rules = []
         self.rule2confidence_dict = dict()
         self.rules_dict = dict()
-        self.output_dir = "./stage_1_results/" + dataset + "/"
+        self.output_dir = "./result/stage_1/" + dataset + "/"
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
     
@@ -287,7 +287,7 @@ class Rule_Learner(object):
                     rule["body_supp"]
                 ) = self.estimate_confidence(rule, is_relax_time=is_relax_time)
                 rule["llm_confidence"] = confidence
-                if rule["conf"] = or confidence:
+                if rule["conf"] or confidence:
                     self.update_rules_dict(rule)
     
 
@@ -459,7 +459,7 @@ class Rule_Learner(object):
         return converted_rules
 
 
-    def parse_and_save_rules_with_names(self, remove_filename, rel2idx, relation_regex, output_filename, rule_id_content):
+    def parse_and_save_rules_with_names(self, remove_filename, rel2idx, relation_regex, output_filename):
         input_file_path = os.path.join(self.output_dir, remove_filename)
         output_file_path = os.path.join(self.output_dir, output_filename)
         with open(input_file_path, 'r') as f:
@@ -480,8 +480,30 @@ class Rule_Learner(object):
 
     def save_rule_name_with_confidence(self, file_path, relation_regex, output_file_path, relations):
         rules_dict = {}
-        
+        with open(file_path, 'r') as f:
+            rules = f.readlines()
+            for rule in rules:
+                # Split the string by spaces to get the columns
+                columns = rule.split()
 
+                # Extract the first and fourth column
+                first_col = columns[0]
+                fourth_col = '.'.join(columns[3:])
+                output = f"{fourth_col}&{first_col}"
+
+                regex_list = fourth_col.split('<-')
+                match = re.search(relation_regex, regex_list[0])
+                if match:
+                    head = match[1].strip()
+                    if head not in relations:
+                        raise ValueError(f"Not exist relation:{head}.")
+                else:
+                    continue
+
+                if head not in rules_dict:
+                    rules_dict[head] = []
+                rules_dict[head].append(output)
+        save_json_data(rules_dict, output_file_path)
 
     def save_rules_verbalized(self, dt, rule_lengths, num_walks, transition_distr, seed, rel2idx, relation_regex):
         """
@@ -501,7 +523,19 @@ class Rule_Learner(object):
         output_original_dir = os.path.join(self.output_dir, 'original/')
         os.makedirs(output_original_dir, exist_ok=True)
 
-        rules_str, rules_var = self.v
+        rules_str, rules_var = self.verbalize_rules()
+        save_json_data(rules_var, output_original_dir + "rules_var.json")
+
+        filename = self.generate_filename(dt, rule_lengths, num_walks, transition_distr, seed, "rules.txt")
+        write_to_file(rules_str, self.output_dir + filename)
+
+        original_rule_txt = self.output_dir + filename
+        remove_filename = self.generate_filename(dt, rule_lengths, num_walks, transition_distr, seed, "remove_rules.txt")
+        rule_id_content = self.remove_first_3_columns(self.output_dir + filename, self.output_dir + remove_filename)
+        self.parse_and_save_rules(remove_filename, list(rel2idx.keys()), relation_regex, 'closed_rel_paths.json')
+        self.parse_and_save_rules_with_names(remove_filename, rel2idx, relation_regex, "rules_name.json")
+        self.parse_and_save_rules_with_ids(rule_id_content, rel2idx, relation_regex, "rules_id.json")
+        self.save_rule_name_with_confidence(original_rule_txt, relation_regex, self.output_dir + "relation_name_with_confidence.json", list(rel2idx.keys()))
 
 
 def parse_rules_for_path(lines, relations, relation_regex):
