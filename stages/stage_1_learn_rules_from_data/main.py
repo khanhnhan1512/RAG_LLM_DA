@@ -70,6 +70,11 @@ def main(args):
                 start = time.time()
                 learn_rules_for_each_relation(rel, length, use_relax_time)
                 end = time.time()
+                total_time = round(end - start, 4)
+                num_rules.append(sum([len(v) for k, v in rl.rules_dict.items()]) // 2)
+                num_new_rules = num_rules[-1] - num_rules[-2]
+
+                print(f"Process {i}: relation {k - relation_idx[0] + 1}/{len(relation_idx)}, length {length}: {total_time} sec, {num_new_rules} new_rules")
                 
 
 
