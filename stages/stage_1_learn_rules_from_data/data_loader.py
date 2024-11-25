@@ -1,7 +1,7 @@
 import os
 import numpy as np
 
-from utils import load_json_data
+from stages.stage_1_learn_rules_from_data.utils import load_json_data
 
 
 class DataLoader():

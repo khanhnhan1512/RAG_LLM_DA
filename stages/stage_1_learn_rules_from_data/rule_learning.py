@@ -7,7 +7,7 @@ from collections import Counter
 import copy
 import re
 import traceback
-from utils import save_json_data, write_to_file
+from stages.stage_1_learn_rules_from_data.utils import save_json_data, write_to_file
 
 class RuleLearner(object):
     def __init__(self, edges, id2relation, inv_relation_id, dataset):
@@ -33,7 +33,7 @@ class RuleLearner(object):
         self.original_found_rules = []
         self.rule2confidence_dict = dict()
         self.rules_dict = dict()
-        self.output_dir = "./result/stage_1/" + dataset + "/"
+        self.output_dir = "./result/" + dataset + "/stage_1/"
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
     
@@ -127,7 +127,7 @@ class RuleLearner(object):
             mask = (
                 (head_rel_edges[:, 0] == body[0]) *
                 (head_rel_edges[:, 2] == body[-1]) *
-                (head_rel_edges[:, 3] == body[-2])
+                (head_rel_edges[:, 3] > body[-2])
             )
             if True in mask:
                 rule_support += 1
@@ -166,7 +166,7 @@ class RuleLearner(object):
         confidence, rule_support = 0, 0
         if body_support:
             rule_support = self.calculate_rule_support(unique_bodies, rule["head_rel"])
-            confidence = round(body_support / rule_support, 3)
+            confidence = round(rule_support/body_support, 3)
         return confidence, rule_support, body_support
 
 
@@ -207,7 +207,7 @@ class RuleLearner(object):
         rule = dict()
         rule["head_rel"] = int(walk["relations"][0])
         rule["body_rels"] = [
-            self.inv_relation_id[x] for x in walk["relations"][1:]
+            self.inv_relation_id[x] for x in walk["relations"][1:][::-1]
         ]
         rule["var_constraints"] = self.define_var_constraints(
             walk["entities"][1:][::-1]
@@ -537,6 +537,28 @@ class RuleLearner(object):
         self.parse_and_save_rules_with_ids(rule_id_content, rel2idx, relation_regex, "rules_id.json")
         self.save_rule_name_with_confidence(original_rule_txt, relation_regex, self.output_dir + "relation_name_with_confidence.json", list(rel2idx.keys()))
 
+    
+    def rules_statistics(self):
+        """
+        Show statistics of the rules.
+
+        Parameters:
+            rules_dict (dict): rules
+
+        Returns:
+            None
+        """
+        print(
+            "Number of relations with rules: ", len(self.rules_dict)
+        )
+        print("Total number of rules: ", sum([len(v) for _, v in self.rules_dict.items()]))
+
+        lengths = []
+        for rel in self.rules_dict:
+            lengths += [len(x["body_rels"]) for x in self.rules_dict[rel]]
+        rule_lengths = [(k, v) for k, v in Counter(lengths).items()]
+        print("Number of rules by length: ", sorted(rule_lengths))
+
 
 def parse_rules_for_path(lines, relations, relation_regex):
     converted_rules = {}
@@ -680,23 +702,3 @@ def verbalize_rule(rule, id2relation):
     return rule_str[:-1]
 
 
-def rules_statistics(rule_dict):
-    """
-    Show statistics of the rules.
-
-    Parameters:
-        rules_dict (dict): rules
-
-    Returns:
-        None
-    """
-    print(
-        "Number of relations with rules: ", len(rule_dict)
-    )
-    print("Total number of rules: ", sum([len(v) for _, v in rule_dict.items()]))
-
-    lengths = []
-    for rel in rule_dict:
-        lengths += [len(x["body_rels"]) for x in rule_dict[rel]]
-    rule_lengths = [(k, v) for k, v in Counter(lengths).items()]
-    print("Number of rules by length: ", sorted(rule_lengths))

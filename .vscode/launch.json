@@ -8,25 +8,11 @@
             "name": "RuleGenerator",
             "type": "debugpy",
             "request": "launch",
-            "program": "rule_generator.py",
+            "program": "main.py",
             "console": "integratedTerminal",
             "args": [
                 "-d", "icews14",
             ]
         },
-        {
-            "name": "IterationReasoning",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "Iteration_reasoning.py",
-            "console": "integratedTerminal",
-            "args": [
-                "-d", "icews14",
-                "--model_name", "llama",
-                "-f", "50",
-                "-l", "5",
-                "--is_rel_name", "Yes"
-            ]
-        }
     ]
 }
