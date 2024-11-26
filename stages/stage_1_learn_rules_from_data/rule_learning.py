@@ -125,9 +125,9 @@ class RuleLearner(object):
             print(f"Can't find edges for {head_rel}.")
         for body in unique_bodies:
             mask = (
-                (head_rel_edges[:, 0] == body[0]) *
-                (head_rel_edges[:, 2] == body[-1]) *
-                (head_rel_edges[:, 3] > body[-2])
+                (head_rel_edges[:, 0] == body[0])
+                * (head_rel_edges[:, 2] == body[-1])
+                * (head_rel_edges[:, 3] > body[-2])
             )
             if True in mask:
                 rule_support += 1
@@ -166,7 +166,7 @@ class RuleLearner(object):
         confidence, rule_support = 0, 0
         if body_support:
             rule_support = self.calculate_rule_support(unique_bodies, rule["head_rel"])
-            confidence = round(rule_support/body_support, 3)
+            confidence = round(rule_support/body_support, 6)
         return confidence, rule_support, body_support
 
 
@@ -248,11 +248,11 @@ class RuleLearner(object):
         rule = dict()
         rule["head_rel"] = int(walk["relations"][0])
         rule["body_rels"] = [
-            self.inv_relation_id(x) for x in walk["relations"][1:][::-1]
+            self.inv_relation_id[x] for x in walk["relations"][1:][::-1]
         ]
         rule["var_constraints"] = self.define_var_constraints(walk["entities"][1:][::-1])
 
-        if is_merged:
+        if is_merged is True:
             if rules_var_dict.get(rule_without_confidence) is None:
                 if rule not in self.found_rules:
                     self.found_rules.append(rule.copy())
@@ -317,7 +317,7 @@ class RuleLearner(object):
 
         rule_with_confidence = ""
 
-        if is_merged:
+        if is_merged is True:
             if rules_var_dict.get(rule_without_confidence) is None:
                 if rule not in self.found_rules:
                     self.found_rules.append(rule.copy())
@@ -413,7 +413,7 @@ class RuleLearner(object):
         filename = f"{dt}_r{rule_lengths}_n{num_walks}_{transition_distr}_s{seed}_rules.json"
         filename = filename.replace(" ", "")
         with open(self.output_dir + filename, "w", encoding="utf-8") as f:
-            json.dump(rules_dict, f, indent=4)
+            json.dump(rules_dict, f)
         
     
     def verbalize_rules(self):
@@ -436,7 +436,7 @@ class RuleLearner(object):
 
     def remove_first_3_columns(self, input_path, output_path):
         rule_id_content = []
-        with open(input_path, 'r') as inp_f, open(output_path, 'w') as out_f:
+        with open(input_path, 'r') as inp_f, open(output_path, 'w', encoding="utf-8") as out_f:
             for line in inp_f:
                 columns = line.split()
                 new_line = ' '.join(columns[3:])
@@ -488,7 +488,7 @@ class RuleLearner(object):
 
                 # Extract the first and fourth column
                 first_col = columns[0]
-                fourth_col = '.'.join(columns[3:])
+                fourth_col = ''.join(columns[3:])
                 output = f"{fourth_col}&{first_col}"
 
                 regex_list = fourth_col.split('<-')
