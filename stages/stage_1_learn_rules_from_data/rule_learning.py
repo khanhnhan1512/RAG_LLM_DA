@@ -23,168 +23,21 @@ class RuleLearner(object):
         Returns:
             None
         """
+
         self.edges = edges
         self.id2relation = id2relation
         self.inv_relation_id = inv_relation_id
         self.num_individual = 0
         self.num_shared = 0
+        self.num_original = 0
 
         self.found_rules = []
+        self.rule2confidence_dict = {}
         self.original_found_rules = []
-        self.rule2confidence_dict = dict()
         self.rules_dict = dict()
         self.output_dir = "./result/" + dataset + "/stage_1/"
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
-    
-
-    def define_var_constraints(self, entities):
-        """
-        Define variable constraints, i.e., state the indices of reoccurring entities in a walk.
-
-        Parameters:
-            entities (list): entities in the temporal walk
-
-        Returns:
-            var_constraints (list): list of indices for reoccurring entities
-        """
-        var_constraints = []
-        for entity in set(entities):
-            all_idx = [idx for idx, x in enumerate(entities) if x == entity]
-            var_constraints.append(all_idx)
-        var_constraints = [x for x in var_constraints if len(x) > 1]
-        return sorted(var_constraints)
-    
-
-    def sample_body(self, body_rels, var_constraints, use_relax_time=False):
-        """
-        Sample a walk according to the rule body.
-        The sequence of timesteps should be non-decreasing.
-
-        Parameters:
-            body_rels (list): relations in the rule body
-            var_constraints (list): variable constraints for the entities
-            use_relax_time (bool): whether to use relaxed time sampling
-
-        Returns:
-            sample_successful (bool): if a body has been successfully sampled
-            body_ents_tss (list): entities and timestamps (alternately entity and timestamp)
-                                  of the sampled body
-        """
-        sample_successful = True
-        body_ents_tss = []
-        cur_rel = body_rels[0]
-        rel_edges = self.edges[cur_rel]
-        next_edge = rel_edges[np.random.choice(len(rel_edges))]
-        cur_ts = next_edge[3]
-        cur_node = next_edge[2]
-        body_ents_tss.append(next_edge[0])
-        body_ents_tss.append(cur_ts)
-        body_ents_tss.append(cur_node)
-
-        for cur_rel in body_rels[1:]:
-            next_edges = self.edges[cur_rel]
-            if use_relax_time:
-                mask = (next_edges[:, 0] == cur_node)
-            else:
-                mask = (next_edges[:, 0] == cur_node) * (next_edges[:, 3] >= cur_ts) # AND logic operator
-            filtered_edges = next_edge[mask]
-
-            if len(filtered_edges):
-                next_edge = filtered_edges[np.random.choice(len(filtered_edges))]
-                cur_ts = next_edge[3]
-                cur_node = next_edge[2]
-                body_ents_tss.append(cur_ts)
-                body_ents_tss.append(cur_node)
-            else:
-                sample_successful = False
-                break
-        if sample_successful and var_constraints:
-            body_var_constraints = self.define_var_constraints(body_ents_tss[::2])
-            if body_var_constraints != var_constraints:
-                sample_successful = False
-        return sample_successful, body_ents_tss
-
-
-    def calculate_rule_support(self, unique_bodies, head_rel):
-        """
-        Calculate the rule support. Check for each body if there is a timestamp
-        (larger than the timestamps in the rule body) for which the rule head holds.
-
-        Parameters:
-            unique_bodies (list): bodies from self.sample_body
-            head_rel (int): head relation
-
-        Returns:
-            rule_support (int): rule support
-        """
-        rule_support = 0
-        try:
-            head_rel_edges = self.edges[head_rel]
-        except Exception as e:
-            print(f"Can't find edges for {head_rel}.")
-        for body in unique_bodies:
-            mask = (
-                (head_rel_edges[:, 0] == body[0])
-                * (head_rel_edges[:, 2] == body[-1])
-                * (head_rel_edges[:, 3] > body[-2])
-            )
-            if True in mask:
-                rule_support += 1
-        return rule_support
-
-
-    def estimate_confidence(self, rule, num_samples=2000, is_relax_time=False):
-        """
-        Estimate the confidence of the rule by sampling bodies and checking the rule support.
-
-        Parameters:
-            rule (dict): rule
-                         {"head_rel": int, "body_rels": list, "var_constraints": list}
-            num_samples (int): number of samples
-
-        Returns:
-            confidence (float): confidence of the rule, rule_support/body_support
-            rule_support (int): rule support
-            body_support (int): body support
-        """
-        if any(body_rel not in self.edges for body_rel in rule["body_rels"]):
-            return 0, 0, 0
-        
-        if rule["head_rel"] not in self.edges:
-            return 0, 0, 0
-        
-        all_bodies = []
-        for _ in range(num_samples):
-            sample_successful, body_ents_tss = self.sample_body(rule["body_rels"], rule["var_constraints"], is_relax_time)
-            if sample_successful:
-                all_bodies.append(body_ents_tss)
-        all_bodies.sort()
-        unique_bodies = list(x for x, _ in itertools.groupby(all_bodies))
-        body_support = len(unique_bodies)
-
-        confidence, rule_support = 0, 0
-        if body_support:
-            rule_support = self.calculate_rule_support(unique_bodies, rule["head_rel"])
-            confidence = round(rule_support/body_support, 6)
-        return confidence, rule_support, body_support
-
-
-    def update_rules_dict(self, rule):
-        """
-        Update the rules if a new rule has been found.
-
-        Parameters:
-            rule (dict): generated rule from self.create_rule
-
-        Returns:
-            None
-        """
-        try:
-            self.rules_dict[rule["head_rel"]].append(rule)
-        except KeyError:
-            self.rules_dict[rule["head_rel"]] = [rule]
-
 
     def create_rule(self, walk, confidence=0, use_relax_time=False):
         """
@@ -204,6 +57,7 @@ class RuleLearner(object):
         Returns:
             rule (dict): created rule
         """
+
         rule = dict()
         rule["head_rel"] = int(walk["relations"][0])
         rule["body_rels"] = [
@@ -215,7 +69,6 @@ class RuleLearner(object):
 
         if rule not in self.found_rules:
             self.found_rules.append(rule.copy())
-
             (
                 rule["conf"],
                 rule["rule_supp"],
@@ -227,9 +80,8 @@ class RuleLearner(object):
             if rule["conf"] or confidence:
                 self.update_rules_dict(rule)
 
-
     def create_rule_for_merge(self, walk, confidence=0, rule_without_confidence="", rules_var_dict=None,
-                             is_merged=False, is_relax_time=False):
+                              is_merge=False, is_relax_time=False):
         """
         Create a rule given a cyclic temporal random walk.
         The rule contains information about head relation, body relations,
@@ -245,34 +97,39 @@ class RuleLearner(object):
         Returns:
             rule (dict): created rule
         """
+
         rule = dict()
         rule["head_rel"] = int(walk["relations"][0])
         rule["body_rels"] = [
             self.inv_relation_id[x] for x in walk["relations"][1:][::-1]
         ]
-        rule["var_constraints"] = self.define_var_constraints(walk["entities"][1:][::-1])
+        rule["var_constraints"] = self.define_var_constraints(
+            walk["entities"][1:][::-1]
+        )
 
-        if is_merged is True:
+        if is_merge is True:
             if rules_var_dict.get(rule_without_confidence) is None:
                 if rule not in self.found_rules:
                     self.found_rules.append(rule.copy())
                     (
                         rule["conf"],
                         rule["rule_supp"],
-                        rule["body_supp"]
+                        rule["body_supp"],
                     ) = self.estimate_confidence(rule)
+
                     rule["llm_confidence"] = confidence
 
                     if rule["conf"] or confidence:
                         self.num_individual += 1
                         self.update_rules_dict(rule)
-            
+
+
             else:
                 rule_var = rules_var_dict[rule_without_confidence]
                 rule_var["llm_confidence"] = confidence
                 temp_var = {}
-                temp_var["head_rel"] = rule_var["head_rel"]
-                temp_var["body_rels"] = rule_var["body_rels"]
+                temp_var['head_rel'] = rule_var['head_rel']
+                temp_var['body_rels'] = rule_var['body_rels']
                 temp_var["var_constraints"] = rule_var["var_constraints"]
                 if temp_var not in self.original_found_rules:
                     self.original_found_rules.append(temp_var.copy())
@@ -284,15 +141,20 @@ class RuleLearner(object):
                 (
                     rule["conf"],
                     rule["rule_supp"],
-                    rule["body_supp"]
+                    rule["body_supp"],
                 ) = self.estimate_confidence(rule, is_relax_time=is_relax_time)
+
+                # if rule["body_supp"] == 0:
+                #     rule["body_supp"] = 2
+
                 rule["llm_confidence"] = confidence
+
                 if rule["conf"] or confidence:
                     self.update_rules_dict(rule)
-    
 
     def create_rule_for_merge_for_iteration(self, walk, llm_confidence=0, rule_without_confidence="",
-                                            rules_var_dict=None, is_merged=False):
+                                            rules_var_dict=None,
+                                            is_merge=False):
         """
         Create a rule given a cyclic temporal random walk.
         The rule contains information about head relation, body relations,
@@ -308,28 +170,31 @@ class RuleLearner(object):
         Returns:
             rule (dict): created rule
         """
+
         rule = dict()
         rule["head_rel"] = int(walk["relations"][0])
         rule["body_rels"] = [
             self.inv_relation_id[x] for x in walk["relations"][1:][::-1]
         ]
-        rule["var_constraints"] = self.define_var_constraints(walk["entities"][1:][::-1])
+        rule["var_constraints"] = self.define_var_constraints(
+            walk["entities"][1:][::-1]
+        )
 
         rule_with_confidence = ""
 
-        if is_merged is True:
+        if is_merge is True:
             if rules_var_dict.get(rule_without_confidence) is None:
                 if rule not in self.found_rules:
                     self.found_rules.append(rule.copy())
                     (
                         rule["conf"],
                         rule["rule_supp"],
-                        rule["body_supp"]
+                        rule["body_supp"],
                     ) = self.estimate_confidence(rule)
 
                     tuple_key = str(rule)
                     self.rule2confidence_dict[tuple_key] = rule["conf"]
-                    rule_with_confidence = rule_without_confidence + "&" + str(rule["conf"])
+                    rule_with_confidence = rule_without_confidence + '&' + str(rule["conf"])
 
                     rule["llm_confidence"] = llm_confidence
 
@@ -339,14 +204,15 @@ class RuleLearner(object):
                 else:
                     tuple_key = tuple(rule)
                     confidence = self.rule2confidence_dict[tuple_key]
-                    rule_with_confidence = rule_without_confidence + "&" + confidence
+                    rule_with_confidence = rule_without_confidence + '&' + confidence
+
 
             else:
                 rule_var = rules_var_dict[rule_without_confidence]
                 rule_var["llm_confidence"] = llm_confidence
                 temp_var = {}
-                temp_var["head_rel"] = rule_var["head_rel"]
-                temp_var["body_rels"] = rule_var["body_rels"]
+                temp_var['head_rel'] = rule_var['head_rel']
+                temp_var['body_rels'] = rule_var['body_rels']
                 temp_var["var_constraints"] = rule_var["var_constraints"]
                 if temp_var not in self.original_found_rules:
                     self.original_found_rules.append(temp_var.copy())
@@ -359,15 +225,15 @@ class RuleLearner(object):
                 (
                     rule["conf"],
                     rule["rule_supp"],
-                    rule["body_supp"]
+                    rule["body_supp"],
                 ) = self.estimate_confidence(rule)
 
                 self.rule2confidence_dict[tuple_key] = rule["conf"]
-                rule_with_confidence = rule_without_confidence + "&" + str(rule["conf"])
+                rule_with_confidence = rule_without_confidence + '&' + str(rule["conf"])
 
                 if rule["body_supp"] == 0:
                     rule["body_supp"] = 2
-                
+
                 rule["llm_confidence"] = llm_confidence
 
                 if rule["conf"] or llm_confidence:
@@ -375,9 +241,168 @@ class RuleLearner(object):
             else:
                 tuple_key = str(rule)
                 confidence = self.rule2confidence_dict[tuple_key]
-                rule_with_confidence = rule_without_confidence + "&" + str(confidence)
+                rule_with_confidence = rule_without_confidence + '&' + str(confidence)
+
         return rule_with_confidence
-    
+
+    def define_var_constraints(self, entities):
+        """
+        Define variable constraints, i.e., state the indices of reoccurring entities in a walk.
+
+        Parameters:
+            entities (list): entities in the temporal walk
+
+        Returns:
+            var_constraints (list): list of indices for reoccurring entities
+        """
+
+        var_constraints = []
+        for ent in set(entities):
+            all_idx = [idx for idx, x in enumerate(entities) if x == ent]
+            var_constraints.append(all_idx)
+        var_constraints = [x for x in var_constraints if len(x) > 1]
+
+        return sorted(var_constraints)
+
+    def estimate_confidence(self, rule, num_samples=2000, is_relax_time=False):
+        """
+        Estimate the confidence of the rule by sampling bodies and checking the rule support.
+
+        Parameters:
+            rule (dict): rule
+                         {"head_rel": int, "body_rels": list, "var_constraints": list}
+            num_samples (int): number of samples
+
+        Returns:
+            confidence (float): confidence of the rule, rule_support/body_support
+            rule_support (int): rule support
+            body_support (int): body support
+        """
+
+        if any(body_rel not in self.edges for body_rel in rule["body_rels"]):
+            return 0, 0, 0
+
+        if rule['head_rel'] not in self.edges:
+            return 0, 0, 0
+
+        all_bodies = []
+        for _ in range(num_samples):
+            sample_successful, body_ents_tss = self.sample_body(
+                rule["body_rels"], rule["var_constraints"], is_relax_time
+            )
+            if sample_successful:
+                all_bodies.append(body_ents_tss)
+
+        all_bodies.sort()
+        unique_bodies = list(x for x, _ in itertools.groupby(all_bodies))
+        body_support = len(unique_bodies)
+
+        confidence, rule_support = 0, 0
+        if body_support:
+            rule_support = self.calculate_rule_support(unique_bodies, rule["head_rel"])
+            confidence = round(rule_support / body_support, 6)
+
+        return confidence, rule_support, body_support
+
+    def sample_body(self, body_rels, var_constraints, use_relax_time=False):
+        """
+        Sample a walk according to the rule body.
+        The sequence of timesteps should be non-decreasing.
+
+        Parameters:
+            body_rels (list): relations in the rule body
+            var_constraints (list): variable constraints for the entities
+            use_relax_time (bool): whether to use relaxed time sampling
+
+        Returns:
+            sample_successful (bool): if a body has been successfully sampled
+            body_ents_tss (list): entities and timestamps (alternately entity and timestamp)
+                                  of the sampled body
+        """
+
+        sample_successful = True
+        body_ents_tss = []
+        cur_rel = body_rels[0]
+        rel_edges = self.edges[cur_rel]
+        next_edge = rel_edges[np.random.choice(len(rel_edges))]
+        cur_ts = next_edge[3]
+        cur_node = next_edge[2]
+        body_ents_tss.append(next_edge[0])
+        body_ents_tss.append(cur_ts)
+        body_ents_tss.append(cur_node)
+
+        for cur_rel in body_rels[1:]:
+            next_edges = self.edges[cur_rel]
+            if use_relax_time:
+                mask = (next_edges[:, 0] == cur_node)
+            else:
+                mask = (next_edges[:, 0] == cur_node) * (next_edges[:, 3] >= cur_ts)
+
+            filtered_edges = next_edges[mask]
+
+            if len(filtered_edges):
+                next_edge = filtered_edges[np.random.choice(len(filtered_edges))]
+                cur_ts = next_edge[3]
+                cur_node = next_edge[2]
+                body_ents_tss.append(cur_ts)
+                body_ents_tss.append(cur_node)
+            else:
+                sample_successful = False
+                break
+
+        if sample_successful and var_constraints:
+            # Check variable constraints
+            body_var_constraints = self.define_var_constraints(body_ents_tss[::2])
+            if body_var_constraints != var_constraints:
+                sample_successful = False
+
+        return sample_successful, body_ents_tss
+
+    def calculate_rule_support(self, unique_bodies, head_rel):
+        """
+        Calculate the rule support. Check for each body if there is a timestamp
+        (larger than the timestamps in the rule body) for which the rule head holds.
+
+        Parameters:
+            unique_bodies (list): bodies from self.sample_body
+            head_rel (int): head relation
+
+        Returns:
+            rule_support (int): rule support
+        """
+
+        rule_support = 0
+        try:
+            head_rel_edges = self.edges[head_rel]
+        except Exception as e:
+            print(head_rel)
+        for body in unique_bodies:
+            mask = (
+                    (head_rel_edges[:, 0] == body[0])
+                    * (head_rel_edges[:, 2] == body[-1])
+                    * (head_rel_edges[:, 3] > body[-2])
+            )
+
+            if True in mask:
+                rule_support += 1
+
+        return rule_support
+
+    def update_rules_dict(self, rule):
+        """
+        Update the rules if a new rule has been found.
+
+        Parameters:
+            rule (dict): generated rule from self.create_rule
+
+        Returns:
+            None
+        """
+
+        try:
+            self.rules_dict[rule["head_rel"]].append(rule)
+        except KeyError:
+            self.rules_dict[rule["head_rel"]] = [rule]
 
     def sort_rules_dict(self):
         """
@@ -389,11 +414,11 @@ class RuleLearner(object):
         Returns:
             None
         """
+
         for rel in self.rules_dict:
             self.rules_dict[rel] = sorted(
                 self.rules_dict[rel], key=lambda x: x["conf"], reverse=True
             )
-    
 
     def save_rules(self, dt, rule_lengths, num_walks, transition_distr, seed):
         """
@@ -409,101 +434,14 @@ class RuleLearner(object):
         Returns:
             None
         """
+
         rules_dict = {int(k): v for k, v in self.rules_dict.items()}
-        filename = f"{dt}_r{rule_lengths}_n{num_walks}_{transition_distr}_s{seed}_rules.json"
+        filename = "{0}_r{1}_n{2}_{3}_s{4}_rules.json".format(
+            dt, rule_lengths, num_walks, transition_distr, seed
+        )
         filename = filename.replace(" ", "")
-        with open(self.output_dir + filename, "w", encoding="utf-8") as f:
-            json.dump(rules_dict, f)
-        
-    
-    def verbalize_rules(self):
-        rules_str = ""
-        rules_var = {}
-        for rel in self.rules_dict:
-            for rule in self.rules_dict[rel]:
-                single_rule = verbalize_rule(rule, self.id2relation) + "\n"
-                part = re.split(r'\s+', single_rule.strip())
-                rule_with_confidence = f"{part[-1]}"
-                rules_var[rule_with_confidence] = rule
-                rules_str += single_rule
-        return rules_str, rules_var
-
-
-    def generate_filename(self, dt, rule_lengths, num_walks, transition_distr, seed, suffix):
-        file_name = f"{dt}_r{rule_lengths}_n{num_walks}_{transition_distr}_s{seed}_{suffix}"
-        return file_name.replace(" ", "")
-    
-
-    def remove_first_3_columns(self, input_path, output_path):
-        rule_id_content = []
-        with open(input_path, 'r') as inp_f, open(output_path, 'w', encoding="utf-8") as out_f:
-            for line in inp_f:
-                columns = line.split()
-                new_line = ' '.join(columns[3:])
-                new_line_for_rule_id = ' '.join(columns[:3]) + '&' + columns[0] +'\n'
-                rule_id_content.append(new_line_for_rule_id)
-                out_f.write(new_line + '\n')
-        return rule_id_content
-
-
-    def parse_and_save_rules(self, remove_filename, keys, relation_regex, output_filename):
-        output_file_path = os.path.join(self.output_dir, output_filename)
-        with open(self.output_dir + remove_filename, 'r') as f:
-            lines = f.readlines()
-            converted_rules = parse_rules_for_path(lines, keys, relation_regex)
-        with open(output_file_path, 'w') as f:
-            for head, paths in converted_rules.items():
-                json.dump({"head": head, "paths": paths}, f)
-                f.write('\n')
-        print(f"Rules have been converted and saved to {output_file_path}.")
-        return converted_rules
-
-
-    def parse_and_save_rules_with_names(self, remove_filename, rel2idx, relation_regex, output_filename):
-        input_file_path = os.path.join(self.output_dir, remove_filename)
-        output_file_path = os.path.join(self.output_dir, output_filename)
-        with open(input_file_path, 'r') as f:
-            rules_content = f.readlines()
-            rules_name_dict = parse_rules_for_name(rules_content, list(rel2idx.keys()), relation_regex)
-        with open(output_file_path, 'w') as f:
-            json.dump(rules_name_dict, f, indent=4)
-        print(f"Rules have been converted and saved to {output_file_path}.")
-
-
-    def parse_and_save_rules_with_ids(self, rule_id_content, rel2idx, relation_regex, output_filename):
-        output_file_path = os.path.join(self.output_dir, output_filename)
-        rules_id_dict = parse_rules_for_id(rule_id_content, rel2idx, relation_regex)
-        with open(output_file_path, 'w') as f:
-            json.dump(rules_id_dict, f, indent=4)
-        print(f"Rules have been converted and saved to {output_file_path}.")
-    
-
-    def save_rule_name_with_confidence(self, file_path, relation_regex, output_file_path, relations):
-        rules_dict = {}
-        with open(file_path, 'r') as f:
-            rules = f.readlines()
-            for rule in rules:
-                # Split the string by spaces to get the columns
-                columns = rule.split()
-
-                # Extract the first and fourth column
-                first_col = columns[0]
-                fourth_col = ''.join(columns[3:])
-                output = f"{fourth_col}&{first_col}"
-
-                regex_list = fourth_col.split('<-')
-                match = re.search(relation_regex, regex_list[0])
-                if match:
-                    head = match[1].strip()
-                    if head not in relations:
-                        raise ValueError(f"Not exist relation:{head}.")
-                else:
-                    continue
-
-                if head not in rules_dict:
-                    rules_dict[head] = []
-                rules_dict[head].append(output)
-        save_json_data(rules_dict, output_file_path)
+        with open(self.output_dir + filename, "w", encoding="utf-8") as fout:
+            json.dump(rules_dict, fout)
 
     def save_rules_verbalized(self, dt, rule_lengths, num_walks, transition_distr, seed, rel2idx, relation_regex):
         """
@@ -530,14 +468,103 @@ class RuleLearner(object):
         write_to_file(rules_str, self.output_dir + filename)
 
         original_rule_txt = self.output_dir + filename
-        remove_filename = self.generate_filename(dt, rule_lengths, num_walks, transition_distr, seed, "remove_rules.txt")
-        rule_id_content = self.remove_first_3_columns(self.output_dir + filename, self.output_dir + remove_filename)
-        self.parse_and_save_rules(remove_filename, list(rel2idx.keys()), relation_regex, 'closed_rel_paths.json')
-        self.parse_and_save_rules_with_names(remove_filename, rel2idx, relation_regex, "rules_name.json")
-        self.parse_and_save_rules_with_ids(rule_id_content, rel2idx, relation_regex, "rules_id.json")
-        self.save_rule_name_with_confidence(original_rule_txt, relation_regex, self.output_dir + "relation_name_with_confidence.json", list(rel2idx.keys()))
+        remove_filename = self.generate_filename(dt, rule_lengths, num_walks, transition_distr, seed,
+                                                 "remove_rules.txt")
 
-    
+        rule_id_content = self.remove_first_three_columns(self.output_dir + filename, self.output_dir + remove_filename)
+
+        self.parse_and_save_rules(remove_filename, list(rel2idx.keys()), relation_regex, 'closed_rel_paths.jsonl')
+        self.parse_and_save_rules_with_names(remove_filename, rel2idx, relation_regex, 'rules_name.json',
+                                             rule_id_content)
+        self.parse_and_save_rules_with_ids(rule_id_content, rel2idx, relation_regex, 'rules_id.json')
+
+        self.save_rule_name_with_confidence(original_rule_txt, relation_regex,
+                                       self.output_dir + 'relation_name_with_confidence.json', list(rel2idx.keys()))
+
+    def verbalize_rules(self):
+        rules_str = ""
+        rules_var = {}
+        for rel in self.rules_dict:
+            for rule in self.rules_dict[rel]:
+                single_rule = verbalize_rule(rule, self.id2relation) + "\n"
+                part = re.split(r'\s+', single_rule.strip())
+                rule_with_confidence = f"{part[-1]}"
+                rules_var[rule_with_confidence] = rule
+                rules_str += single_rule
+        return rules_str, rules_var
+
+    def generate_filename(self, dt, rule_lengths, num_walks, transition_distr, seed, suffix):
+        filename = f"{dt}_r{rule_lengths}_n{num_walks}_{transition_distr}_s{seed}_{suffix}"
+        return filename.replace(" ", "")
+
+    def remove_first_three_columns(self, input_path, output_path):
+        rule_id_content = []
+        with open(input_path, 'r') as input_file, open(output_path, 'w', encoding="utf-8") as output_file:
+            for line in input_file:
+                columns = line.split()
+                new_line = ' '.join(columns[3:])
+                new_line_for_rule_id = ' '.join(columns[3:]) + '&' + columns[0] + '\n'
+                rule_id_content.append(new_line_for_rule_id)
+                output_file.write(new_line + '\n')
+        return rule_id_content
+
+    def parse_and_save_rules(self, remove_filename, keys, relation_regex, output_filename):
+        output_file_path = os.path.join(self.output_dir, output_filename)
+        with open(self.output_dir + remove_filename, 'r') as file:
+            lines = file.readlines()
+            converted_rules = parse_rules_for_path(lines, keys, relation_regex)
+        with open(output_file_path, 'w') as file:
+            for head, paths in converted_rules.items():
+                json.dump({"head": head, "paths": paths}, file)
+                file.write('\n')
+        print(f'Rules have been converted and saved to {output_file_path}')
+        return converted_rules
+
+    def parse_and_save_rules_with_names(self, remove_filename, rel2idx, relation_regex, output_filename,
+                                        rule_id_content):
+        input_file_path = os.path.join(self.output_dir, remove_filename)
+        output_file_path = os.path.join(self.output_dir, output_filename)
+        with open(input_file_path, 'r') as file:
+            rules_content = file.readlines()
+            rules_name_dict = parse_rules_for_name(rules_content, list(rel2idx.keys()), relation_regex)
+        with open(output_file_path, 'w') as file:
+            json.dump(rules_name_dict, file, indent=4)
+        print(f'Rules have been converted and saved to {output_file_path}')
+
+    def parse_and_save_rules_with_ids(self, rule_id_content, rel2idx, relation_regex, output_filename):
+        output_file_path = os.path.join(self.output_dir, output_filename)
+        rules_id_dict = parse_rules_for_id(rule_id_content, rel2idx, relation_regex)
+        with open(output_file_path, 'w') as file:
+            json.dump(rules_id_dict, file, indent=4)
+        print(f'Rules have been converted and saved to {output_file_path}')
+
+    def save_rule_name_with_confidence(self, file_path, relation_regex, out_file_path, relations):
+        rules_dict = {}
+        with open(file_path, 'r') as fin:
+            rules = fin.readlines()
+            for rule in rules:
+                # Split the string by spaces to get the columns
+                columns = rule.split()
+
+                # Extract the first and fourth columns
+                first_column = columns[0]
+                fourth_column = ''.join(columns[3:])
+                output = f"{fourth_column}&{first_column}"
+
+                regrex_list = fourth_column.split('<-')
+                match = re.search(relation_regex, regrex_list[0])
+                if match:
+                    head = match[1].strip()
+                    if head not in relations:
+                        raise ValueError(f"Not exist relation:{head}")
+                else:
+                    continue
+
+                if head not in rules_dict:
+                    rules_dict[head] = []
+                rules_dict[head].append(output)
+        save_json_data(rules_dict, out_file_path)
+
     def rules_statistics(self):
         """
         Show statistics of the rules.
@@ -548,10 +575,11 @@ class RuleLearner(object):
         Returns:
             None
         """
+
         print(
             "Number of relations with rules: ", len(self.rules_dict)
-        )
-        print("Total number of rules: ", sum([len(v) for _, v in self.rules_dict.items()]))
+        )  # Including inverse relations
+        print("Total number of rules: ", sum([len(v) for k, v in self.rules_dict.items()]))
 
         lengths = []
         for rel in self.rules_dict:
@@ -567,60 +595,63 @@ def parse_rules_for_path(lines, relations, relation_regex):
         if not rule:
             continue
         temp_rule = re.sub(r'\s*<-\s*', '&', rule)
-        regex_list = temp_rule.split('&')
+        regrex_list = temp_rule.split('&')
 
         head = ""
         body_list = []
-        for idx, regex_item in enumerate(regex_list):
-            match = re.search(relation_regex, regex_item)
+        for idx, regrex_item in enumerate(regrex_list):
+            match = re.search(relation_regex, regrex_item)
             if match:
                 rel_name = match.group(1).strip()
                 if rel_name not in relations:
-                    raise ValueError(f"Not exist relation: {rel_name}.")
+                    raise ValueError(f"Not exist relation:{rel_name}")
                 if idx == 0:
                     head = rel_name
                     paths = converted_rules.setdefault(head, [])
                 else:
                     body_list.append(rel_name)
+
         path = '|'.join(body_list)
         paths.append(path)
+
     return converted_rules
 
 
 def parse_rules_for_name(lines, relations, relation_regex):
     rules_dict = {}
     for rule in lines:
-        temp_rule = re.sub(r'\s*<-\s*', "&", rule)
-        regex_list = temp_rule.split("&")
-        match = re.search(relation_regex, regex_list[0])
+        temp_rule = re.sub(r'\s*<-\s*', '&', rule)
+        regrex_list = temp_rule.split('&')
+        match = re.search(relation_regex, regrex_list[0])
         if match:
             head = match[1].strip()
             if head not in relations:
-                raise ValueError(f"Not exist relation: {head}.")
+                raise ValueError(f"Not exist relation:{head}")
         else:
             continue
 
         if head not in rules_dict:
             rules_dict[head] = []
         rules_dict[head].append(rule)
+
     return rules_dict
 
 
 def parse_rules_for_id(rules, rel2idx, relation_regex):
     rules_dict = {}
     for rule in rules:
-        temp_rule = re.sub(r'\s*<-\s*', "&", rule)
-        regex_list = temp_rule.split("&")
-        match = re.search(relation_regex, regex_list[0])
+        temp_rule = re.sub(r'\s*<-\s*', '&', rule)
+        regrex_list = temp_rule.split('&')
+        match = re.search(relation_regex, regrex_list[0])
         if match:
             head = match[1].strip()
             if head not in rel2idx:
-                raise ValueError(f"Not exist relation: {head}.")
+                raise ValueError(f"Relation '{head}' not found in rel2idx")
         else:
             continue
 
-        rule_id = rule2id(rule.rplit('&', 1)[0], rel2idx, relation_regex)
-        rule_id = rule_id + '&' + rule.rsplit('*', 1)[1].strip()
+        rule_id = rule2id(rule.rsplit('&', 1)[0], rel2idx, relation_regex)
+        rule_id = rule_id + '&' + rule.rsplit('&', 1)[1].strip()
         rules_dict.setdefault(head, []).append(rule_id)
     return rules_dict
 
@@ -644,13 +675,16 @@ def rule2id(rule, relation2id, relation_regex):
                 full_id = f"{full_id}<-"
             else:
                 full_id = f"{full_id}&"
-            
-            rule2id_str += full_id
+
+            rule2id_str += f"{full_id}"
     except KeyError as keyerror:
+        # 捕获异常并打印调用栈信息
         traceback.print_exc()
-        raise ValueError(f"Error in rule2id: {keyerror}")
+        raise ValueError(f"KeyError: {keyerror}")
+
     except Exception as e:
-        raise ValueError(f"An error occured: {e}")
+        raise ValueError(f"An error occurred: {rule}")
+
     return rule2id_str[:-1]
 
 
@@ -665,6 +699,7 @@ def verbalize_rule(rule, id2relation):
     Returns:
         rule_str (str): human-readable rule
     """
+
     if rule["var_constraints"]:
         var_constraints = rule["var_constraints"]
         constraints = [x for sublist in var_constraints for x in sublist]
@@ -674,10 +709,11 @@ def verbalize_rule(rule, id2relation):
         var_constraints = sorted(var_constraints)
     else:
         var_constraints = [[x] for x in range(len(rule["body_rels"]) + 1)]
-    
-    rule_str = "{0:8.6f} {1:4} {2:4} {3}(X0, X{4}, T{5})<-"
+
+    rule_str = "{0:8.6f}  {1:4}  {2:4}  {3}(X0,X{4},T{5})<-"
     obj_idx = [
-        idx for idx in range(len(var_constraints))
+        idx
+        for idx in range(len(var_constraints))
         if len(rule["body_rels"]) in var_constraints[idx]
     ][0]
     rule_str = rule_str.format(
@@ -692,13 +728,16 @@ def verbalize_rule(rule, id2relation):
     for i in range(len(rule["body_rels"])):
         sub_idx = [
             idx for idx in range(len(var_constraints)) if i in var_constraints[idx]
-        ]
+        ][0]
         obj_idx = [
-            idx for idx in range(len(var_constraints)) if i+1 in var_constraints[idx]
-        ]
-        rule_str += "{0}(X{1}, X{2}, T{3})&".format(
-            id2relation[rule["body_rels"][i]], sub_idx, obj_idx, i 
+            idx for idx in range(len(var_constraints)) if i + 1 in var_constraints[idx]
+        ][0]
+        rule_str += "{0}(X{1},X{2},T{3})&".format(
+            id2relation[rule["body_rels"][i]], sub_idx, obj_idx, i
         )
+
     return rule_str[:-1]
+
+
 
 

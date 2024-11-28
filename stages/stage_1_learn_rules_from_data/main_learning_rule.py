@@ -79,8 +79,6 @@ def stage_1_main():
         else:
             relation_idx = range(i*num_relations, len(all_rels))
 
-        num_rules = [0]
-
         for k in relation_idx:
             rel = all_rels[k]
             for length in rule_length:
@@ -88,10 +86,8 @@ def stage_1_main():
                 learn_rules_for_each_relation(rel, length, use_relax_time)
                 end = time.time()
                 total_time = round(end - start, 4)
-                num_rules.append(sum([len(v) for k, v in rl.rules_dict.items()]) // 2)
-                num_new_rules = num_rules[-1] - num_rules[-2]
 
-                print(f"Process {i}: relation {k}, length {length}: {total_time} sec, {num_new_rules} new_rules")
+                print(f"Process {i}: relation {k}, length {length}: {total_time} secs")
         
         return rl.rules_dict
     
