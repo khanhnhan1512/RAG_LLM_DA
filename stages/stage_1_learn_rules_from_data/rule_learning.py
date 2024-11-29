@@ -73,7 +73,7 @@ class RuleLearner(object):
                 rule["conf"],
                 rule["rule_supp"],
                 rule["body_supp"],
-            ) = self.estimate_confidence(rule, is_relax_time=use_relax_time)
+            ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
 
             rule["llm_confidence"] = confidence
 
@@ -115,7 +115,7 @@ class RuleLearner(object):
                         rule["conf"],
                         rule["rule_supp"],
                         rule["body_supp"],
-                    ) = self.estimate_confidence(rule)
+                    ) = self.estimate_metrics(rule)
 
                     rule["llm_confidence"] = confidence
 
@@ -142,7 +142,7 @@ class RuleLearner(object):
                     rule["conf"],
                     rule["rule_supp"],
                     rule["body_supp"],
-                ) = self.estimate_confidence(rule, is_relax_time=is_relax_time)
+                ) = self.estimate_metrics(rule, is_relax_time=is_relax_time)
 
                 # if rule["body_supp"] == 0:
                 #     rule["body_supp"] = 2
@@ -190,7 +190,7 @@ class RuleLearner(object):
                         rule["conf"],
                         rule["rule_supp"],
                         rule["body_supp"],
-                    ) = self.estimate_confidence(rule)
+                    ) = self.estimate_metrics(rule)
 
                     tuple_key = str(rule)
                     self.rule2confidence_dict[tuple_key] = rule["conf"]
@@ -226,7 +226,9 @@ class RuleLearner(object):
                     rule["conf"],
                     rule["rule_supp"],
                     rule["body_supp"],
-                ) = self.estimate_confidence(rule)
+                    rule["lift"],
+                    rule["conviction"],
+                ) = self.estimate_metrics(rule)
 
                 self.rule2confidence_dict[tuple_key] = rule["conf"]
                 rule_with_confidence = rule_without_confidence + '&' + str(rule["conf"])
@@ -264,9 +266,9 @@ class RuleLearner(object):
 
         return sorted(var_constraints)
 
-    def estimate_confidence(self, rule, num_samples=2000, is_relax_time=False):
+    def estimate_metrics(self, rule, num_samples=2000, is_relax_time=False):
         """
-        Estimate the confidence of the rule by sampling bodies and checking the rule support.
+        Estimate the metrics of the rule by sampling bodies and checking the rule support.
 
         Parameters:
             rule (dict): rule
@@ -297,12 +299,18 @@ class RuleLearner(object):
         unique_bodies = list(x for x, _ in itertools.groupby(all_bodies))
         body_support = len(unique_bodies)
 
-        confidence, rule_support = 0, 0
+        confidence, rule_support, lift, conviction = 0, 0, 0, 0
+        head_supp = self.head_supp(rule["head_rel"], is_relax_time)
         if body_support:
             rule_support = self.calculate_rule_support(unique_bodies, rule["head_rel"])
             confidence = round(rule_support / body_support, 6)
 
-        return confidence, rule_support, body_support
+        if head_supp and body_support:
+            lift = round(rule_support / (head_supp * body_support), 6)
+        if confidence < 1:
+            conviction = round((1 - head_supp) / (1 - confidence), 6)
+
+        return confidence, rule_support, body_support, lift, conviction
 
     def sample_body(self, body_rels, var_constraints, use_relax_time=False):
         """
@@ -357,6 +365,14 @@ class RuleLearner(object):
                 sample_successful = False
 
         return sample_successful, body_ents_tss
+
+    def head_supp(self, head_rel, use_relax_time=False):
+        """
+        
+        """
+        if head_rel not in self.edges:
+            return 0
+        return len(self.edges[head_rel])
 
     def calculate_rule_support(self, unique_bodies, head_rel):
         """
