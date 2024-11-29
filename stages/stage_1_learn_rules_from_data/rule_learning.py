@@ -10,7 +10,7 @@ import traceback
 from stages.stage_1_learn_rules_from_data.utils import save_json_data, write_to_file
 
 class RuleLearner(object):
-    def __init__(self, edges, id2relation, inv_relation_id, dataset):
+    def __init__(self, edges, id2relation, inv_relation_id, dataset, llm_instance):
         """
         Initialize rule learner object.
 
@@ -27,6 +27,7 @@ class RuleLearner(object):
         self.edges = edges
         self.id2relation = id2relation
         self.inv_relation_id = inv_relation_id
+        self.llm_instance = llm_instance
         self.num_individual = 0
         self.num_shared = 0
         self.num_original = 0
@@ -201,7 +202,14 @@ class RuleLearner(object):
 
     def head_supp(self, head_rel, use_relax_time=False):
         """
-        
+        Calculate the head support.
+        Parameters:
+            head_rel: relation in head part of a rule
+
+        Returns:
+            sample_successful (bool): if a body has been successfully sampled
+            body_ents_tss (list): entities and timestamps (alternately entity and timestamp)
+                                  of the sampled body
         """
         if head_rel not in self.edges:
             return 0
