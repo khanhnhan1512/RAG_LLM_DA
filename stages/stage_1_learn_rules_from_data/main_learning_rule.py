@@ -106,9 +106,8 @@ def stage_1_main():
     rl.sort_rules_dict()
     dt = datetime.now().strftime("%d%m%y%H%M%S")
     rl.save_rules(dt, rule_length, num_walks, transition_choice, seed)
-    save_json_data(rl.rules_dict, rl.output_dir + 'confidence.json')
+    # save_json_data(rl.rules_dict, rl.output_dir + 'confidence.json')
     rl.rules_statistics()
-    rl.save_rules_verbalized(dt, rule_length, num_walks, transition_choice, seed, rel2idx, relation_regex)
-
+    # rl.save_rules_verbalized(dt, rule_length, num_walks, transition_choice, seed, rel2idx, relation_regex)
     calculate_relation_similarity(llm_instance, list(data_loader.relation2id.keys()), rl.output_dir)
 

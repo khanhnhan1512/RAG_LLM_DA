@@ -74,12 +74,16 @@ class RuleLearner(object):
                 rule["conf"],
                 rule["rule_supp"],
                 rule["body_supp"],
+                rule["lift"],
+                rule["conviction"]
             ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
 
             rule["llm_confidence"] = confidence
 
             if rule["conf"] or confidence:
                 self.update_rules_dict(rule)
+        self.remove_low_quality_rules()
+        self.describe_rules()
 
     def define_var_constraints(self, entities):
         """
@@ -261,6 +265,39 @@ class RuleLearner(object):
         except KeyError:
             self.rules_dict[rule["head_rel"]] = [rule]
 
+    def remove_low_quality_rules(self, min_confidence=0.25):
+        """
+        Remove rules with confidence lower than a given threshold.
+
+        Parameters:
+            min_confidence (float): minimum confidence
+
+        Returns:
+            None
+        """
+
+        for rel in self.rules_dict:
+            self.rules_dict[rel] = [
+                x for x in self.rules_dict[rel] if x["conf"] >= min_confidence
+            ]
+
+    def describe_rules(self):
+        """
+        Describe the rules in natural language.
+
+        Parameters:
+            None
+
+        Returns:
+            None
+        """
+        user_query = "Please help me to describe these temporal rules in natural language."
+        user_msg_content = f'''
+                        Here is the user query: {user_query}
+                        Here is the rules that need to be verbalized:
+                        {1}
+                        '''
+        
     def sort_rules_dict(self):
         """
         Sort the found rules for each head relation by decreasing confidence.
@@ -292,13 +329,13 @@ class RuleLearner(object):
             None
         """
 
-        rules_dict = {int(k): v for k, v in self.rules_dict.items()}
-        filename = "{0}_r{1}_n{2}_{3}_s{4}_rules.json".format(
+        rules_str, rules_var = self.verbalize_rules()
+        filename = "{0}_r{1}_n{2}_{3}_s{4}_rules.txt".format(
             dt, rule_lengths, num_walks, transition_distr, seed
         )
         filename = filename.replace(" ", "")
-        with open(self.output_dir + filename, "w", encoding="utf-8") as fout:
-            json.dump(rules_dict, fout)
+        write_to_file(rules_str, self.output_dir + filename)
+
 
     def save_rules_verbalized(self, dt, rule_lengths, num_walks, transition_distr, seed, rel2idx, relation_regex):
         """
@@ -567,13 +604,15 @@ def verbalize_rule(rule, id2relation):
     else:
         var_constraints = [[x] for x in range(len(rule["body_rels"]) + 1)]
 
-    rule_str = "{0:8.6f}  {1:4}  {2:4}  {3}(X0,X{4},T{5})<-"
+    rule_str = "{0:8.6f}    {1:8.6f}    {2:8.6f}    {3:4}   {4:4}   {5}(X0,X{6},T{7})<-"
     obj_idx = [
         idx
         for idx in range(len(var_constraints))
         if len(rule["body_rels"]) in var_constraints[idx]
     ][0]
     rule_str = rule_str.format(
+        rule["lift"],
+        rule["conviction"],
         rule["conf"],
         rule["rule_supp"],
         rule["body_supp"],

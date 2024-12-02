@@ -122,7 +122,7 @@ class LLM_Model:
         while retry < max_retry:
             try: 
                 answer_llm = self.run_query(msg)
-                answer_llm = json.loads(answer_llm)
+                answer_llm = json.loads(answer_llm.content)
 
                 if answer_llm == {}:
                     retry += 1
