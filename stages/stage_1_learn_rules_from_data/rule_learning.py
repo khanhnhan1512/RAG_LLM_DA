@@ -82,8 +82,7 @@ class RuleLearner(object):
 
             if rule["conf"] or confidence:
                 self.update_rules_dict(rule)
-        self.remove_low_quality_rules()
-        self.describe_rules()
+
 
     def define_var_constraints(self, entities):
         """
@@ -280,23 +279,6 @@ class RuleLearner(object):
             self.rules_dict[rel] = [
                 x for x in self.rules_dict[rel] if x["conf"] >= min_confidence
             ]
-
-    def describe_rules(self):
-        """
-        Describe the rules in natural language.
-
-        Parameters:
-            None
-
-        Returns:
-            None
-        """
-        user_query = "Please help me to describe these temporal rules in natural language."
-        user_msg_content = f'''
-                        Here is the user query: {user_query}
-                        Here is the rules that need to be verbalized:
-                        {1}
-                        '''
         
     def sort_rules_dict(self):
         """
@@ -481,6 +463,23 @@ class RuleLearner(object):
         rule_lengths = [(k, v) for k, v in Counter(lengths).items()]
         print("Number of rules by length: ", sorted(rule_lengths))
 
+
+def describe_rules(rules, llm_instance):
+        """
+        Describe the rules in natural language.
+
+        Parameters:
+            None
+
+        Returns:
+            None
+        """
+        user_query = "Please help me to describe these temporal rules in natural language."
+        user_msg_content = f'''
+                        Here is the user query: {user_query}
+                        Here is the rules that need to be verbalized:
+                        {rules}
+                        '''
 
 def parse_rules_for_path(lines, relations, relation_regex):
     converted_rules = {}
