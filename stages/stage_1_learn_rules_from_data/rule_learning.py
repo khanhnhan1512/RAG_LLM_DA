@@ -2,6 +2,7 @@ import os
 import json
 import itertools
 import numpy as np
+import pandas as pd
 from collections import Counter
 
 import copy
@@ -10,7 +11,7 @@ import traceback
 from stages.stage_1_learn_rules_from_data.utils import save_json_data, write_to_file
 
 class RuleLearner(object):
-    def __init__(self, edges, id2relation, inv_relation_id, dataset, llm_instance):
+    def __init__(self, edges, id2relation, inv_relation_id, dataset):
         """
         Initialize rule learner object.
 
@@ -27,7 +28,6 @@ class RuleLearner(object):
         self.edges = edges
         self.id2relation = id2relation
         self.inv_relation_id = inv_relation_id
-        self.llm_instance = llm_instance
         self.num_individual = 0
         self.num_shared = 0
         self.num_original = 0
@@ -296,9 +296,9 @@ class RuleLearner(object):
                 self.rules_dict[rel], key=lambda x: x["conf"], reverse=True
             )
 
-    def save_rules(self, dt, rule_lengths, num_walks, transition_distr, seed):
+    def save_rules_csv(self, dt, rule_lengths, num_walks, transition_distr, seed):
         """
-        Save all rules.
+        Save all rules in a csv file.
 
         Parameters:
             dt (str): time now
@@ -310,15 +310,29 @@ class RuleLearner(object):
         Returns:
             None
         """
-
-        rules_str, rules_var = self.verbalize_rules()
-        filename = "{0}_r{1}_n{2}_{3}_s{4}_rules.txt".format(
+        filename = "{0}_r{1}_n{2}_{3}_s{4}_rules.csv".format(
             dt, rule_lengths, num_walks, transition_distr, seed
         )
         filename = filename.replace(" ", "")
-        write_to_file(rules_str, self.output_dir + filename)
+        output_path = self.output_dir + filename
 
+        columns = ["lift_score", "conviction_score", "confidence_score", "rule_support", "body_support", "rule", "head_rel"]
+        df = pd.DataFrame(columns=columns)
+        entries = []
 
+        for rel in self.rules_dict:
+            for rule in self.rules_dict[rel]:
+                rule_str = verbalize_rule(rule, self.id2relation)
+                entry = rule_str.split("\t") + [self.id2relation[rule["head_rel"]]]
+                entries.append(entry)
+        df = pd.concat([df, pd.DataFrame(entries, columns=columns)], ignore_index=True)
+        df.to_csv(output_path, index=False)
+        print(f"Rules have been saved to {output_path}")
+        
+    def generate_filename(self, dt, rule_lengths, num_walks, transition_distr, seed, suffix):
+        filename = f"{dt}_r{rule_lengths}_n{num_walks}_{transition_distr}_s{seed}_{suffix}"
+        return filename.replace(" ", "")
+    
     def save_rules_verbalized(self, dt, rule_lengths, num_walks, transition_distr, seed, rel2idx, relation_regex):
         """
         Save all rules in a human-readable format.
@@ -356,22 +370,6 @@ class RuleLearner(object):
 
         self.save_rule_name_with_confidence(original_rule_txt, relation_regex,
                                        self.output_dir + 'relation_name_with_confidence.json', list(rel2idx.keys()))
-
-    def verbalize_rules(self):
-        rules_str = ""
-        rules_var = {}
-        for rel in self.rules_dict:
-            for rule in self.rules_dict[rel]:
-                single_rule = verbalize_rule(rule, self.id2relation) + "\n"
-                part = re.split(r'\s+', single_rule.strip())
-                rule_with_confidence = f"{part[-1]}"
-                rules_var[rule_with_confidence] = rule
-                rules_str += single_rule
-        return rules_str, rules_var
-
-    def generate_filename(self, dt, rule_lengths, num_walks, transition_distr, seed, suffix):
-        filename = f"{dt}_r{rule_lengths}_n{num_walks}_{transition_distr}_s{seed}_{suffix}"
-        return filename.replace(" ", "")
 
     def remove_first_three_columns(self, input_path, output_path):
         rule_id_content = []
@@ -464,22 +462,74 @@ class RuleLearner(object):
         print("Number of rules by length: ", sorted(rule_lengths))
 
 
-def describe_rules(rules, llm_instance):
-        """
-        Describe the rules in natural language.
+# def describe_rules(rules, llm_instance):
+#         """
+#         Describe the rules in natural language.
 
-        Parameters:
-            None
+#         Parameters:
+#             None
 
-        Returns:
-            None
-        """
-        user_query = "Please help me to describe these temporal rules in natural language."
-        user_msg_content = f'''
-                        Here is the user query: {user_query}
-                        Here is the rules that need to be verbalized:
-                        {rules}
-                        '''
+#         Returns:
+#             None
+#         """
+#         user_query = "Please help me to describe these temporal rules in natural language."
+#         user_msg_content = f'''
+#                         Here is the user query: {user_query}
+#                         Here is the rules that need to be verbalized:
+#                         {rules}
+#                         '''
+
+def verbalize_rule(rule, id2relation):
+    """
+    Verbalize the rule to be in a human-readable format.
+
+    Parameters:
+        rule (dict): rule from Rule_Learner.create_rule
+        id2relation (dict): mapping of index to relation
+
+    Returns:
+        rule_str (str): human-readable rule
+    """
+
+    if rule["var_constraints"]:
+        var_constraints = rule["var_constraints"]
+        constraints = [x for sublist in var_constraints for x in sublist]
+        for i in range(len(rule["body_rels"]) + 1):
+            if i not in constraints:
+                var_constraints.append([i])
+        var_constraints = sorted(var_constraints)
+    else:
+        var_constraints = [[x] for x in range(len(rule["body_rels"]) + 1)]
+
+    rule_str = "{0:8.6f}\t{1:8.6f}\t{2:8.6f}\t{3:4}\t{4:4}\t{5}(X0,X{6},T{7})<-"
+    obj_idx = [
+        idx
+        for idx in range(len(var_constraints))
+        if len(rule["body_rels"]) in var_constraints[idx]
+    ][0]
+    rule_str = rule_str.format(
+        rule["lift"],
+        rule["conviction"],
+        rule["conf"],
+        rule["rule_supp"],
+        rule["body_supp"],
+        id2relation[rule["head_rel"]],
+        obj_idx,
+        len(rule["body_rels"]),
+    )
+
+    for i in range(len(rule["body_rels"])):
+        sub_idx = [
+            idx for idx in range(len(var_constraints)) if i in var_constraints[idx]
+        ][0]
+        obj_idx = [
+            idx for idx in range(len(var_constraints)) if i + 1 in var_constraints[idx]
+        ][0]
+        rule_str += "{0}(X{1},X{2},T{3})&".format(
+            id2relation[rule["body_rels"][i]], sub_idx, obj_idx, i
+        )
+
+    return rule_str[:-1]
 
 def parse_rules_for_path(lines, relations, relation_regex):
     converted_rules = {}
@@ -580,58 +630,6 @@ def rule2id(rule, relation2id, relation_regex):
 
     return rule2id_str[:-1]
 
-
-def verbalize_rule(rule, id2relation):
-    """
-    Verbalize the rule to be in a human-readable format.
-
-    Parameters:
-        rule (dict): rule from Rule_Learner.create_rule
-        id2relation (dict): mapping of index to relation
-
-    Returns:
-        rule_str (str): human-readable rule
-    """
-
-    if rule["var_constraints"]:
-        var_constraints = rule["var_constraints"]
-        constraints = [x for sublist in var_constraints for x in sublist]
-        for i in range(len(rule["body_rels"]) + 1):
-            if i not in constraints:
-                var_constraints.append([i])
-        var_constraints = sorted(var_constraints)
-    else:
-        var_constraints = [[x] for x in range(len(rule["body_rels"]) + 1)]
-
-    rule_str = "{0:8.6f}    {1:8.6f}    {2:8.6f}    {3:4}   {4:4}   {5}(X0,X{6},T{7})<-"
-    obj_idx = [
-        idx
-        for idx in range(len(var_constraints))
-        if len(rule["body_rels"]) in var_constraints[idx]
-    ][0]
-    rule_str = rule_str.format(
-        rule["lift"],
-        rule["conviction"],
-        rule["conf"],
-        rule["rule_supp"],
-        rule["body_supp"],
-        id2relation[rule["head_rel"]],
-        obj_idx,
-        len(rule["body_rels"]),
-    )
-
-    for i in range(len(rule["body_rels"])):
-        sub_idx = [
-            idx for idx in range(len(var_constraints)) if i in var_constraints[idx]
-        ][0]
-        obj_idx = [
-            idx for idx in range(len(var_constraints)) if i + 1 in var_constraints[idx]
-        ][0]
-        rule_str += "{0}(X{1},X{2},T{3})&".format(
-            id2relation[rule["body_rels"][i]], sub_idx, obj_idx, i
-        )
-
-    return rule_str[:-1]
 
 
 

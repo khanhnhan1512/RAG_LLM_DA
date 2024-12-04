@@ -45,14 +45,11 @@ def stage_1_main():
     temporal_walk_data = load_learn_data(data_loader, 'train')
     temporal_walk = TemporalWalker(temporal_walk_data, data_loader.inverse_rel_idx, transition_choice)
 
-    rl = RuleLearner(temporal_walk.edges, data_loader.id2relation, data_loader.inverse_rel_idx, dataset, llm_instance)
+    rl = RuleLearner(temporal_walk.edges, data_loader.id2relation, data_loader.inverse_rel_idx, dataset)
     
     all_rels = sorted(temporal_walk.edges.keys())
     all_rels = [int(rel) for rel in all_rels]
     rel2idx = data_loader.relation2id
-
-    regex_config = load_json_data('./config/regex.json')
-    relation_regex = regex_config['relation_regex'][dataset]
 
     def learn_rules_for_each_relation(rel, length, use_relax_time):
         for _ in range(num_walks):
@@ -105,9 +102,7 @@ def stage_1_main():
     rl.rules_dict = all_graph
     rl.sort_rules_dict()
     dt = datetime.now().strftime("%d%m%y%H%M%S")
-    rl.save_rules(dt, rule_length, num_walks, transition_choice, seed)
-    # save_json_data(rl.rules_dict, rl.output_dir + 'confidence.json')
+    rl.save_rules_csv(dt, rule_length, num_walks, transition_choice, seed)
     rl.rules_statistics()
-    # rl.save_rules_verbalized(dt, rule_length, num_walks, transition_choice, seed, rel2idx, relation_regex)
-    calculate_relation_similarity(llm_instance, list(data_loader.relation2id.keys()), rl.output_dir)
+    # calculate_relation_similarity(llm_instance, list(data_loader.relation2id.keys()), rl.output_dir)
 

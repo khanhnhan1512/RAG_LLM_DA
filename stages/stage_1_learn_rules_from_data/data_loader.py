@@ -11,7 +11,6 @@ class DataLoader():
         self.relation2id = load_json_data(os.path.join(data_dir, 'relation2id.json'))
         self.ts2id = load_json_data(os.path.join(data_dir, 'ts2id.json'))
         self.id2entity = {v: k for k, v in self.entity2id.items()}
-        self.id2relation = {v: k for k, v in self.relation2id.items()}
         self.id2ts = {v: k for k, v in self.ts2id.items()}
         self.inverse_rel_idx = dict()
         for i in range(len(self.relation2id)):
@@ -19,6 +18,7 @@ class DataLoader():
         for i in range(len(self.relation2id), 2 * len(self.relation2id)):
             self.inverse_rel_idx[i] = i % len(self.relation2id)
         self.add_inverse_relation()
+        self.id2relation = {v: k for k, v in self.relation2id.items()}
         self.train_data_idx, self.train_data_text = self.load_fact(os.path.join(data_dir, 'train.txt'))
         self.valid_data_idx, self.valid_data_text = self.load_fact(os.path.join(data_dir, 'valid.txt'))
         self.test_data_idx, self.test_data_text = self.load_fact(os.path.join(data_dir, 'test.txt'))
