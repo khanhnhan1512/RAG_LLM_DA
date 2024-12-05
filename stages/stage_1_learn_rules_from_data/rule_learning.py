@@ -11,7 +11,7 @@ import traceback
 from stages.stage_1_learn_rules_from_data.utils import save_json_data, write_to_file
 
 class RuleLearner(object):
-    def __init__(self, edges, id2relation, inv_relation_id, dataset):
+    def __init__(self, edges, id2relation, inv_relation_id, dataset, total_num_fact):
         """
         Initialize rule learner object.
 
@@ -28,6 +28,7 @@ class RuleLearner(object):
         self.edges = edges
         self.id2relation = id2relation
         self.inv_relation_id = inv_relation_id
+        self.total_num_fact = total_num_fact
         self.num_individual = 0
         self.num_shared = 0
         self.num_original = 0
@@ -134,18 +135,18 @@ class RuleLearner(object):
 
         all_bodies.sort()
         unique_bodies = list(x for x, _ in itertools.groupby(all_bodies))
-        body_support = len(unique_bodies)
+        body_support = len(unique_bodies) / self.total_num_fact
 
         confidence, rule_support, lift, conviction = 0, 0, 0, 0
-        head_supp = self.head_supp(rule["head_rel"], is_relax_time)
+        head_supp = self.head_supp(rule["head_rel"], is_relax_time) / self.total_num_fact
         if body_support:
-            rule_support = self.calculate_rule_support(unique_bodies, rule["head_rel"])
+            rule_support = self.calculate_rule_support(unique_bodies, rule["head_rel"]) / self.total_num_fact
             confidence = round(rule_support / body_support, 6)
 
         if head_supp and body_support:
             lift = round(rule_support / (head_supp * body_support), 6)
         if confidence < 1:
-            conviction = round((1 - head_supp) / (1 - confidence), 6)
+            conviction = round((1 - (head_supp/self.total_num_fact)) / (1 - (confidence/self.total_num_fact)), 6)
 
         return confidence, rule_support, body_support, lift, conviction
 
