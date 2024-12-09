@@ -45,7 +45,7 @@ def stage_1_main():
     temporal_walk_data = load_learn_data(data_loader, 'train')
     temporal_walk = TemporalWalker(temporal_walk_data, data_loader.inverse_rel_idx, transition_choice)
 
-    rl = RuleLearner(temporal_walk.edges, data_loader.id2relation, data_loader.inverse_rel_idx, dataset, len(temporal_walk_data))
+    rl = RuleLearner(temporal_walk.edges, data_loader.id2entity, data_loader.id2relation, data_loader.inverse_rel_idx, dataset, len(temporal_walk_data))
     
     all_rels = sorted(temporal_walk.edges.keys())
     all_rels = [int(rel) for rel in all_rels]

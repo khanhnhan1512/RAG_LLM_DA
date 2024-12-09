@@ -11,7 +11,7 @@ import traceback
 from stages.stage_1_learn_rules_from_data.utils import save_json_data, write_to_file
 
 class RuleLearner(object):
-    def __init__(self, edges, id2relation, inv_relation_id, dataset, total_num_fact):
+    def __init__(self, edges, id2entity, id2relation, inv_relation_id, dataset, total_num_fact):
         """
         Initialize rule learner object.
 
@@ -26,6 +26,7 @@ class RuleLearner(object):
         """
 
         self.edges = edges
+        self.id2entity = id2entity
         self.id2relation = id2relation
         self.inv_relation_id = inv_relation_id
         self.total_num_fact = total_num_fact
@@ -65,18 +66,23 @@ class RuleLearner(object):
         rule["body_rels"] = [
             self.inv_relation_id[x] for x in walk["relations"][1:][::-1]
         ]
-        rule["var_constraints"] = self.define_var_constraints(
+        rule["var_constraints"], _ = self.define_var_constraints(
             walk["entities"][1:][::-1]
         )
+
+        rule["example_entities"] = [self.id2entity[entity_id] for entity_id in walk["entities"][1:][::-1]]
 
         if rule not in self.found_rules:
             self.found_rules.append(rule.copy())
             (
                 rule["conf"],
-                rule["rule_supp"],
-                rule["body_supp"],
+                rule["rule_supp_count"],
+                rule["body_supp_count"],
+                rule["head_supp_count"],
                 rule["lift"],
-                rule["conviction"]
+                rule["conviction"],
+                rule["kulczynski"],
+                rule["IR_score"]
             ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
 
             rule["llm_confidence"] = confidence
@@ -96,13 +102,13 @@ class RuleLearner(object):
             var_constraints (list): list of indices for reoccurring entities
         """
 
-        var_constraints = []
+        entity_occurances = []
         for ent in set(entities):
             all_idx = [idx for idx, x in enumerate(entities) if x == ent]
-            var_constraints.append(all_idx)
-        var_constraints = [x for x in var_constraints if len(x) > 1]
+            entity_occurances.append(all_idx)
+        var_constraints = [x for x in entity_occurances if len(x) > 1]
 
-        return sorted(var_constraints)
+        return sorted(var_constraints), entity_occurances
 
     def estimate_metrics(self, rule, num_samples=2000, is_relax_time=False):
         """
@@ -135,20 +141,26 @@ class RuleLearner(object):
 
         all_bodies.sort()
         unique_bodies = list(x for x, _ in itertools.groupby(all_bodies))
-        body_support = len(unique_bodies) / self.total_num_fact
+        body_support_count = len(unique_bodies)
+        body_support = round(body_support_count / self.total_num_fact, 6)
 
-        confidence, rule_support, lift, conviction = 0, 0, 0, 0
-        head_supp = self.head_supp(rule["head_rel"], is_relax_time) / self.total_num_fact
-        if body_support:
-            rule_support = self.calculate_rule_support(unique_bodies, rule["head_rel"]) / self.total_num_fact
+        confidence, rule_support, lift, conviction, kulczynski, IR_score = 0, 0, 0, 100, 0, 0
+        head_supp_count = self.calculate_head_supp(rule["head_rel"])
+        head_supp = round(head_supp_count / self.total_num_fact, 6)
+        rule_support_count = self.calculate_rule_support(unique_bodies, rule["head_rel"])
+        if body_support_count:
+            rule_support = round(rule_support_count / self.total_num_fact, 6)
             confidence = round(rule_support / body_support, 6)
 
-        if head_supp and body_support:
-            lift = round(rule_support / (head_supp * body_support), 6)
+        
+        lift = round(confidence / head_supp, 6)
+        kulczynski = round(0.5 * (confidence + (rule_support/head_supp)), 6)
         if confidence < 1:
-            conviction = round((1 - (head_supp/self.total_num_fact)) / (1 - (confidence/self.total_num_fact)), 6)
+            conviction = round((1 - head_supp) / (1 - confidence), 6)
+        
+        IR_score = round(abs(body_support - head_supp)/(body_support + head_supp - rule_support), 6)
 
-        return confidence, rule_support, body_support, lift, conviction
+        return confidence, rule_support_count, body_support_count, head_supp_count, lift, conviction, kulczynski, IR_score
 
     def sample_body(self, body_rels, var_constraints, use_relax_time=False):
         """
@@ -198,13 +210,13 @@ class RuleLearner(object):
 
         if sample_successful and var_constraints:
             # Check variable constraints
-            body_var_constraints = self.define_var_constraints(body_ents_tss[::2])
+            body_var_constraints, _ = self.define_var_constraints(body_ents_tss[::2])
             if body_var_constraints != var_constraints:
                 sample_successful = False
 
         return sample_successful, body_ents_tss
 
-    def head_supp(self, head_rel, use_relax_time=False):
+    def calculate_head_supp(self, head_rel):
         """
         Calculate the head support.
         Parameters:
@@ -317,14 +329,15 @@ class RuleLearner(object):
         filename = filename.replace(" ", "")
         output_path = self.output_dir + filename
 
-        columns = ["lift_score", "conviction_score", "confidence_score", "rule_support", "body_support", "rule", "head_rel"]
+        columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
+                   "rule", "head_rel", "example_rule"]
         df = pd.DataFrame(columns=columns)
         entries = []
 
         for rel in self.rules_dict:
             for rule in self.rules_dict[rel]:
                 rule_str = verbalize_rule(rule, self.id2relation)
-                entry = rule_str.split("\t") + [self.id2relation[rule["head_rel"]]]
+                entry = rule_str.split("\t")
                 entries.append(entry)
         df = pd.concat([df, pd.DataFrame(entries, columns=columns)], ignore_index=True)
         df.to_csv(output_path, index=False)
@@ -502,18 +515,21 @@ def verbalize_rule(rule, id2relation):
     else:
         var_constraints = [[x] for x in range(len(rule["body_rels"]) + 1)]
 
-    rule_str = "{0:8.6f}\t{1:8.6f}\t{2:8.6f}\t{3:4}\t{4:4}\t{5}(X0,X{6},T{7})<-"
+    rule_str = "{0:8.6f}\t{1:8.6f}\t{2:8.6f}\t{3:8.6f}\t{4:8.6f}\t{5:4}\t{6:4}\t{7:4}\t{8}(X0,X{9},T{10})<-"
     obj_idx = [
         idx
         for idx in range(len(var_constraints))
         if len(rule["body_rels"]) in var_constraints[idx]
     ][0]
     rule_str = rule_str.format(
+        rule["kulczynski"],
+        rule["IR_score"],
         rule["lift"],
         rule["conviction"],
         rule["conf"],
-        rule["rule_supp"],
-        rule["body_supp"],
+        rule["rule_supp_count"],
+        rule["body_supp_count"],
+        rule["head_supp_count"],
         id2relation[rule["head_rel"]],
         obj_idx,
         len(rule["body_rels"]),
@@ -530,7 +546,22 @@ def verbalize_rule(rule, id2relation):
             id2relation[rule["body_rels"][i]], sub_idx, obj_idx, i
         )
 
-    return rule_str[:-1]
+    rule_str = rule_str[:-1]
+    rule_str += f"\t{id2relation[rule['head_rel']]}\t{verbalize_example_rule(rule, id2relation)}"
+    return rule_str
+
+def verbalize_example_rule(rule, id2relation):
+    example_str = "{0}({1},{2},T{3})<-".format(
+        id2relation[rule["head_rel"]],
+        rule["example_entities"][0],
+        rule["example_entities"][-1],
+        len(rule["body_rels"])
+    )
+    for i in range(len(rule["body_rels"])):
+        sub_idx = i
+        obj_idx = i + 1
+        example_str += f"{id2relation[rule['body_rels'][i]]}({rule['example_entities'][sub_idx]},{rule['example_entities'][obj_idx]},T{i})&"
+    return example_str[:-1]
 
 def parse_rules_for_path(lines, relations, relation_regex):
     converted_rules = {}
