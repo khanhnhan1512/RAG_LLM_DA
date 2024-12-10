@@ -70,7 +70,11 @@ class RuleLearner(object):
             walk["entities"][1:][::-1]
         )
 
-        rule["example_entities"] = [self.id2entity[entity_id] for entity_id in walk["entities"][1:][::-1]]
+        entities = [self.id2entity[entity_id] for entity_id in walk["entities"][1:][::-1]]
+        content = ""
+        for entity in entities:
+            content += f"{entity}\t"
+        write_to_file(content[:-1]+"\n", self.output_dir + "entities.txt")
 
         if rule not in self.found_rules:
             self.found_rules.append(rule.copy())
@@ -330,7 +334,7 @@ class RuleLearner(object):
         output_path = self.output_dir + filename
 
         columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
-                   "rule", "head_rel", "example_rule"]
+                   "rule", "head_rel"]
         df = pd.DataFrame(columns=columns)
         entries = []
 
@@ -475,24 +479,6 @@ class RuleLearner(object):
         rule_lengths = [(k, v) for k, v in Counter(lengths).items()]
         print("Number of rules by length: ", sorted(rule_lengths))
 
-
-# def describe_rules(rules, llm_instance):
-#         """
-#         Describe the rules in natural language.
-
-#         Parameters:
-#             None
-
-#         Returns:
-#             None
-#         """
-#         user_query = "Please help me to describe these temporal rules in natural language."
-#         user_msg_content = f'''
-#                         Here is the user query: {user_query}
-#                         Here is the rules that need to be verbalized:
-#                         {rules}
-#                         '''
-
 def verbalize_rule(rule, id2relation):
     """
     Verbalize the rule to be in a human-readable format.
@@ -547,7 +533,7 @@ def verbalize_rule(rule, id2relation):
         )
 
     rule_str = rule_str[:-1]
-    rule_str += f"\t{id2relation[rule['head_rel']]}\t{verbalize_example_rule(rule, id2relation)}"
+    rule_str += f"\t{id2relation[rule['head_rel']]}"
     return rule_str
 
 def verbalize_example_rule(rule, id2relation):

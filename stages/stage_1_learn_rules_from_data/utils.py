@@ -22,7 +22,7 @@ def save_json_data(data, file_path):
         print(f"Error saving JSON data to {file_path}")
 
 def write_to_file(content, path):
-    with open(path, "w", encoding="utf-8") as f:
+    with open(path, "a", encoding="utf-8") as f:
         f.write(content)
 
 def load_learn_data(data, type):
