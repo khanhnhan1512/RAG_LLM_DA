@@ -49,7 +49,7 @@ class RuleLearner(object):
         variable constraints, confidence, rule support, and body support.
         A rule is a dictionary with the content
         {"head_rel": int, "body_rels": list, "var_constraints": list,
-         "conf": float, "rule_supp": int, "body_supp": int}
+         "conf": float, "rule_supp": int, "body_supp": int} 
 
         Parameters:
             walk (dict): cyclic temporal random walk
@@ -70,11 +70,10 @@ class RuleLearner(object):
             walk["entities"][1:][::-1]
         )
 
-        entities = [self.id2entity[entity_id] for entity_id in walk["entities"][1:][::-1]]
-        content = ""
-        for entity in entities:
-            content += f"{entity}\t"
-        write_to_file(content[:-1]+"\n", self.output_dir + "entities.txt")
+        rule["example_entities"] = [self.id2entity[entity_id] for entity_id in walk["entities"][1:][::-1]]
+        rule["example"] = verbalize_example_rule(rule, self.id2relation)
+        del rule["example_entities"]
+        
 
         if rule not in self.found_rules:
             self.found_rules.append(rule.copy())
@@ -265,6 +264,23 @@ class RuleLearner(object):
 
         return rule_support
 
+    def is_new_rule(self, new_rule):
+        """
+        Check if a rule is new or has been found before.
+
+        Parameters:
+            rule (dict): rule from self.create_rule
+
+        Returns:
+            is_new (bool): if the rule is new
+        """
+
+        key = new_rule['head_rel']
+        for rule in self.rules_dict[key]:
+            if new_rule["body_rels"] == rule["body_rels"]:
+                return False
+        return True
+
     def update_rules_dict(self, rule):
         """
         Update the rules if a new rule has been found.
@@ -275,10 +291,11 @@ class RuleLearner(object):
         Returns:
             None
         """
-
-        try:
-            self.rules_dict[rule["head_rel"]].append(rule)
-        except KeyError:
+        key = rule["head_rel"]
+        if key in self.rules_dict:
+            if self.is_new_rule(rule):
+                self.rules_dict[rule["head_rel"]].append(rule)
+        else:
             self.rules_dict[rule["head_rel"]] = [rule]
 
     def remove_low_quality_rules(self, min_confidence=0.25):
@@ -334,7 +351,7 @@ class RuleLearner(object):
         output_path = self.output_dir + filename
 
         columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
-                   "rule", "head_rel"]
+                   "rule", "head_rel", "example"]
         df = pd.DataFrame(columns=columns)
         entries = []
 
@@ -346,116 +363,6 @@ class RuleLearner(object):
         df = pd.concat([df, pd.DataFrame(entries, columns=columns)], ignore_index=True)
         df.to_csv(output_path, index=False)
         print(f"Rules have been saved to {output_path}")
-        
-    def generate_filename(self, dt, rule_lengths, num_walks, transition_distr, seed, suffix):
-        filename = f"{dt}_r{rule_lengths}_n{num_walks}_{transition_distr}_s{seed}_{suffix}"
-        return filename.replace(" ", "")
-    
-    def save_rules_verbalized(self, dt, rule_lengths, num_walks, transition_distr, seed, rel2idx, relation_regex):
-        """
-        Save all rules in a human-readable format.
-
-        Parameters:
-            dt (str): time now
-            rule_lengths (list): rule lengths
-            num_walks (int): number of walks
-            transition_distr (str): transition distribution
-            seed (int): random seed
-
-        Returns:
-            None
-        """
-
-        output_original_dir = os.path.join(self.output_dir, 'original/')
-        os.makedirs(output_original_dir, exist_ok=True)
-
-        rules_str, rules_var = self.verbalize_rules()
-        save_json_data(rules_var, output_original_dir + "rules_var.json")
-
-        filename = self.generate_filename(dt, rule_lengths, num_walks, transition_distr, seed, "rules.txt")
-        write_to_file(rules_str, self.output_dir + filename)
-
-        original_rule_txt = self.output_dir + filename
-        remove_filename = self.generate_filename(dt, rule_lengths, num_walks, transition_distr, seed,
-                                                 "remove_rules.txt")
-
-        rule_id_content = self.remove_first_three_columns(self.output_dir + filename, self.output_dir + remove_filename)
-
-        self.parse_and_save_rules(remove_filename, list(rel2idx.keys()), relation_regex, 'closed_rel_paths.jsonl')
-        self.parse_and_save_rules_with_names(remove_filename, rel2idx, relation_regex, 'rules_name.json',
-                                             rule_id_content)
-        self.parse_and_save_rules_with_ids(rule_id_content, rel2idx, relation_regex, 'rules_id.json')
-
-        self.save_rule_name_with_confidence(original_rule_txt, relation_regex,
-                                       self.output_dir + 'relation_name_with_confidence.json', list(rel2idx.keys()))
-
-    def remove_first_three_columns(self, input_path, output_path):
-        rule_id_content = []
-        with open(input_path, 'r') as input_file, open(output_path, 'w', encoding="utf-8") as output_file:
-            for line in input_file:
-                columns = line.split()
-                new_line = ' '.join(columns[3:])
-                new_line_for_rule_id = ' '.join(columns[3:]) + '&' + columns[0] + '\n'
-                rule_id_content.append(new_line_for_rule_id)
-                output_file.write(new_line + '\n')
-        return rule_id_content
-
-    def parse_and_save_rules(self, remove_filename, keys, relation_regex, output_filename):
-        output_file_path = os.path.join(self.output_dir, output_filename)
-        with open(self.output_dir + remove_filename, 'r') as file:
-            lines = file.readlines()
-            converted_rules = parse_rules_for_path(lines, keys, relation_regex)
-        with open(output_file_path, 'w') as file:
-            for head, paths in converted_rules.items():
-                json.dump({"head": head, "paths": paths}, file)
-                file.write('\n')
-        print(f'Rules have been converted and saved to {output_file_path}')
-        return converted_rules
-
-    def parse_and_save_rules_with_names(self, remove_filename, rel2idx, relation_regex, output_filename,
-                                        rule_id_content):
-        input_file_path = os.path.join(self.output_dir, remove_filename)
-        output_file_path = os.path.join(self.output_dir, output_filename)
-        with open(input_file_path, 'r') as file:
-            rules_content = file.readlines()
-            rules_name_dict = parse_rules_for_name(rules_content, list(rel2idx.keys()), relation_regex)
-        with open(output_file_path, 'w') as file:
-            json.dump(rules_name_dict, file, indent=4)
-        print(f'Rules have been converted and saved to {output_file_path}')
-
-    def parse_and_save_rules_with_ids(self, rule_id_content, rel2idx, relation_regex, output_filename):
-        output_file_path = os.path.join(self.output_dir, output_filename)
-        rules_id_dict = parse_rules_for_id(rule_id_content, rel2idx, relation_regex)
-        with open(output_file_path, 'w') as file:
-            json.dump(rules_id_dict, file, indent=4)
-        print(f'Rules have been converted and saved to {output_file_path}')
-
-    def save_rule_name_with_confidence(self, file_path, relation_regex, out_file_path, relations):
-        rules_dict = {}
-        with open(file_path, 'r') as fin:
-            rules = fin.readlines()
-            for rule in rules:
-                # Split the string by spaces to get the columns
-                columns = rule.split()
-
-                # Extract the first and fourth columns
-                first_column = columns[0]
-                fourth_column = ''.join(columns[3:])
-                output = f"{fourth_column}&{first_column}"
-
-                regrex_list = fourth_column.split('<-')
-                match = re.search(relation_regex, regrex_list[0])
-                if match:
-                    head = match[1].strip()
-                    if head not in relations:
-                        raise ValueError(f"Not exist relation:{head}")
-                else:
-                    continue
-
-                if head not in rules_dict:
-                    rules_dict[head] = []
-                rules_dict[head].append(output)
-        save_json_data(rules_dict, out_file_path)
 
     def rules_statistics(self):
         """
@@ -533,7 +440,7 @@ def verbalize_rule(rule, id2relation):
         )
 
     rule_str = rule_str[:-1]
-    rule_str += f"\t{id2relation[rule['head_rel']]}"
+    rule_str += f"\t{id2relation[rule['head_rel']]}\t{rule['example']}"
     return rule_str
 
 def verbalize_example_rule(rule, id2relation):
@@ -548,107 +455,6 @@ def verbalize_example_rule(rule, id2relation):
         obj_idx = i + 1
         example_str += f"{id2relation[rule['body_rels'][i]]}({rule['example_entities'][sub_idx]},{rule['example_entities'][obj_idx]},T{i})&"
     return example_str[:-1]
-
-def parse_rules_for_path(lines, relations, relation_regex):
-    converted_rules = {}
-    for line in lines:
-        rule = line.strip()
-        if not rule:
-            continue
-        temp_rule = re.sub(r'\s*<-\s*', '&', rule)
-        regrex_list = temp_rule.split('&')
-
-        head = ""
-        body_list = []
-        for idx, regrex_item in enumerate(regrex_list):
-            match = re.search(relation_regex, regrex_item)
-            if match:
-                rel_name = match.group(1).strip()
-                if rel_name not in relations:
-                    raise ValueError(f"Not exist relation:{rel_name}")
-                if idx == 0:
-                    head = rel_name
-                    paths = converted_rules.setdefault(head, [])
-                else:
-                    body_list.append(rel_name)
-
-        path = '|'.join(body_list)
-        paths.append(path)
-
-    return converted_rules
-
-
-def parse_rules_for_name(lines, relations, relation_regex):
-    rules_dict = {}
-    for rule in lines:
-        temp_rule = re.sub(r'\s*<-\s*', '&', rule)
-        regrex_list = temp_rule.split('&')
-        match = re.search(relation_regex, regrex_list[0])
-        if match:
-            head = match[1].strip()
-            if head not in relations:
-                raise ValueError(f"Not exist relation:{head}")
-        else:
-            continue
-
-        if head not in rules_dict:
-            rules_dict[head] = []
-        rules_dict[head].append(rule)
-
-    return rules_dict
-
-
-def parse_rules_for_id(rules, rel2idx, relation_regex):
-    rules_dict = {}
-    for rule in rules:
-        temp_rule = re.sub(r'\s*<-\s*', '&', rule)
-        regrex_list = temp_rule.split('&')
-        match = re.search(relation_regex, regrex_list[0])
-        if match:
-            head = match[1].strip()
-            if head not in rel2idx:
-                raise ValueError(f"Relation '{head}' not found in rel2idx")
-        else:
-            continue
-
-        rule_id = rule2id(rule.rsplit('&', 1)[0], rel2idx, relation_regex)
-        rule_id = rule_id + '&' + rule.rsplit('&', 1)[1].strip()
-        rules_dict.setdefault(head, []).append(rule_id)
-    return rules_dict
-
-
-def rule2id(rule, relation2id, relation_regex):
-    temp_rule = copy.deepcopy(rule)
-    temp_rule = re.sub(r'\s*<-\s*', '&', temp_rule)
-    temp_rule = temp_rule.split('&')
-    rule2id_str = ""
-
-    try:
-        for idx, _ in enumerate(temp_rule):
-            match = re.search(relation_regex, temp_rule[idx])
-            rel_name = match[1].strip()
-            subject = match[2].strip()
-            object = match[3].strip()
-            timestamp = match[4].strip()
-            rel_id = relation2id[rel_name]
-            full_id = f"{rel_id}({subject},{object},{timestamp})"
-            if idx == 0:
-                full_id = f"{full_id}<-"
-            else:
-                full_id = f"{full_id}&"
-
-            rule2id_str += f"{full_id}"
-    except KeyError as keyerror:
-        # 捕获异常并打印调用栈信息
-        traceback.print_exc()
-        raise ValueError(f"KeyError: {keyerror}")
-
-    except Exception as e:
-        raise ValueError(f"An error occurred: {rule}")
-
-    return rule2id_str[:-1]
-
-
 
 
 
