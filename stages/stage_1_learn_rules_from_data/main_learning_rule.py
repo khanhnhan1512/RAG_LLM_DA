@@ -7,7 +7,7 @@ from joblib import Parallel, delayed
 from datetime import datetime
 
 from stages.stage_1_learn_rules_from_data.data_loader import DataLoader
-from stages.stage_1_learn_rules_from_data.utils import load_learn_data, calculate_relation_similarity, load_json_data, save_json_data
+from utils import load_learn_data, calculate_relation_similarity
 from openai_llm.llm_init import LLM_Model
 from stages.stage_1_learn_rules_from_data.temporal_walk import TemporalWalker
 from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner
@@ -22,7 +22,7 @@ def parse_args():
     parser.add_argument('--num_process', type=int, default=16, help='Number of learning rule processes')
     parser.add_argument('--seed', '--s', type=int, default=42, help='random seed')
     parser.add_argument("--version", default="train", type=str,
-                        choices=['train', 'test', 'train_valid', 'valid'])
+                        choices=['train', 'test', 'train_valid', 'valid', 'all'])
     parser.add_argument("--is_relax_time", default=False, type=bool)
     parser = vars(parser.parse_args())
     return parser
@@ -101,9 +101,9 @@ def stage_1_main():
 
     rl.rules_dict = all_graph
     rl.sort_rules_dict()
-    rl.remove_low_quality_rules()
+    # rl.remove_low_quality_rules()
     dt = datetime.now().strftime("%d%m%y%H%M%S")
     rl.save_rules_csv(dt, rule_length, num_walks, transition_choice, seed)
     rl.rules_statistics()
-    # calculate_relation_similarity(llm_instance, list(data_loader.relation2id.keys()), rl.output_dir)
+    calculate_relation_similarity(llm_instance, list(data_loader.relation2id.keys()), rl.output_dir)
 

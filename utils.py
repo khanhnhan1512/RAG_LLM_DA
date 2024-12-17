@@ -42,3 +42,36 @@ def calculate_relation_similarity(llm_instance, all_rels, output_dir):
     np.fill_diagonal(similarity, 0)
     np.save(os.path.join(output_dir, 'relation_similarity.npy'), similarity)
 
+def parse_verbalized_rule_to_walk(verbalized_rule, relation2id):
+    """
+    Parse a verbalized rule string to a temporal walk.
+
+    Parameters:
+        verbalized_rule (str): verbalized rule string
+
+    Returns:
+        walk (dict): parsed temporal walk
+                        {"entities": list, "relations": list, "timestamps": list}
+    """
+    walk = {
+        "entities": [],
+        "relations": [],
+        "timestamps": []
+    }
+    
+    head, body = verbalized_rule.split("<-")
+    head_rel, head_entities = head.split("(")
+    head_entities = head_entities.split(",")[:-1]
+    
+    walk["relations"].append(relation2id[head_rel.strip()])
+    walk["entities"].extend(head_entities)
+    
+    body_parts = body.split("&")
+    for part in body_parts:
+        rel, entities = part.split("(")
+        entities = entities[:-1].split(",")
+        walk["relations"].append(relation2id[rel.strip()])
+        walk["entities"].extend(entities[:-1])
+        walk["timestamps"].append(entities[-1])
+    
+    return walk

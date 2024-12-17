@@ -8,7 +8,7 @@ from collections import Counter
 import copy
 import re
 import traceback
-from stages.stage_1_learn_rules_from_data.utils import save_json_data, write_to_file
+from utils import save_json_data, write_to_file
 
 class RuleLearner(object):
     def __init__(self, edges, id2entity, id2relation, inv_relation_id, dataset, total_num_fact):
@@ -92,7 +92,6 @@ class RuleLearner(object):
 
             if rule["conf"] or confidence:
                 self.update_rules_dict(rule)
-
 
     def define_var_constraints(self, entities):
         """
