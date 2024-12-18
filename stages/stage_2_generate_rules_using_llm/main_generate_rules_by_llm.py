@@ -30,20 +30,21 @@ def stage_2_main():
     version = args['version']
     transition_choice = args['transition_choice']
     data_dir = os.path.join(data_path, dataset)
+    output_dir = "./result/" + dataset + "/stage_2/"
 
     ###########################Thang's code############################
 
     ###################################################################
 
     # for example, the result of Thang will be in a json file
-    generated_rules = load_json_data('stages/stage_2_generate_rules_using_llm/example.json')
+    generated_rules = load_json_data(output_dir+"example.json")
 
     # Code to update generated rules 
     data_loader = DataLoader(data_dir)
     temporal_walk_data = load_learn_data(data_loader, version)
     temporal_walk = TemporalWalker(temporal_walk_data, data_loader.inverse_rel_idx, transition_choice)
     rl = RuleLearner(temporal_walk.edges, data_loader.relation2id, data_loader.id2entity, data_loader.id2relation, data_loader.inverse_rel_idx, 
-                     dataset, len(temporal_walk_data), "./result/" + dataset + "/stage_2/")
+                     dataset, len(temporal_walk_data), output_dir)
 
     for rel in generated_rules:
         for rule in generated_rules[rel]:
@@ -51,6 +52,6 @@ def stage_2_main():
     
     rl.sort_rules_dict()
     dt = datetime.now().strftime("%Y%m%d")
-    rl.save_rules_csv(dt, "llm")
+    rl.save_rules_csv(dt, "llm", metrics=["confidence_score"])
     rl.rules_statistics()
 

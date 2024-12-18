@@ -362,7 +362,7 @@ class RuleLearner(object):
                 self.rules_dict[rel], key=lambda x: x["conf"], reverse=True
             )
 
-    def save_rules_csv(self, dt, rule_type, rule_lengths=0, num_walks=0, transition_distr=None, seed=None):
+    def save_rules_csv(self, dt, rule_type, rule_lengths=0, num_walks=0, transition_distr=None, seed=None, metrics=["confidence_score"]):
         """
         Save all rules in a csv file.
 
@@ -376,21 +376,28 @@ class RuleLearner(object):
         Returns:
             None
         """
+        
+
         if rule_type == "random_walk":
             filename = "{0}_r{1}_n{2}_{3}_s{4}_{5}_random_rules.csv".format(
                 dt, rule_lengths, num_walks, transition_distr, seed, rule_type
             )
-            columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
+            full_columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
                    "rule", "head_rel", "example"]
+            default_columns = ["rule_supp_count", "body_supp_count", "head_supp_count", "rule", "head_rel", "example"]
+
         elif rule_type == "llm":
             filename = "{0}_{1}_generated_llm_rules.csv".format(dt, rule_type)
-            columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
+            full_columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
                    "rule", "head_rel"]
+            default_columns = ["rule_supp_count", "body_supp_count", "head_supp_count", "rule", "head_rel"]
+            
         filename = filename.replace(" ", "")
         output_path = self.output_dir + filename
 
+        columns_to_keep = metrics + default_columns
         
-        df = pd.DataFrame(columns=columns)
+        df = pd.DataFrame(columns=full_columns)
         entries = []
 
         for rel in self.rules_dict:
@@ -398,7 +405,8 @@ class RuleLearner(object):
                 rule_str = verbalize_rule(rule, self.id2relation, rule_type)
                 entry = rule_str.split("\t")
                 entries.append(entry)
-        df = pd.concat([df, pd.DataFrame(entries, columns=columns)], ignore_index=True)
+        df = pd.concat([df, pd.DataFrame(entries, columns=full_columns)], ignore_index=True)
+        df = df[columns_to_keep]
         df.to_csv(output_path, index=False)
         print(f"Rules have been saved to {output_path}")
 
@@ -514,7 +522,7 @@ def parse_verbalized_rule_to_walk(verbalized_rule, relation2id, inverse_rel_idx)
         "relations": [],
         "timestamps": []
     }
-    print(verbalized_rule)
+    # print(verbalized_rule)
     head, body = verbalized_rule.split("<-")
     head_rel, head_entities = head.split("(")
     head_entities = head_entities.split(",")[:-1]
