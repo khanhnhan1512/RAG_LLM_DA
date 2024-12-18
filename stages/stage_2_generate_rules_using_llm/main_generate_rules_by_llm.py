@@ -1,11 +1,11 @@
 import argparse
 import os
+from datetime import datetime
 
 from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner
 from stages.stage_1_learn_rules_from_data.temporal_walk import TemporalWalker
 from stages.stage_1_learn_rules_from_data.data_loader import DataLoader
-from utils import load_json_data, load_learn_data, parse_verbalized_rule_to_walk
-
+from utils import load_json_data, load_learn_data
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='datasets', help='path to the dataset')
@@ -42,10 +42,15 @@ def stage_2_main():
     data_loader = DataLoader(data_dir)
     temporal_walk_data = load_learn_data(data_loader, version)
     temporal_walk = TemporalWalker(temporal_walk_data, data_loader.inverse_rel_idx, transition_choice)
-    rl = RuleLearner(temporal_walk.edges, data_loader.id2entity, data_loader.id2relation, data_loader.inverse_rel_idx, dataset, len(temporal_walk_data))
+    rl = RuleLearner(temporal_walk.edges, data_loader.relation2id, data_loader.id2entity, data_loader.id2relation, data_loader.inverse_rel_idx, 
+                     dataset, len(temporal_walk_data), "./result/" + dataset + "/stage_2/")
 
     for rel in generated_rules:
         for rule in generated_rules[rel]:
-            walk = parse_verbalized_rule_to_walk(rule, data_loader.relation2id)
-
+            rl.create_llm_rule(rule)
+    
+    rl.sort_rules_dict()
+    dt = datetime.now().strftime("%Y%m%d")
+    rl.save_rules_csv(dt, "llm")
+    rl.rules_statistics()
 

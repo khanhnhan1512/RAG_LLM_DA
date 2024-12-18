@@ -11,7 +11,7 @@ import traceback
 from utils import save_json_data, write_to_file
 
 class RuleLearner(object):
-    def __init__(self, edges, id2entity, id2relation, inv_relation_id, dataset, total_num_fact):
+    def __init__(self, edges, relation2id, id2entity, id2relation, inv_relation_id, dataset, total_num_fact, output_dir):
         """
         Initialize rule learner object.
 
@@ -26,6 +26,7 @@ class RuleLearner(object):
         """
 
         self.edges = edges
+        self.relation2id = relation2id
         self.id2entity = id2entity
         self.id2relation = id2relation
         self.inv_relation_id = inv_relation_id
@@ -38,7 +39,7 @@ class RuleLearner(object):
         self.rule2confidence_dict = {}
         self.original_found_rules = []
         self.rules_dict = dict()
-        self.output_dir = "./result/" + dataset + "/stage_1/"
+        self.output_dir = output_dir
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
 
@@ -93,6 +94,38 @@ class RuleLearner(object):
             if rule["conf"] or confidence:
                 self.update_rules_dict(rule)
 
+    def create_llm_rule(self, verbalized_rule, confidence=0, use_relax_time=False):
+        """
+        
+        """
+        walk = parse_verbalized_rule_to_walk(verbalized_rule, self.relation2id, self.inv_relation_id)
+        rule = dict()
+        rule["head_rel"] = int(walk["relations"][0])
+        rule["body_rels"] = [
+            self.inv_relation_id[x] for x in walk["relations"][1:][::-1]
+        ]
+        rule["var_constraints"], _ = self.define_var_constraints(
+            walk["entities"][1:][::-1]
+        )
+
+        if rule not in self.found_rules:
+            self.found_rules.append(rule.copy())
+            (
+                rule["conf"],
+                rule["rule_supp_count"],
+                rule["body_supp_count"],
+                rule["head_supp_count"],
+                rule["lift"],
+                rule["conviction"],
+                rule["kulczynski"],
+                rule["IR_score"]
+            ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
+
+            rule["llm_confidence"] = confidence
+
+            if rule["conf"] or confidence:
+                self.update_rules_dict(rule)
+
     def define_var_constraints(self, entities):
         """
         Define variable constraints, i.e., state the indices of reoccurring entities in a walk.
@@ -128,10 +161,10 @@ class RuleLearner(object):
         """
 
         if any(body_rel not in self.edges for body_rel in rule["body_rels"]):
-            return 0, 0, 0
+            return 0, 0, 0, 0, 0, 0, 0, 0
 
         if rule['head_rel'] not in self.edges:
-            return 0, 0, 0
+            return 0, 0, 0, 0, 0, 0, 0, 0
 
         all_bodies = []
         for _ in range(num_samples):
@@ -329,7 +362,7 @@ class RuleLearner(object):
                 self.rules_dict[rel], key=lambda x: x["conf"], reverse=True
             )
 
-    def save_rules_csv(self, dt, rule_lengths, num_walks, transition_distr, seed):
+    def save_rules_csv(self, dt, rule_type, rule_lengths=0, num_walks=0, transition_distr=None, seed=None):
         """
         Save all rules in a csv file.
 
@@ -343,20 +376,26 @@ class RuleLearner(object):
         Returns:
             None
         """
-        filename = "{0}_r{1}_n{2}_{3}_s{4}_rules.csv".format(
-            dt, rule_lengths, num_walks, transition_distr, seed
-        )
+        if rule_type == "random_walk":
+            filename = "{0}_r{1}_n{2}_{3}_s{4}_{5}_random_rules.csv".format(
+                dt, rule_lengths, num_walks, transition_distr, seed, rule_type
+            )
+            columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
+                   "rule", "head_rel", "example"]
+        elif rule_type == "llm":
+            filename = "{0}_{1}_generated_llm_rules.csv".format(dt, rule_type)
+            columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
+                   "rule", "head_rel"]
         filename = filename.replace(" ", "")
         output_path = self.output_dir + filename
 
-        columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
-                   "rule", "head_rel", "example"]
+        
         df = pd.DataFrame(columns=columns)
         entries = []
 
         for rel in self.rules_dict:
             for rule in self.rules_dict[rel]:
-                rule_str = verbalize_rule(rule, self.id2relation)
+                rule_str = verbalize_rule(rule, self.id2relation, rule_type)
                 entry = rule_str.split("\t")
                 entries.append(entry)
         df = pd.concat([df, pd.DataFrame(entries, columns=columns)], ignore_index=True)
@@ -385,7 +424,7 @@ class RuleLearner(object):
         rule_lengths = [(k, v) for k, v in Counter(lengths).items()]
         print("Number of rules by length: ", sorted(rule_lengths))
 
-def verbalize_rule(rule, id2relation):
+def verbalize_rule(rule, id2relation, rule_type):
     """
     Verbalize the rule to be in a human-readable format.
 
@@ -439,7 +478,11 @@ def verbalize_rule(rule, id2relation):
         )
 
     rule_str = rule_str[:-1]
-    rule_str += f"\t{id2relation[rule['head_rel']]}\t{rule['example']}"
+    if rule_type == "random_walk":
+        rule_str += f"\t{id2relation[rule['head_rel']]}\t{rule['example']}"
+    elif rule_type == "llm":
+        rule_str += f"\t{id2relation[rule['head_rel']]}"
+    
     return rule_str
 
 def verbalize_example_rule(rule, id2relation):
@@ -455,5 +498,43 @@ def verbalize_example_rule(rule, id2relation):
         example_str += f"{id2relation[rule['body_rels'][i]]}({rule['example_entities'][sub_idx]},{rule['example_entities'][obj_idx]},T{i})&"
     return example_str[:-1]
 
+def parse_verbalized_rule_to_walk(verbalized_rule, relation2id, inverse_rel_idx):
+    """
+    Parse a verbalized rule string to a temporal walk.
 
+    Parameters:
+        verbalized_rule (str): verbalized rule string
+
+    Returns:
+        walk (dict): parsed temporal walk
+                        {"entities": list, "relations": list, "timestamps": list}
+    """
+    walk = {
+        "entities": [],
+        "relations": [],
+        "timestamps": []
+    }
+    print(verbalized_rule)
+    head, body = verbalized_rule.split("<-")
+    head_rel, head_entities = head.split("(")
+    head_entities = head_entities.split(",")[:-1]
+    
+    walk["relations"].append(relation2id[head_rel.strip()])
+    walk["entities"].append(head_entities[0])
+    
+    body_parts = body.split("&")
+    pattern = r'(\w+\(.*?\))'
+    for part in body_parts[::-1]:
+        try:
+            rel, entities = part.split("(")
+        except:
+            matches = re.findall(pattern, part)   
+            if matches:  
+                rel = matches[0]  
+                entities = part.split(rel+"(")[1]
+        entities = entities.split(",")[:-1]
+        walk["relations"].append(inverse_rel_idx[relation2id[rel.strip()]])
+        walk["entities"].append(entities[1])
+    walk["entities"].append(head_entities[0])
+    return walk
 
