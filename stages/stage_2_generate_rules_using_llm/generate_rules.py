@@ -1,108 +1,3 @@
-# import pandas as pd
-# import json
-# from openai_llm.llm_init import LLM_Model
-# from langchain_core.messages import HumanMessage, SystemMessage
-
-# # Step 1: Read the content from draph.txt and extract 'rule' column values
-# def extract_rules_from_file(filename):
-#     # Read the CSV file
-#     df = pd.read_csv(filename)
-#     # Extracting 'rule' column values
-#     return df['rule'].tolist()
-
-# # Step 2: Create LLM prompt
-# def create_llm_prompt(rules):
-#     user_query = "Identify the top 10 rules that are not correct about reality based on the given data."
-#     user_msg_content = f'''
-#     Here is the user query: {user_query}
-
-#     Here are the rules that need to be evaluated:
-#     {rules}
-#     '''
-#     system_msg_content = '''
-#     You are an expert in rule validation and factual accuracy. You will be given some rules extracted from the data.
-#     Your task is to identify the top 10 rules that do not align with reality.
-#     Your answer should be in JSON format:
-#     {
-#         "identified_rules": // a list of top 10 rules that are not correct about reality.
-#     }
-#     '''
-    
-#     return user_msg_content, system_msg_content
-
-# # Step 3: Save results to JSON file
-# def save_results_to_json(results, filename):
-#     with open(filename, 'w') as file:
-#         json.dump(results, file, indent=4)
-
-# # Main execution
-# if __name__ == "__main__":
-#     # Extract rules from draph.txt
-#     rules = extract_rules_from_file("draph.txt")
-    
-#     # Initialize LLM instance
-#     llm_instance = LLM_Model()
-    
-#     # Create prompt for LLM
-#     user_msg_content, system_msg_content = create_llm_prompt(rules)
-    
-#     # Create messages for LLM input
-#     user_message = HumanMessage(content=user_msg_content)
-#     system_message = SystemMessage(content=system_msg_content)
-    
-#     # Get response from LLM
-#     answer_llm = llm_instance.run_task([system_message, user_message])
-    
-#     # Assuming answer_llm contains a valid JSON response with identified rules
-#     identified_rules = answer_llm.get("identified_rules", [])
-    
-#     # Prepare results for saving
-#     results = {
-#         "identified_rules": identified_rules
-#     }
-    
-#     # Save results to results.json
-#     save_results_to_json(results, "results.json")
-
-# import os
-# import pandas as pd
-
-# def create_rule_dict(file_path):
-#     # Read the CSV file into a DataFrame
-#     df = pd.read_csv(file_path)
-
-#     # Initialize an empty dictionary to hold the results
-#     rule_dict = {}
-
-#     # Iterate through each row in the DataFrame
-#     for index, row in df.iterrows():
-#         head_rel = row['head_rel']
-#         rule = row['rule']
-
-#         # If the head_rel is not already in the dictionary, initialize it with an empty list
-#         if head_rel not in rule_dict:
-#             rule_dict[head_rel] = []
-
-#         # Append the rule to the list corresponding to the head_rel key
-#         rule_dict[head_rel].append(rule)
-
-#     return rule_dict
-
-# def save_rule_dict_to_csv(rule_dict, output_file_path):
-#     # Ensure the directory exists
-#     os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
-    
-#     # Convert the dictionary to a DataFrame
-#     df = pd.DataFrame([(key, rule) for key, rules in rule_dict.items() for rule in rules], columns=['head_rel', 'rule'])
-    
-#     # Save the DataFrame to a CSV file
-#     df.to_csv(output_file_path, index=False)
-
-# file_path = 'result/icews14/stage_1/151224093916_r[1,2,3]_n200_exp_s42_rules.csv'
-# result_dict = create_rule_dict(file_path)
-# output_file_path = 'result/icews14/stage_1/rule_dict_output.csv'
-# save_rule_dict_to_csv(result_dict, output_file_path)
-
 import os
 import json
 from openai_llm.llm_init import LLM_Model
@@ -118,8 +13,6 @@ def create_llm_prompt(rule_head, extracted_rules, candidate_relations):
     user_msg_content = f'''
     Please generate as many temporal logical rules as possible related to '{rule_head}' based on extracted temporal rules.
 
-    Here are a few examples:
-    Example 1:
     Rule Head:
     {rule_head}(X, Y, T)
     Extracted Rules from Historical Data:
@@ -134,7 +27,7 @@ def create_llm_prompt(rule_head, extracted_rules, candidate_relations):
 
     For the relations in rule body, you are going to choose from the following candidates: {candidate_relations}.
 
-    Let's think step-by-step, please generate as many as possible most relevant temporal rules that are relative to \"{rule_head}(X0,Xl,Tl)\" based on the above sampled rules.
+    Let's think step-by-step, please generate as many as possible most relevant temporal rules that are relative to \"{rule_head}(X0,Xl,Tl)\" based on the above extracted rules from historical data.
 
     Return in JSON format:
     {{
@@ -201,4 +94,3 @@ output_dir = 'result/icews14/stage_2'
 output_file_path = os.path.join(output_dir, 'generated_rules_added_output.json')
 with open(output_file_path, 'w', encoding='utf-8') as f:
     json.dump(new_generated_rules, f, ensure_ascii=False, indent=4)
-
