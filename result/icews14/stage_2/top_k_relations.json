@@ -1,0 +1,50 @@
+{
+    "Make_statement": [
+        "Express_intent_to_engage_in_diplomatic_cooperation_(such_as_policy_support)",
+        "Sign_formal_agreement",
+        "Engage_in_negotiation",
+        "Cooperate_economically",
+        "Engage_in_diplomatic_cooperation",
+        "Appeal_for_diplomatic_cooperation_(such_as_policy_support)",
+        "Engage_in_material_cooperation",
+        "Express_intent_to_provide_economic_aid",
+        "Demand_meeting,_negotiation",
+        "Express_intent_to_cooperate"
+    ],
+    "Consult": [
+        "Express_intent_to_cooperate",
+        "Engage_in_diplomatic_cooperation",
+        "Sign_formal_agreement",
+        "Discuss_by_telephone",
+        "Meet_at_a_'third'_location",
+        "Engage_in_negotiation",
+        "Express_intent_to_meet_or_negotiate",
+        "Ease_economic_sanctions,_boycott,_embargo",
+        "Make_statement",
+        "Appeal_for_intelligence"
+    ],
+    "Make_an_appeal_or_request": [
+        "Express_intent_to_engage_in_diplomatic_cooperation_(such_as_policy_support)",
+        "Engage_in_diplomatic_cooperation",
+        "Sign_formal_agreement",
+        "Provide_humanitarian_aid",
+        "Receive_deployment_of_peacekeepers",
+        "Provide_economic_aid",
+        "Grant_diplomatic_recognition",
+        "Express_intent_to_settle_dispute",
+        "Provide_military_aid",
+        "Express_intent_to_provide_humanitarian_aid"
+    ],
+    "Express_intent_to_meet_or_negotiate": [
+        "Express_intent_to_engage_in_diplomatic_cooperation_(such_as_policy_support)",
+        "Engage_in_material_cooperation",
+        "Express_intent_to_provide_material_aid",
+        "Demand_meeting,_negotiation",
+        "Express_intent_to_mediate",
+        "Appeal_to_others_to_meet_or_negotiate",
+        "Demand_material_cooperation",
+        "Express_intent_to_provide_economic_aid",
+        "Express_intent_to_change_policy",
+        "Appeal_for_intelligence"
+    ]
+}

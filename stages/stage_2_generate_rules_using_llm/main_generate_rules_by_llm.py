@@ -32,12 +32,10 @@ def stage_2_main():
     data_dir = os.path.join(data_path, dataset)
     output_dir = "./result/" + dataset + "/stage_2/"
 
-    ###########################Thang's code############################
 
-    ###################################################################
 
     # for example, the result of Thang will be in a json file
-    generated_rules = load_json_data(output_dir+"example.json")
+    generated_rules = load_json_data('result\icews14\stage_2\generated_rules_added_output.json')
 
     # Code to update generated rules 
     data_loader = DataLoader(data_dir)
