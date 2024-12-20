@@ -35,7 +35,7 @@ def stage_2_main():
 
 
     # for example, the result of Thang will be in a json file
-    generated_rules = load_json_data('result\icews14\stage_2\generated_rules_added_output.json')
+    generated_rules = load_json_data(output_dir + "example.json")
 
     # Code to update generated rules 
     data_loader = DataLoader(data_dir)

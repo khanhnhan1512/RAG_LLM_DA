@@ -531,7 +531,7 @@ def parse_verbalized_rule_to_walk(verbalized_rule, relation2id, inverse_rel_idx)
     walk["entities"].append(head_entities[0])
     
     body_parts = body.split("&")
-    pattern = r'(\w+\(.*?\))'
+    pattern = r"([\\w\\s'\\-\\.,\\(\\)]+)\\((\\w+),\\s*(\\w+),\\s*(\\w+)\\)(&|$)"
     for part in body_parts[::-1]:
         try:
             rel, entities = part.split("(")
