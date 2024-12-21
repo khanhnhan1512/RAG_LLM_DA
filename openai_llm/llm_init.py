@@ -20,7 +20,7 @@ COST_TOKENS_1000TK = {
 
 class LLM_Model:
     def __init__(self):
-        self.settings = read_settings("openai_llm/llm.config")
+        self.settings = read_settings("config/llm.config")
 
         self.connect()
 

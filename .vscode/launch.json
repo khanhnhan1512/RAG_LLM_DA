@@ -14,5 +14,12 @@
                 "-d", "icews14",
             ]
         },
+        {
+            "name": "test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "test.py",
+            "console": "integratedTerminal"
+        }
     ]
 }

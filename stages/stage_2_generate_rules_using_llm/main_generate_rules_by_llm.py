@@ -31,11 +31,12 @@ def stage_2_main():
     transition_choice = args['transition_choice']
     data_dir = os.path.join(data_path, dataset)
     output_dir = "./result/" + dataset + "/stage_2/"
-
+    rule_regex = load_json_data("config/rule_regex.json")[dataset]
 
 
     # for example, the result of Thang will be in a json file
-    generated_rules = load_json_data(output_dir + "example.json")
+    generated_rules = load_json_data(output_dir + "generated_rules_added_output.json")
+    
 
     # Code to update generated rules 
     data_loader = DataLoader(data_dir)
@@ -46,7 +47,7 @@ def stage_2_main():
 
     for rel in generated_rules:
         for rule in generated_rules[rel]:
-            rl.create_llm_rule(rule)
+            rl.create_llm_rule(rule, rule_regex)
     
     rl.sort_rules_dict()
     dt = datetime.now().strftime("%Y%m%d")

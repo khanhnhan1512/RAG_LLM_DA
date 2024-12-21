@@ -94,11 +94,11 @@ class RuleLearner(object):
             if rule["conf"] or confidence:
                 self.update_rules_dict(rule)
 
-    def create_llm_rule(self, verbalized_rule, confidence=0, use_relax_time=False):
+    def create_llm_rule(self, verbalized_rule, rule_regex, confidence=0, use_relax_time=False):
         """
         
         """
-        walk = parse_verbalized_rule_to_walk(verbalized_rule, self.relation2id, self.inv_relation_id)
+        walk = parse_verbalized_rule_to_walk(verbalized_rule, self.relation2id, self.inv_relation_id, rule_regex)
         rule = dict()
         rule["head_rel"] = int(walk["relations"][0])
         rule["body_rels"] = [
@@ -506,7 +506,7 @@ def verbalize_example_rule(rule, id2relation):
         example_str += f"{id2relation[rule['body_rels'][i]]}({rule['example_entities'][sub_idx]},{rule['example_entities'][obj_idx]},T{i})&"
     return example_str[:-1]
 
-def parse_verbalized_rule_to_walk(verbalized_rule, relation2id, inverse_rel_idx):
+def parse_verbalized_rule_to_walk(verbalized_rule, relation2id, inverse_rel_idx, rule_regex):
     """
     Parse a verbalized rule string to a temporal walk.
 
@@ -515,34 +515,28 @@ def parse_verbalized_rule_to_walk(verbalized_rule, relation2id, inverse_rel_idx)
 
     Returns:
         walk (dict): parsed temporal walk
-                        {"entities": list, "relations": list, "timestamps": list}
+                        {"entities": list, "relations": list}
     """
     walk = {
         "entities": [],
         "relations": [],
-        "timestamps": []
     }
     # print(verbalized_rule)
     head, body = verbalized_rule.split("<-")
-    head_rel, head_entities = head.split("(")
-    head_entities = head_entities.split(",")[:-1]
+    # parse to get head relation and entities
+    head_match = re.search(rule_regex, head)
+    walk["entities"].append(head_match.groups()[1])
+    walk["relations"].append(relation2id[head_match.groups()[0].strip()])
+
+
     
-    walk["relations"].append(relation2id[head_rel.strip()])
-    walk["entities"].append(head_entities[0])
-    
-    body_parts = body.split("&")
-    pattern = r"([\\w\\s'\\-\\.,\\(\\)]+)\\((\\w+),\\s*(\\w+),\\s*(\\w+)\\)(&|$)"
-    for part in body_parts[::-1]:
-        try:
-            rel, entities = part.split("(")
-        except:
-            matches = re.findall(pattern, part)   
-            if matches:  
-                rel = matches[0]  
-                entities = part.split(rel+"(")[1]
-        entities = entities.split(",")[:-1]
-        walk["relations"].append(inverse_rel_idx[relation2id[rel.strip()]])
-        walk["entities"].append(entities[1])
-    walk["entities"].append(head_entities[0])
+    parts = body.split("&")
+    for part in parts[::-1]:
+        match = re.search(rule_regex, part)
+        if match:
+            walk["relations"].append(inverse_rel_idx[relation2id[match.groups()[0].strip()]])
+            walk["entities"].append(match.groups()[2])
+
+    walk["entities"].append(walk["entities"][0])
     return walk
 
