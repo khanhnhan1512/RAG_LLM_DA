@@ -37,13 +37,14 @@ def stage_1_main():
     num_walks = args['random_walk']
     num_process = args['num_process']
     seed = args['seed']
+    data_version = args['version']
     data_dir = os.path.join(data_path, dataset)
     output_dir = "./result/" + dataset + "/stage_1/"
 
     data_loader = DataLoader(data_dir)
     llm_instance = LLM_Model()
 
-    temporal_walk_data = load_learn_data(data_loader, 'train')
+    temporal_walk_data = load_learn_data(data_loader, data_version)
     temporal_walk = TemporalWalker(temporal_walk_data, data_loader.inverse_rel_idx, transition_choice)
 
     rl = RuleLearner(temporal_walk.edges, data_loader.relation2id, data_loader.id2entity, data_loader.id2relation, data_loader.inverse_rel_idx, dataset, 
@@ -108,5 +109,5 @@ def stage_1_main():
     rl.save_rules_csv(dt, 'random_walk', rule_length, num_walks, transition_choice, seed, 
                       metrics=["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score"])
     rl.rules_statistics()
-    # calculate_relation_similarity(llm_instance, list(data_loader.relation2id.keys()), rl.output_dir)
+    calculate_relation_similarity(llm_instance, list(data_loader.relation2id.keys()), rl.output_dir)
 
