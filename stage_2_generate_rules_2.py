@@ -11,23 +11,20 @@ def load_json(file_path):
 def create_llm_prompt(rule_head, extracted_rules, candidate_relations, k):
     """Create prompt for LLM."""
     user_msg_content = f'''
-    Please generate temporal logical rules related to '{rule_head}' based on extracted temporal rules.
+    Let's think step-by-step, please generate at least {k * 3} temporal logical rules related to '{rule_head}' based on extracted temporal rules.
 
     Rule Head:
     {rule_head}(X, Y, T)
     Extracted Rules from Historical Data:
     {extracted_rules}
     '''
-
     system_msg_content = f'''
     Definition: "Temporal Logical Rules:\n Temporal Logical Rules \"{rule_head}(X0,Xl,Tl)<-R1(X0,X1,T0)&...&Rl(X(l-1),Xl,T(l-1))\" are rules used in temporal knowledge graph reasoning to predict relations between entities over time. They describe how the relation \"{rule_head}\" between entities \"X0\" and \"Xl\" evolves from past time steps \"Ti (i={{0,...,(l-1)}})\"(rule body) to the next \"Tl\" (rule head), strictly following the constraint \"T0 <= \u00b7\u00b7\u00b7 <= T(l-1) < Tl\".\n\n",
     Context: "You are an expert in temporal knowledge graph reasoning, and please generate as many temporal logical rules as possible related to \"Rl\" based on extracted temporal rules.\n\nHere are a few examples: \n\nRule head: inv_Provide_humanitarian_aid(X0,Xl,Tl)\nSampled rules:\n\tinv_Provide_humanitarian_aid(X0,X1,T1)<-inv_Engage_in_diplomatic_cooperation(X0,X1,T0)\n\tinv_Provide_humanitarian_aid(X0,X3,T3)<-inv_Criticize_or_denounce(X0,X1,T0)&inv_Demand(X1,X2,T1)&Make_a_visit(X2,X3,T2)\n\tinv_Provide_humanitarian_aid(X0,X2,T2)<-Make_a_visit(X0,X1,T0)&Make_a_visit(X1,X2,T1)\nGenerated Temporal logic rules:\n\tinv_Provide_humanitarian_aid(X0,X1,T1)<-inv_Provide_aid(X0,X1,T0)\n\tinv_Provide_humanitarian_aid(X0,X2,T2)<-Make_an_appeal_or_request(X0,X1,T0)&inv_Consult(X1,X2,T1)\n\tinv_Provide_humanitarian_aid(X0,X3,T3)<-inv_Return,_release_person(s)(X0,X1,T0)&Return,_release_person(s)(X1,X2,T1)&Accuse(X2,X3,T2)\n\nRule head: Appeal_for_change_in_institutions,_regime(X0,Xl,Tl)\nSampled rules:\n\tAppeal_for_change_in_institutions,_regime(X0,X1,T1)<-inv_Engage_in_symbolic_act(X0,X1,T0)\n\tAppeal_for_change_in_institutions,_regime(X0,X2,T2)<-inv_Criticize_or_denounce(X0,X1,T0)&Make_pessimistic_comment(X1,X2,T1)\nGenerated Temporal logic rules:\n\tAppeal_for_change_in_institutions,_regime(X0,X1,T1)<-Make_an_appeal_or_request(X0,X1,T0)\n\tAppeal_for_change_in_institutions,_regime(X0,X2,T2)<-inv_Rally_support_on_behalf_of(X0,X1,T0)&Praise_or_endorse(X1,X2,T1)\n\tAppeal_for_change_in_institutions,_regime(X0,X3,T3)<-Appeal_for_change_in_institutions,_regime(X0,X1,T0)&Host_a_visit(X1,X2,T1)&inv_Criticize_or_denounce(X2,X3,T2)\n\tAppeal_for_change_in_institutions,_regime(X0,X2,T2)<-inv_Engage_in_symbolic_act(X0,X1,T0)&inv_Consult(X1,X2,T1)\n\nRule head: Appeal_for_economic_aid(X0,Xl,Tl)\nSampled rules:\n\tAppeal_for_economic_aid(X0,X1,T1)<-inv_Reduce_or_stop_military_assistance(X0,X1,T0)\n\tAppeal_for_economic_aid(X0,X2,T2)<-inv_Make_an_appeal_or_request(X0,X1,T0)&Make_statement(X1,X2,T1)\n\tAppeal_for_economic_aid(X0,X3,T3)<-inv_Demand(X0,X1,T0)&inv_Accede_to_demands_for_change_in_leadership(X1,X2,T1)&Accuse(X2,X3,T2)\nGenerated Temporal logic rules:\n\tAppeal_for_economic_aid(X0,X2,T2)<-Make_an_appeal_or_request(X0,X1,T0)&Appeal_for_military_aid(X1,X2,T1)\n\tAppeal_for_economic_aid(X0,X2,T2)<-inv_Express_intent_to_cooperate(X0,X1,T0)&Make_statement(X1,X2,T1)\n\tAppeal_for_economic_aid(X0,X1,T1)<-Make_an_appeal_or_request(X0,X1,T0)\n\n",
 
     Temporal Logical Rules: Temporal Logical Rules \"{rule_head}(X0,Xl,Tl)<-R1(X0,X1,T0)&...&Rl(X(l-1),Xl,T(l-1))\" are rules used in temporal knowledge graph reasoning to predict relations between entities over time. They describe how the relation \"{rule_head}\" between entities \"X0\" and \"Xl\" evolves from past time steps \"Ti (i={{0,...,(l-1)}})\" (rule body) to the next \"Tl\" (rule head), strictly following the constraint \"T0 <= \u00b7\u00b7\u00b7 <= T(l-1) < Tl\".
 
-    For the relations in rule body, you are going to choose from the following candidates: {candidate_relations}. Each candidate needs to be selected 4 times in all the relations to induce or combine to induce the rule head to make sense in terms of actual semantics.
-
-    Let's think step-by-step, please generate most relevant temporal rules that are relative to \"{rule_head}(X0,Xl,Tl)\" based on the above extracted rules from historical data.
+    For the relations in rule body, you are going to choose from the following candidates: {candidate_relations}. Each candidate needs to be selected at least 3 times in all the relations to induce or combine to induce the rule head to make sense in terms of actual semantics.
 
     Return in JSON format:
     {{

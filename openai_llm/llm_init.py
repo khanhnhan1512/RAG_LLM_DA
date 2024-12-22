@@ -117,7 +117,7 @@ class LLM_Model:
         answer_llm = {}
 
         retry = 0
-        max_retry = 3
+        max_retry = 1
 
         while retry < max_retry:
             try: 

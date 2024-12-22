@@ -8,10 +8,10 @@ def load_json(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
-def create_llm_prompt(rule_head, extracted_rules, candidate_relations):
+def create_llm_prompt(rule_head, extracted_rules, candidate_relations, k):
     """Create prompt for LLM."""
     user_msg_content = f'''
-    Please generate as many temporal logical rules as possible related to '{rule_head}' based on extracted temporal rules.
+    Please generate {k * 3} temporal logical rules related to '{rule_head}' based on extracted temporal rules.
 
     Rule Head:
     {rule_head}(X, Y, T)
@@ -25,7 +25,7 @@ def create_llm_prompt(rule_head, extracted_rules, candidate_relations):
 
     Temporal Logical Rules: Temporal Logical Rules \"{rule_head}(X0,Xl,Tl)<-R1(X0,X1,T0)&...&Rl(X(l-1),Xl,T(l-1))\" are rules used in temporal knowledge graph reasoning to predict relations between entities over time. They describe how the relation \"{rule_head}\" between entities \"X0\" and \"Xl\" evolves from past time steps \"Ti (i={{0,...,(l-1)}})\" (rule body) to the next \"Tl\" (rule head), strictly following the constraint \"T0 <= \u00b7\u00b7\u00b7 <= T(l-1) < Tl\".
 
-    For the relations in rule body, you are going to choose from the following candidates: {candidate_relations}.
+    For the relations in rule body, you are going to choose from the following candidates: {candidate_relations}. Each candidate needs to be selected 5 times in all the relations to induce or combine to induce the rule head to make sense in terms of actual semantics.
 
     Let's think step-by-step, please generate as many as possible most relevant temporal rules that are relative to \"{rule_head}(X0,Xl,Tl)\" based on the above extracted rules from historical data.
 
@@ -48,15 +48,17 @@ def add_generated_rules_to_rule_dict(generated_rules, rule_dict):
             rule_dict[rule_head] = new_rules
     return rule_dict
 
-def generate_new_rules(top_k_relations, rule_dict, llm_instance):
+def generate_new_rules(top_k_relations, k, rule_dict, llm_instance):
     """Generate new rules using LLM based on top k relations and existing rules."""
     generated_rules = {}
 
-    for rule_head, candidate_relations in top_k_relations.items():
+    for rule_head, candidate_relations_dict in top_k_relations.items():
         extracted_rules = rule_dict.get(rule_head, [])
+
+        candidate_relations = [list(relation.keys())[0] for relation in candidate_relations_dict]
         
         # Create prompt for LLM
-        user_msg_content, system_msg_content = create_llm_prompt(rule_head, extracted_rules, candidate_relations)
+        user_msg_content, system_msg_content = create_llm_prompt(rule_head, extracted_rules, candidate_relations, k)
         
         # Create messages for LLM input
         user_message = HumanMessage(content=user_msg_content)
@@ -73,6 +75,10 @@ def generate_new_rules(top_k_relations, rule_dict, llm_instance):
 
     return updated_rule_dict
 
+
+# Set k value for top k relations
+k = 10  
+
 # Example usage
 top_k_relations_file_path = 'result/icews14/stage_2/top_k_relations.json'
 rule_dict_file_path = 'result/icews14/stage_2/rule_dict_output.json'
@@ -85,7 +91,7 @@ rule_dict = load_json(rule_dict_file_path)
 llm_instance = LLM_Model()
 
 # Generate new rules based on top k relations and existing rules
-new_generated_rules = generate_new_rules(top_k_relations, rule_dict, llm_instance)
+new_generated_rules = generate_new_rules(top_k_relations, k, rule_dict, llm_instance)
 
 # Output directory
 output_dir = 'result/icews14/stage_2'
