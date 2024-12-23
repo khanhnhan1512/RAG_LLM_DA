@@ -11,13 +11,8 @@ def parse_args():
     parser.add_argument('--data_path', type=str, default='datasets', help='path to the dataset')
     parser.add_argument('--dataset', "-d", type=str, default='icews14', help='dataset name')
     parser.add_argument('--transition_choice', type=str, default='exp', help='transition choice')
-    # parser.add_argument('--max_rule_length', type=int, default=3, help='Maximum length of a rule')
-    # parser.add_argument('--random_walk', type=int, default=200, help='Number of random walks')
-    # parser.add_argument('--num_process', type=int, default=16, help='Number of learning rule processes')
-    # parser.add_argument('--seed', '--s', type=int, default=42, help='random seed')
     parser.add_argument("--version", default="valid", type=str,
                         choices=['train', 'test', 'train_valid', 'valid', 'all'])
-    # parser.add_argument("--is_relax_time", default=False, type=bool)
     parser = vars(parser.parse_args())
     return parser
 
@@ -30,14 +25,12 @@ def stage_2_main():
     version = args['version']
     transition_choice = args['transition_choice']
     data_dir = os.path.join(data_path, dataset)
-    output_dir = "./result/" + dataset + "/stage_2/"
+    output_dir = "./result/" + dataset + "/stage_3/"
     rule_regex = load_json_data("config/rule_regex.json")[dataset]
 
-
-    # for example, the result of Thang will be in a json file
-    generated_rules = load_json_data(output_dir + "generated_rules_added_output.json")
+    # for example, the llm-generated rules will be saved in a json file
+    generated_rules = load_json_data(f"result/{dataset}/stage_2/generated_rules_added_output.json")
     
-
     # Code to update generated rules 
     data_loader = DataLoader(data_dir)
     temporal_walk_data = load_learn_data(data_loader, version)
@@ -53,4 +46,3 @@ def stage_2_main():
     dt = datetime.now().strftime("%Y%m%d")
     rl.save_rules_csv(dt, "llm", metrics=["confidence_score"])
     rl.rules_statistics()
-
