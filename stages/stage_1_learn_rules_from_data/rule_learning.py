@@ -410,28 +410,6 @@ class RuleLearner(object):
         df.to_csv(output_path, index=False)
         print(f"Rules have been saved to {output_path}")
 
-    def rules_statistics(self):
-        """
-        Show statistics of the rules.
-
-        Parameters:
-            rules_dict (dict): rules
-
-        Returns:
-            None
-        """
-
-        print(
-            "Number of relations with rules: ", len(self.rules_dict)
-        )  # Including inverse relations
-        print("Total number of rules: ", sum([len(v) for k, v in self.rules_dict.items()]))
-
-        lengths = []
-        for rel in self.rules_dict:
-            lengths += [len(x["body_rels"]) for x in self.rules_dict[rel]]
-        rule_lengths = [(k, v) for k, v in Counter(lengths).items()]
-        print("Number of rules by length: ", sorted(rule_lengths))
-
 def verbalize_rule(rule, id2relation, rule_type):
     """
     Verbalize the rule to be in a human-readable format.
@@ -539,4 +517,26 @@ def parse_verbalized_rule_to_walk(verbalized_rule, relation2id, inverse_rel_idx,
 
     walk["entities"].append(walk["entities"][0])
     return walk
+
+def rules_statistics(rules_dict):
+    """
+    Show statistics of the rules.
+
+    Parameters:
+        rules_dict (dict): rules
+
+    Returns:
+        None
+    """
+
+    print(
+        "Number of relations with rules: ", len(rules_dict)
+    )  # Including inverse relations
+    print("Total number of rules: ", sum([len(v) for k, v in rules_dict.items()]))
+
+    lengths = []
+    for rel in rules_dict:
+        lengths += [len(x["body_rels"]) for x in rules_dict[rel]]
+    rule_lengths = [(k, v) for k, v in Counter(lengths).items()]
+    print("Number of rules by length: ", sorted(rule_lengths))
 

@@ -2,7 +2,7 @@ import argparse
 import os
 from datetime import datetime
 
-from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner
+from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner, rules_statistics
 from stages.stage_1_learn_rules_from_data.temporal_walk import TemporalWalker
 from stages.stage_1_learn_rules_from_data.data_loader import DataLoader
 from utils import load_json_data, load_learn_data
@@ -45,4 +45,4 @@ def stage_2_main():
     rl.sort_rules_dict()
     dt = datetime.now().strftime("%Y%m%d")
     rl.save_rules_csv(dt, "llm", metrics=["confidence_score"])
-    rl.rules_statistics()
+    rules_statistics(rl.rules_dict)
