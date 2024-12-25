@@ -10,6 +10,20 @@ import re
 import traceback
 from utils import save_json_data, write_to_file
 
+COLUMNS_MAPPING = {
+    'kulczynski': 'kulczynski',
+    'IR_score': 'IR_score',
+    'lift_score': 'lift',
+    'conviction_score': 'conviction',
+    'confidence_score': 'conf', 
+    'rule_supp_count': 'rule_supp_count', 
+    'body_supp_count': 'body_supp_count',
+    'head_supp_count': 'head_supp_count', 
+    'rule': 'body_rels', 
+    'head_rel': 'head_rel',
+    'example': 'example',
+}
+
 class RuleLearner(object):
     def __init__(self, edges, relation2id, id2entity, id2relation, inv_relation_id, dataset, total_num_fact, output_dir):
         """
@@ -75,24 +89,21 @@ class RuleLearner(object):
         rule["example"] = verbalize_example_rule(rule, self.id2relation)
         del rule["example_entities"]
         
+        (
+            rule["conf"],
+            rule["rule_supp_count"],
+            rule["body_supp_count"],
+            rule["head_supp_count"],
+            rule["lift"],
+            rule["conviction"],
+            rule["kulczynski"],
+            rule["IR_score"]
+        ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
 
-        if rule not in self.found_rules:
-            self.found_rules.append(rule.copy())
-            (
-                rule["conf"],
-                rule["rule_supp_count"],
-                rule["body_supp_count"],
-                rule["head_supp_count"],
-                rule["lift"],
-                rule["conviction"],
-                rule["kulczynski"],
-                rule["IR_score"]
-            ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
+        rule["llm_confidence"] = confidence
 
-            rule["llm_confidence"] = confidence
-
-            if rule["conf"] or confidence:
-                self.update_rules_dict(rule)
+        if rule["conf"] or confidence:
+            self.update_rules_dict(rule)
 
     def create_llm_rule(self, verbalized_rule, rule_regex, confidence=0, use_relax_time=False):
         """
@@ -108,23 +119,35 @@ class RuleLearner(object):
             walk["entities"][1:][::-1]
         )
 
-        if rule not in self.found_rules:
-            self.found_rules.append(rule.copy())
-            (
-                rule["conf"],
-                rule["rule_supp_count"],
-                rule["body_supp_count"],
-                rule["head_supp_count"],
-                rule["lift"],
-                rule["conviction"],
-                rule["kulczynski"],
-                rule["IR_score"]
-            ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
+        (
+            rule["conf"],
+            rule["rule_supp_count"],
+            rule["body_supp_count"],
+            rule["head_supp_count"],
+            rule["lift"],
+            rule["conviction"],
+            rule["kulczynski"],
+            rule["IR_score"]
+        ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
 
-            rule["llm_confidence"] = confidence
+        rule["llm_confidence"] = confidence
 
-            if rule["conf"] or confidence:
-                self.update_rules_dict(rule)
+        if rule["conf"] or confidence:
+            self.update_rules_dict(rule)
+
+    def create_rule_from_series_df(self, entry, rule_regex):
+        rule = dict()
+        for col in COLUMNS_MAPPING:
+            if col in entry:
+                if col == 'rule':
+                    rule[COLUMNS_MAPPING[col]] = get_body_rels_from_verbalized_rule(entry['rule'], self.relation2id, rule_regex)
+                elif col == 'head_rel':
+                    rule[COLUMNS_MAPPING[col]] = self.relation2id[entry[col]]
+                else:
+                    rule[COLUMNS_MAPPING[col]] = entry[col]
+        
+        if rule['conf']:
+            self.update_rules_dict(rule)
 
     def define_var_constraints(self, entities):
         """
@@ -517,6 +540,21 @@ def parse_verbalized_rule_to_walk(verbalized_rule, relation2id, inverse_rel_idx,
 
     walk["entities"].append(walk["entities"][0])
     return walk
+
+def get_body_rels_from_verbalized_rule(verbalized_rule, relation2id, rule_regex):
+    """
+    
+    """
+    body_rels = []
+    head, body = verbalized_rule.split("<-")
+    
+    parts = body.split("&")
+    for part in parts:
+        match = re.search(rule_regex, part)
+        if match:
+            body_rels.append(relation2id[match.groups()[0].strip()])
+        
+    return body_rels
 
 def rules_statistics(rules_dict):
     """
