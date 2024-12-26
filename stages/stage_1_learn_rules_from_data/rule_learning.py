@@ -141,6 +141,8 @@ class RuleLearner(object):
             if col in entry:
                 if col == 'rule':
                     rule[COLUMNS_MAPPING[col]] = get_body_rels_from_verbalized_rule(entry['rule'], self.relation2id, rule_regex)
+                    walk = parse_verbalized_rule_to_walk(entry['rule'], self.relation2id, self.inv_relation_id, rule_regex)
+                    rule["var_constraints"], _ = self.define_var_constraints(walk["entities"][1:][::-1])
                 elif col == 'head_rel':
                     rule[COLUMNS_MAPPING[col]] = self.relation2id[entry[col]]
                 else:

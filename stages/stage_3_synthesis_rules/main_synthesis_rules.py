@@ -16,7 +16,7 @@ def parse_args():
     parser = vars(parser.parse_args())
     return parser
 
-def stage_2_main():
+def stage_3_main():
 
     # args for rule learning
     args = parse_args()
