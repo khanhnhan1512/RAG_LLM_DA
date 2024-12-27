@@ -10,9 +10,6 @@
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
-            "args": [
-                "-d", "icews14",
-            ]
         },
         {
             "name": "test",

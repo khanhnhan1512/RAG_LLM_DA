@@ -13,13 +13,14 @@ def stage_6_main():
     candidates_file = "reasoning_result.json"
 
     dataset_dir = os.path.join("./datasets", dataset)
-    ranked_rules_dir = os.path.join("./result", dataset, "stage_5")
+    reasoning_result_dir = os.path.join("./result", dataset, "stage_4")
+    result_dir_path = os.path.join("./result", dataset, "stage_5")
 
     data = DataLoader(dataset_dir)
     num_entities = len(data.id2entity)
     test_data = data.test_data_idx if (parsed.test_data == "test") else data.valid_idx
 
-    all_rule_candidates = load_candidates(ranked_rules_dir, candidates_file)
+    all_rule_candidates = load_candidates(reasoning_result_dir, candidates_file)
 
     if parsed.graph_reasoning_type in ['TiRGN', 'REGCN']:
         test_numpy, score_numpy = load_test_and_score_data(dataset, dataset_dir, parsed.graph_reasoning_type)
@@ -36,7 +37,7 @@ def stage_6_main():
 
     print_results(hits_1, hits_3, hits_10, mrr)
 
-    # save_evaluation_results(ranked_rules_dir, candidates_file, hits_1, hits_3, hits_10, mrr)
+    save_evaluation_results(result_dir_path, hits_1, hits_3, hits_10, mrr)
 
 def load_candidates(ranked_rules_dir, candidates_file):
     with open(os.path.join(ranked_rules_dir, candidates_file), 'r') as f:
@@ -105,11 +106,13 @@ def print_results(hits_1, hits_3, hits_10, mrr):
     print("Hits@10: ", round(hits_10, 6))
     print("MRR: ", round(mrr, 6))
 
-def save_evaluation_results(ranked_rules_dir, candidates_file, hits_1, hits_3, hits_10, mrr):
-    filename = candidates_file[:-5] + "_eval.txt"
-    with open(os.path.join(ranked_rules_dir, filename), "w", encoding="utf-8") as fout:
-        fout.write("Hits@1: " + str(round(hits_1, 6)) + "\n")
-        fout.write("Hits@3: " + str(round(hits_3, 6)) + "\n")
-        fout.write("Hits@10: " + str(round(hits_10, 6)) + "\n")
-        fout.write("MRR: " + str(round(mrr, 6)) + "\n")
+def save_evaluation_results(result_dir_path, hits_1, hits_3, hits_10, mrr):
+    filename = "result_eval.txt"
+    if not os.path.exists(result_dir_path):
+        os.makedirs(result_dir_path)
+        with open(os.path.join(result_dir_path, filename), "w", encoding="utf-8") as fout:
+            fout.write("Hits@1: " + str(round(hits_1, 6)) + "\n")
+            fout.write("Hits@3: " + str(round(hits_3, 6)) + "\n")
+            fout.write("Hits@10: " + str(round(hits_10, 6)) + "\n")
+            fout.write("MRR: " + str(round(mrr, 6)) + "\n")
 

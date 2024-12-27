@@ -444,8 +444,8 @@ def save_candidates(rules_file, dir_path, all_candidates, rule_lengths, window, 
     all_candidates = {int(k): v for k,v in all_candidates.items()}
     for k in all_candidates:
         all_candidates[k] = {int(cand): v for cand, v in all_candidates[k].items()}
-    filename = "{0}_cands_r{1}_w{2}_{3}.json".format(
-        rules_file, rule_lengths, window, score_func_str
+    filename = "{0}.json".format(
+        rules_file
     )
     filename = filename.replace(" ", "")
     if not os.path.exists(dir_path):

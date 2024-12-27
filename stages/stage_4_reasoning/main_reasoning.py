@@ -11,8 +11,8 @@ from stages.stage_1_learn_rules_from_data.data_loader import DataLoader
 from stages.stage_1_learn_rules_from_data.temporal_walk import TemporalWalker
 from stages.stage_1_learn_rules_from_data.temporal_walk import store_edges
 from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner, rules_statistics
-from stages.stage_4_rule_application import main_rule_application as ra
-from stages.stage_5_reasoning.score_function import score_12, score_13, score_14
+from stages.stage_4_reasoning import rule_application as ra
+from stages.stage_4_reasoning.score_function import score_12, score_13, score_14
 from params import str_to_bool
 from utils import load_json_data, get_win_subgraph, load_learn_data
 
@@ -245,14 +245,16 @@ def print_final_statistics(final_no_cands_counter, final_all_candidates):
 
 def save_results(final_all_candidates, final_all_timestamp, parsed, dir_path, rules_file, args, score_func):
     for s in range(len(args)):
-        score_func_str = f'{score_func.__name__}{args[s]}'.replace(" ", "")
-        score_func_str = f'{score_func_str}_rule_{parsed["is_rule_priority"]}_top_{parsed["top_k"]}_et_{parsed["evaluation_type"]}_sorted_{parsed["is_sorted"]}_bgkg_{parsed["bgkg"]}_start_{parsed["win_start"]}_relax_{parsed["is_relax_time"]}_sample_{parsed["is_sampled"]}'
+        score_func_str = ''
+        # score_func_str = f'{score_func.__name__}{args[s]}'.replace(" ", "")
+        # score_func_str = f'{score_func_str}_rule_{parsed["is_rule_priority"]}_top_{parsed["top_k"]}_et_{parsed["evaluation_type"]}_sorted_{parsed["is_sorted"]}_bgkg_{parsed["bgkg"]}_start_{parsed["win_start"]}_relax_{parsed["is_relax_time"]}_sample_{parsed["is_sampled"]}'
         ra.save_candidates(rules_file, dir_path, final_all_candidates[s], parsed["max_rule_length"], parsed["window"], score_func_str, final_all_timestamp[s])
 
 def parse_arguments():
     global parsed
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", "-d", default="icews14", type=str)
+    parser.add_argument("--result_rules_path", default="./result/icews14/stage_3/temp_result.csv", type=str)
     parser.add_argument("--test_data", default="test", type=str)
     parser.add_argument("--rules", "-r", default="reasoning_result", type=str)
     parser.add_argument("--max_rule_length", "-l", default=3, type=int, nargs="+")
@@ -287,18 +289,18 @@ def stage_5_main():
     rule_lengths = (torch.arange(parsed['max_rule_length']) + 1).tolist()
 
     dataset_dir = os.path.join(".", "datasets", parsed["dataset"])
-    dir_path = os.path.join(".", "result", parsed["dataset"], "stage_5")
+    dir_path = os.path.join(".", "result", parsed["dataset"], "stage_4")
 
     data = DataLoader(dataset_dir, parsed)
     test_data = data.test_data_idx if parsed["test_data"] == "test" else data.valid_data_idx
 
     # Load rules
     rule_regex = load_json_data("config/rule_regex.json")['icews14']
-    df = pd.read_csv('./result/icews14/stage_3/temp_result.csv')
+    df = pd.read_csv(parsed["result_rules_path"])
     temporal_walk_data = load_learn_data(data, 'all')
     temporal_walk = TemporalWalker(temporal_walk_data, data.inverse_rel_idx, 'exp')
     rl = RuleLearner(temporal_walk.edges, data.relation2id, data.id2entity, data.id2relation, data.inverse_rel_idx, 
-                        'icews14', len(temporal_walk_data), "./result/" + "icews14" + "/stage_x/")
+                        parsed["dataset"], len(temporal_walk_data), dir_path)
     for _, entry in df.iterrows():
         rl.create_rule_from_series_df(entry=entry, rule_regex=rule_regex)
     rules_dict = rl.rules_dict

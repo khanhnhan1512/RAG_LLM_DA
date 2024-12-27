@@ -2,7 +2,7 @@ import json
 import os
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-from stages.stage_4_rule_application import main_rule_application as ra
+from stages.stage_4_reasoning import rule_application as ra
 
 def load_json_data(file_path):
     try:

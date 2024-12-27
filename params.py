@@ -3,7 +3,7 @@ import argparse
 
 def get_params():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset", "-d", default="", type=str)
+    parser.add_argument("--dataset", "-d", default="icews14", type=str)
     parser.add_argument("--test_data", default="test", type=str)
     parser.add_argument("--candidates", "-c", default="", type=str)
     parser.add_argument("--timestamp", "-t", default="", type=str)
