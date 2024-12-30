@@ -13,7 +13,7 @@ from stages.stage_1_learn_rules_from_data.temporal_walk import store_edges
 from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner, rules_statistics
 from stages.stage_4_reasoning import rule_application as ra
 from stages.stage_4_reasoning.score_function import score_12, score_13, score_14
-from params import str_to_bool
+from utils import str_to_bool
 from utils import load_json_data, get_win_subgraph, load_learn_data
 
 def apply_rules(i, num_queries, parsed, test_data, window_subgraph, rules_dict, args, score_func, top_k):

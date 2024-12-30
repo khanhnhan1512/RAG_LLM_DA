@@ -1,33 +1,47 @@
 import json
 import os
 import numpy as np
+import argparse
 
 from stages.stage_1_learn_rules_from_data.data_loader import DataLoader
-from params import get_params
 from utils import filter_candidates, calculate_rank
 
-def stage_6_main():
-    parsed = get_params()
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--data_path', type=str, default='datasets', help='path to the dataset')
+    parser.add_argument('--dataset', "-d", type=str, default='icews14', help='dataset name')
+    parser.add_argument("--test_data", default="test", type=str)
+    parser.add_argument('--graph_reasoning_type', type=str,
+                        choices=['transformer', 'timestamp', 'based_source_with_timestamp', 'origin', 'fusion',
+                                 'fusion_with_weight', 'fusion_with_source', 'fusion_with_relation', 'TADistmult',
+                                 'TADistmult_with_recent', 'frequcy_only', 'new_origin_frequency', 'TiRGN', 'REGCN'],
+                        default='timestamp')
+    parser.add_argument("--rule_weight", default=1.0, type=float)
+    parser = vars(parser.parse_args())
+    return parser
 
-    dataset = parsed.dataset
+def stage_6_main():
+    args = parse_args()
+    data_dir = args['data_path']
+    dataset = args['dataset']
     candidates_file = "reasoning_result.json"
 
-    dataset_dir = os.path.join("./datasets", dataset)
+    dataset_path = os.path.join(data_dir, dataset)
     reasoning_result_dir = os.path.join("./result", dataset, "stage_4")
     result_dir_path = os.path.join("./result", dataset, "stage_5")
 
-    data = DataLoader(dataset_dir)
+    data = DataLoader(dataset_path)
     num_entities = len(data.id2entity)
-    test_data = data.test_data_idx if (parsed.test_data == "test") else data.valid_idx
+    test_data = data.test_data_idx if (args['test_data'] == "test") else data.valid_idx
 
     all_rule_candidates = load_candidates(reasoning_result_dir, candidates_file)
 
-    if parsed.graph_reasoning_type in ['TiRGN', 'REGCN']:
-        test_numpy, score_numpy = load_test_and_score_data(dataset, dataset_dir, parsed.graph_reasoning_type)
+    if args['graph_reasoning_type'] in ['TiRGN', 'REGCN']:
+        test_numpy, score_numpy = load_test_and_score_data(dataset, dataset_path, args['graph_reasoning_type'])
     else:
         test_numpy, score_numpy = None, None
 
-    results = evaluate(parsed, test_data, all_rule_candidates, num_entities, test_numpy, score_numpy)
+    results = evaluate(args, test_data, all_rule_candidates, num_entities, test_numpy, score_numpy)
     hits_1, hits_3, hits_10, mrr = results
 
     hits_1 /= len(test_data)
@@ -56,13 +70,13 @@ def load_test_and_score_data(dataset, dataset_dir, graph_reasoning_type):
     score_numpy = np.load(os.path.join(dataset_dir, graph_reasoning_type, 'score.npy'))
     return test_numpy, score_numpy
 
-def evaluate(parsed, test_data, all_rule_candidates, num_entities, test_numpy, score_numpy):
+def evaluate(args, test_data, all_rule_candidates, num_entities, test_numpy, score_numpy):
     hits_1 = hits_3 = hits_10 = mrr = 0
     num_samples = len(test_data)
 
     for i in range(num_samples):
         test_query = test_data[i]
-        candidates = get_final_candidates(parsed, test_query, all_rule_candidates, i, num_entities, test_numpy, score_numpy)
+        candidates = get_final_candidates(args, test_query, all_rule_candidates, i, num_entities, test_numpy, score_numpy)
         candidates = filter_candidates(test_query, candidates, test_data)
         rank = calculate_rank(test_query[2], candidates, num_entities)
 
@@ -70,14 +84,14 @@ def evaluate(parsed, test_data, all_rule_candidates, num_entities, test_numpy, s
 
     return hits_1, hits_3, hits_10, mrr
 
-def get_final_candidates(parsed, test_query, all_rule_candidates, i, num_entities, test_numpy, score_numpy):
-    if parsed.graph_reasoning_type in ['TiRGN', 'REGCN']:
-        return get_candidates(parsed, test_query, all_rule_candidates, i, num_entities, test_numpy, score_numpy)
+def get_final_candidates(args, test_query, all_rule_candidates, i, num_entities, test_numpy, score_numpy):
+    if args['graph_reasoning_type'] in ['TiRGN', 'REGCN']:
+        return get_candidates(args, test_query, all_rule_candidates, i, num_entities, test_numpy, score_numpy)
     else:
         return all_rule_candidates[i]
 
 
-def get_candidates(parsed, test_query, all_rule_candidates, i, num_entities, test_numpy, score_numpy):
+def get_candidates(args, test_query, all_rule_candidates, i, num_entities, test_numpy, score_numpy):
     temp_candidates = {k: 0 for k in range(num_entities)}
     rule_candidates = all_rule_candidates[i]
     rule_candidates = {**temp_candidates, **rule_candidates}
@@ -86,7 +100,7 @@ def get_candidates(parsed, test_query, all_rule_candidates, i, num_entities, tes
     score = score_numpy[indices[0]]
     regcn_candidates = {index: value for index, value in enumerate(score)}
 
-    candidates = {k: (1 - parsed.rule_weight) * regcn_candidates[k] + parsed.rule_weight * rule_candidates[k] for k in
+    candidates = {k: (1 - args['rule_weight']) * regcn_candidates[k] + args['rule_weight'] * rule_candidates[k] for k in
                   rule_candidates}
     return candidates
 
