@@ -12,6 +12,13 @@
             "console": "integratedTerminal",
         },
         {
+            "name": "embedding",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "./process_embedding/main_process_data.py",
+            "console": "integratedTerminal",
+        },
+        {
             "name": "test",
             "type": "debugpy",
             "request": "launch",

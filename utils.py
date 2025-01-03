@@ -1,6 +1,7 @@
 import json
 import argparse
 import os
+import shutil
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from stages.stage_4_reasoning import rule_application as ra
@@ -174,6 +175,24 @@ def save_json_data(data, file_path):
 def write_to_file(content, path):
     with open(path, "a", encoding="utf-8") as f:
         f.write(content)
+
+def copy__file(source_dirt_path, destination_path):
+    try:
+        shutil.rmtree(destination_path)
+        print(f"Deleted existing files/data at {destination_path}")
+    except:
+        print(f"No existing files/data at {destination_path}")
+    
+    try:
+        os.mkdir(destination_path)
+    except:
+        pass
+
+    try:
+        shutil.copytree(source_dirt_path, destination_path, dirs_exist_ok=True)
+        print(f"Copied files from {source_dirt_path} to {destination_path}")
+    except Exception as e:
+        print(f"Error while copying files from {source_dirt_path} to {destination_path}: {e}")
 
 def load_learn_data(data, type):
     data_map = {
