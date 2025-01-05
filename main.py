@@ -4,7 +4,7 @@ from stages.stage_4_reasoning.main_reasoning import stage_5_main
 from stages.stage_5_evaluate.main_evaluate import stage_6_main
 
 if __name__ == '__main__':
-    # stage_1_main()
+    stage_1_main()
     # stage_3_main()
     # stage_5_main()
-    stage_6_main()
+    # stage_6_main()

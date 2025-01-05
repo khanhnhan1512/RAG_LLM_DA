@@ -3,6 +3,7 @@ import argparse
 import os
 import shutil
 import numpy as np
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from sklearn.metrics.pairwise import cosine_similarity
 from stages.stage_4_reasoning import rule_application as ra
 
@@ -203,6 +204,39 @@ def load_learn_data(data, type):
         'train_valid': np.array(data.train_data_idx.tolist() + data.valid_data_idx.tolist())
     }
     return data_map[type]
+
+def transform_relations(all_rels, llm_instance, output_dir):
+    batch_size = 10
+
+    result = dict()
+
+    system_msg_content = '''
+    You are an expert in Temporal Knowledge Graph. Your task is to transform the given relations into a natural language term.
+    - Each given relation represents for an action between two entities in the past.
+    - Remove underscores and technical formatting  
+    - An important note is that if the relation has a prefix 'inv', it means that the action is an inverse action. You need to consider this information when transforming the relation.
+
+    Your answer should be in a json format as below:
+    {{
+        'original_relations': // list of original relations
+        'transformed_relations': // list of transformed relations corresponding to the original relations
+    }}
+    '''
+    system_msg = SystemMessage(content=system_msg_content)
+
+    for i in range(0, len(all_rels), batch_size):
+        user_msg_content = f'''
+            The list of relations need to be transformed: {all_rels[i:i+batch_size]}
+        '''
+        user_msg = HumanMessage(content=user_msg_content)
+
+        answer_llm = llm_instance.run_task([system_msg, user_msg])
+
+        for k, v in zip(answer_llm['original_relations'], answer_llm['transformed_relations']):
+            result[k] = v
+    
+    save_json_data(result, os.path.join(output_dir, 'transformed_relations.json'))
+    return result.values()
 
 def calculate_relation_similarity(llm_instance, all_rels, output_dir):
     embedding_A = llm_instance.run_embedding(all_rels)

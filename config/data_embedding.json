@@ -1,6 +1,5 @@
 {
-    "rules": "result/dataset/stage_3/temp_final_rules_result.csv",
-    "facts": "datasets/dataset/facts.txt.inv",
+    "facts": "facts.txt",
     "output_vector_database_build": "result/dataset/stage_3/vector_database_build",
     "output_vector_database_load": "result/dataset/stage_3/vector_database_load"
 }

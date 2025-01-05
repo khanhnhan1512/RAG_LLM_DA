@@ -11,8 +11,8 @@ from stages.stage_1_learn_rules_from_data.data_loader import DataLoader
 from stages.stage_1_learn_rules_from_data.temporal_walk import TemporalWalker
 from stages.stage_1_learn_rules_from_data.temporal_walk import store_edges
 from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner, rules_statistics
-from stages.stage_4_reasoning import rule_application as ra
-from stages.stage_4_reasoning.score_function import score_12, score_13, score_14
+from stages.stage_3_reasoning import rule_application as ra
+from stages.stage_3_reasoning.score_function import score_12, score_13, score_14
 from utils import str_to_bool
 from utils import load_json_data, get_win_subgraph, load_learn_data
 
@@ -254,7 +254,7 @@ def parse_arguments():
     global parsed
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", "-d", default="icews14", type=str)
-    parser.add_argument("--result_rules_path", default="./result/icews14/stage_3/temp_result.csv", type=str)
+    parser.add_argument("--result_rules_path", default="./result/icews14/stage_2/temp_result.csv", type=str)
     parser.add_argument("--test_data", default="test", type=str)
     parser.add_argument("--rules", "-r", default="reasoning_result", type=str)
     parser.add_argument("--max_rule_length", "-l", default=3, type=int, nargs="+")
@@ -289,7 +289,7 @@ def stage_5_main():
     rule_lengths = (torch.arange(parsed['max_rule_length']) + 1).tolist()
 
     dataset_dir = os.path.join(".", "datasets", parsed["dataset"])
-    dir_path = os.path.join(".", "result", parsed["dataset"], "stage_4")
+    dir_path = os.path.join(".", "result", parsed["dataset"], "stage_3")
 
     data = DataLoader(dataset_dir, parsed)
     test_data = data.test_data_idx if parsed["test_data"] == "test" else data.valid_data_idx

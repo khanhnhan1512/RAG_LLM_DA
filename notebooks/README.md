@@ -1,0 +1,5 @@
+- This folder contains the notebooks for testing.
+- To run notebook, you need to install the kernel for the environment:
+    - conda activate <env_name>
+    - conda install ipykernel
+    - python -m ipykernel install --user --name=<env_name>

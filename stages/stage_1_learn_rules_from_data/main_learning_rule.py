@@ -7,7 +7,7 @@ from joblib import Parallel, delayed
 from datetime import datetime
 
 from stages.stage_1_learn_rules_from_data.data_loader import DataLoader
-from utils import load_learn_data, calculate_relation_similarity
+from utils import load_learn_data, calculate_relation_similarity, transform_relations
 from openai_llm.llm_init import LLM_Model
 from stages.stage_1_learn_rules_from_data.temporal_walk import TemporalWalker
 from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner, rules_statistics
@@ -109,5 +109,6 @@ def stage_1_main():
     rl.save_rules_csv(dt, 'random_walk', rule_length, num_walks, transition_choice, seed, 
                       metrics=["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score"])
     rules_statistics(rl.rules_dict)
-    calculate_relation_similarity(llm_instance, list(data_loader.relation2id.keys()), rl.output_dir)
+    relations = transform_relations(list(data_loader.relation2id.keys()), llm_instance, rl.output_dir)
+    calculate_relation_similarity(llm_instance, relations, rl.output_dir)
 
