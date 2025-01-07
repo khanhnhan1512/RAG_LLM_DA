@@ -4,12 +4,13 @@ from process_embedding.steps.create_vector_db import main_create_vector_db
 from process_embedding.steps.add_attributes import add_attribute
 
 class Process:
-    def __init__(self, llm_instance, settings, original_data):
+    def __init__(self, llm_instance, settings, original_data, data_loader):
         """
         """
         self.llm_instance = llm_instance
         self.settings = settings
         self.original_data = original_data
+        self.data_loader = data_loader
         self.data = {}
     
     def get_data_path(self):
@@ -36,7 +37,7 @@ class Process:
         """
         """
         print("3. Adding attributes to data...")
-        self.data, task_result = add_attribute(self.data, self.llm_instance, self.settings)
+        self.data, task_result = add_attribute(self.data, self.llm_instance, self.settings, self.data_loader)
         print(task_result)
 
     def prepare_vector_database_content(self):

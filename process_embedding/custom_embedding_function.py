@@ -9,6 +9,10 @@ METADATA_DESIGN = {
         'relation': 'relation',
         'object': 'object',
         'timestamp': 'timestamp',
+        'subject_id': 'subject_id',
+        'object_id': 'object_id',
+        'relation_id': 'relation_id',
+        'timestamp_id': 'timestamp_id',
     }
 }
 
@@ -44,7 +48,7 @@ class CustomEmbeddingFunction(EmbeddingFunction):
         self.llm_instance = llm_instance
 
     def embed_documents(self, pages_content):
-        return self.llm_instance.run_embedding(pages_content)
+        return self.llm_instance.run_embeddings(pages_content)
     
     def embed_query(self, query):
         return self.llm_instance.run_embeddings([query])[0]
