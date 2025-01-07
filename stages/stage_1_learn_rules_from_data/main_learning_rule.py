@@ -72,7 +72,7 @@ def stage_1_main():
         Returns:
             rl.rules_dict (dict): rules dictionary
         """
-        np.random.seed(seed)
+        # np.random.seed(seed)
         
         if i < num_relations - 1:
             relation_idx = range(i*num_relations, (i+1)*num_relations)

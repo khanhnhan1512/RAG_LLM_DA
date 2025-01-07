@@ -70,10 +70,11 @@ def generate_new_rules(top_k_relations, k, rule_dict, llm_instance):
         if isinstance(answer_llm, dict):
             generated_rules.update(answer_llm)  # Merge generated rules into our dictionary
 
-    # Update the rule_dict with the new generated rules
-    updated_rule_dict = add_generated_rules_to_rule_dict(generated_rules, rule_dict)
+    return generated_rules
+    # # Update the rule_dict with the new generated rules
+    # updated_rule_dict = add_generated_rules_to_rule_dict(generated_rules, rule_dict)
 
-    return updated_rule_dict
+    # return updated_rule_dict
 
 
 # Set k value for top k relations

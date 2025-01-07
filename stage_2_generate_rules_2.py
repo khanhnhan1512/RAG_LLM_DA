@@ -11,7 +11,7 @@ def load_json(file_path):
 def create_llm_prompt(rule_head, extracted_rules, candidate_relations, k):
     """Create prompt for LLM."""
     user_msg_content = f'''
-    Let's think step-by-step, please generate at least {k * 3} temporal logical rules related to '{rule_head}' based on extracted temporal rules.
+    Let's think step-by-step, please generate as many as possible temporal logical rules related to '{rule_head}' based on extracted temporal rules.
 
     Rule Head:
     {rule_head}(X, Y, T)
@@ -24,7 +24,7 @@ def create_llm_prompt(rule_head, extracted_rules, candidate_relations, k):
 
     Temporal Logical Rules: Temporal Logical Rules \"{rule_head}(X0,Xl,Tl)<-R1(X0,X1,T0)&...&Rl(X(l-1),Xl,T(l-1))\" are rules used in temporal knowledge graph reasoning to predict relations between entities over time. They describe how the relation \"{rule_head}\" between entities \"X0\" and \"Xl\" evolves from past time steps \"Ti (i={{0,...,(l-1)}})\" (rule body) to the next \"Tl\" (rule head), strictly following the constraint \"T0 <= \u00b7\u00b7\u00b7 <= T(l-1) < Tl\".
 
-    For the relations in rule body, you are going to choose from the following candidates: {candidate_relations}. Each candidate needs to be selected at least 3 times in all the relations to induce or combine to induce the rule head to make sense in terms of actual semantics.
+    For the relations in rule body, you are going to choose from the following candidates: {candidate_relations} and the relations of above extracted rules from historical data. Each candidate needs to be selected in all the relations to induce or combine to induce the rule head to make sense in terms of actual semantics.
 
     Return in JSON format:
     {{
@@ -67,10 +67,7 @@ def generate_new_rules(top_k_relations, k, rule_dict, llm_instance):
         if isinstance(answer_llm, dict):
             generated_rules.update(answer_llm)  # Merge generated rules into our dictionary
 
-    # Update the rule_dict with the new generated rules
-    updated_rule_dict = add_generated_rules_to_rule_dict(generated_rules, rule_dict)
-
-    return updated_rule_dict
+    return generated_rules
 
 
 # Set k value for top k relations

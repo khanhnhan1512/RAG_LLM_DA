@@ -31,4 +31,3 @@ lines = ["Arrest,_detain,_or_charge_with_legal_action(X0,X1,T1)<-Return,_release
          "Make_statement(X0,X1,T3)<-Appeal_for_diplomatic_cooperation_(such_as_policy_support)(X0,X1,T0)&Make_a_visit(X1,X2,T1)&inv_Reduce_relations(X2,X1,T2)",
           "Make_statement(X0,X2,T2)<-Make_empathetic_comment(X0,X1,T0)&Obstruct_passage,_block(X1,X2,T1)",]
 parse_rules_for_path(lines, "([\\w\\s'\\-\\.,\\(\\)]+)\\((\\w+),\\s*(\\w+),\\s*(\\w+)\\)(&|$)")
-

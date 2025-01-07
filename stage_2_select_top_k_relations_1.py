@@ -1,4 +1,3 @@
-
 import os
 import json
 from openai_llm.llm_init import LLM_Model
@@ -16,6 +15,15 @@ def load_rule_head_dict(file_path):
 
 def create_llm_prompt(rule_head, rules, relation_list, k=10):
     """Create prompt for LLM."""
+    
+    # Explanation of 'inv' meaning
+    inv_explanation = (
+        "The prefix 'inv' stands for 'inverse'. For example, the rule:\n"
+        f"'inv_Make_statement(X0,X2,T2)<-inv_Demonstrate_or_rally(X0,X1,T0)&inv_Make_optimistic_comment(X1,X2,T1)' "
+        "is equivalent to:\n"
+        "'Make_statement(X2,X0,T2)<-Demonstrate_or_rally(X1,X0,T0)&Make_optimistic_comment(X2,X1,T1)'."
+    )
+    
     user_query = f"Identify the top {k} relevant relations from the following list that can induce or combine to induce the rule head '{rule_head}' based on reality knowledge."
     user_msg_content = f'''
     Here is the user query: {user_query}
@@ -26,17 +34,20 @@ def create_llm_prompt(rule_head, rules, relation_list, k=10):
     Here is the list of relations to consider:
     {relation_list}
     
-    Please ensure to select relations that are not already included in the current rules.
+    Additional Information:
+    {inv_explanation}
     '''
     
     system_msg_content = '''
     Definition: "Temporal Logical Rules:\n Temporal Logical Rules \"{head}(X0,Xl,Tl)<-R1(X0,X1,T0)&...&Rl(X(l-1),Xl,T(l-1))\" are rules used in temporal knowledge graph reasoning to predict relations between entities over time. They describe how the relation \"{head}\" between entities \"X0\" and \"Xl\" evolves from past time steps \"Ti (i={{0,...,(l-1)}})\"(rule body) to the next \"Tl\" (rule head), strictly following the constraint \"T0 <= \u00b7\u00b7\u00b7 <= T(l-1) < Tl\".\n\n",
     You are an expert in rule validation and factual accuracy. You will be given some rules extracted from the data.
-    Your task is to identify the top {k} relevant relations that can logically induce or combine to induce the rule head '{rule_head}'.
+    Your task is to identify the top {k} relevant relations that can logically induce or combine to induce the rule head '{rule_head}'. 
+    Ensure that none of the selected relations begin with 'inv_'.
+    
     Your answer should be in JSON format:
-    {
+    {{
         "identified_relation_list": // a list of top {k} relevant relations.
-    }
+    }}
     '''
 
     return user_msg_content, system_msg_content
@@ -44,8 +55,8 @@ def create_llm_prompt(rule_head, rules, relation_list, k=10):
 def select_top_k_most_relevant(rule_head_dict, relation_list, k, llm_instance):
     """Select top k most relevant relations for each rule head using an LLM."""
     top_k_relations = {}
-    n = 0
-
+    print("The number of rule heads: ", len(rule_head_dict))
+    
     for rule_head, rules in rule_head_dict.items():
         # Create prompt for LLM using rule_head and relation_list
         user_msg_content, system_msg_content = create_llm_prompt(rule_head, rules, relation_list, k)
@@ -61,25 +72,17 @@ def select_top_k_most_relevant(rule_head_dict, relation_list, k, llm_instance):
         identified_relation_list = answer_llm.get("identified_relation_list", [])
 
         # Store top k relevant relations in the output dictionary
-        top_k_relations[rule_head] = [{relation: 0} for relation in identified_relation_list[:k]]
+        top_k_relations[rule_head] = identified_relation_list[:k]
 
-        if n == 3:
-            break
-
-        n += 1
+        # Add rule head to the output dictionary if top k relations doens't contain rule head
+        if rule_head not in top_k_relations[rule_head]:
+            top_k_relations[rule_head].append(rule_head)
 
     return top_k_relations
 
-def transform_output(top_k_relations):
-    """Transform output to required format."""
-    transformed_output = {}
-    for rule_head, relations in top_k_relations.items():
-        transformed_output[rule_head] = [{relation: 0} for relation in relations]
-    return transformed_output
-
 # Example usage
-relation_file_path = 'datasets/icews14/relations.txt'
-rule_dict_file_path = 'result/icews14/stage_2/rule_dict_output.json'
+relation_file_path = r'result\icews14\stage_2\unique_relations.txt'
+rule_dict_file_path = 'result\icews14\stage_2\high_quality_example_rules.json'
 
 # Load relations and rule heads with rules
 relations = load_relations(relation_file_path)
@@ -89,7 +92,7 @@ rule_head_dict = load_rule_head_dict(rule_dict_file_path)
 llm_instance = LLM_Model()
 
 # Select top k relevant relations
-k = 10
+k = 25
 result = select_top_k_most_relevant(rule_head_dict, relations, k, llm_instance)
 
 # Output directory
