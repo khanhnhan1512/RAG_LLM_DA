@@ -99,10 +99,12 @@ def main_create_vector_db(data, llm_instance, db_directory):
         
         if documents:
             try:
-                chunk_size = 1
+                chunk_size = 20
+                num_process = len(documents) // chunk_size 
                 with ThreadPoolExecutor(max_workers=5) as executor:
-                    document_chunks = [documents[i:i+chunk_size] for i in range(0, len(documents), chunk_size) if documents[i:i+chunk_size]]
-                    print(f"- Total chunks: {len(document_chunks)}")
+                    document_chunks = [documents[i * chunk_size:(i + 1) * chunk_size] for i in range(num_process)]  
+                    if len(documents) % chunk_size != 0:  # Handle the remaining documents  
+                        document_chunks.append(documents[num_process * chunk_size:])
                     if len(document_chunks) > 0:
                         futures = {}
                         for _, chunk in enumerate(document_chunks):

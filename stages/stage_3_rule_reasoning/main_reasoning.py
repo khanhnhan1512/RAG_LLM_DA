@@ -11,8 +11,8 @@ from stages.stage_1_learn_rules_from_data.data_loader import DataLoader
 from stages.stage_1_learn_rules_from_data.temporal_walk import TemporalWalker
 from stages.stage_1_learn_rules_from_data.temporal_walk import store_edges
 from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner, rules_statistics
-from stages.stage_3_reasoning import rule_application as ra
-from stages.stage_3_reasoning.score_function import score_12, score_13, score_14
+from stages.stage_3_rule_reasoning import rule_application as ra
+from stages.stage_3_rule_reasoning.score_function import score_12, score_13, score_14
 from utils import str_to_bool
 from utils import load_json_data, get_win_subgraph, load_learn_data
 
@@ -120,10 +120,10 @@ def apply_rules(i, num_queries, parsed, test_data, window_subgraph, rules_dict, 
                             
                             if parsed['is_rule_priority'] is False:
                                 top_k_scores = [v for _, v in cands_dict[s].items()][:top_k]
-                                unique_socres = list(
+                                unique_scores = list(
                                     scores for scores, _ in itertools.groupby(top_k_scores)
                                 )
-                                if len(unique_socres) >= top_k:
+                                if len(unique_scores) >= top_k:
                                     dicts_idx.remove(s)
                             else:
                                 if rule_idx >= top_k:

@@ -1,6 +1,7 @@
 from process_embedding.steps.main_load_data import main_load_data
 from process_embedding.steps.prepare_vector_db_content import main_prepare_vector_db
 from process_embedding.steps.create_vector_db import main_create_vector_db
+from process_embedding.steps.add_attributes import add_attribute
 
 class Process:
     def __init__(self, llm_instance, settings, original_data):
@@ -18,7 +19,7 @@ class Process:
         print('1. Getting path to data...')
 
         for i, key in enumerate(self.settings):
-            if 'output_vector_database' not in key:
+            if key in ['facts', 'rules']:
                 self.data[key] = {}
                 self.data[key]['path'] = self.settings[key]
                 task_result += f"- Path to data {key}: {self.data[key]['path']}.\n"
@@ -35,8 +36,8 @@ class Process:
         """
         """
         print("3. Adding attributes to data...")
-        # self.data, task_result = add_descriptions(self.data, self.llm_instance)
-        # print(task_result)
+        self.data, task_result = add_attribute(self.data, self.llm_instance, self.settings)
+        print(task_result)
 
     def prepare_vector_database_content(self):
         """
@@ -56,7 +57,7 @@ class Process:
         steps = [
             self.get_data_path,
             self.load_data,
-            # self.add_attributes,
+            self.add_attributes,
             self.prepare_vector_database_content,
             self.create_vector_database
         ]

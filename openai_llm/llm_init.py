@@ -4,12 +4,12 @@ import tiktoken
 import json
 from openai_llm.llm_connect import connect_llm_chat, connect_llm_embeddings
 
-from openai_llm.utils import read_settings
+from utils import load_json_data
 
 MAX_TOKENS_VALUES = {
-    'gpt-4o': {'accepted': 64_000, 'total': 500_000, 'nb_requests': 2_000},
-    'gpt-4o-mini': {'accepted': 64_000, 'total': 1_000_000, 'nb_requests': 250_000},
-    'text-embedding-3-large': {'accepted': 64_000, 'total': 200_000, 'nb_requests': 1000}
+    'gpt-4o': {'accepted': 3_000, 'total': 30_000, 'nb_requests': 500},
+    'gpt-4o-mini': {'accepted': 20_000, 'total': 200_000, 'nb_requests': 500},
+    'text-embedding-3-large': {'accepted': 100_000, 'total': 1_000_000, 'nb_requests': 3000}
 }
 
 COST_TOKENS_1000TK = {
@@ -20,7 +20,7 @@ COST_TOKENS_1000TK = {
 
 class LLM_Model:
     def __init__(self):
-        self.settings = read_settings("config/llm.config")
+        self.settings = load_json_data("config/llm_config.json")
 
         self.connect()
 
@@ -155,7 +155,7 @@ class LLM_Model:
             self.update_cost_chat_model(result)
         return result
 
-    def run_embedding(self, documents):
+    def run_embeddings(self, documents):
         input_tokens = sum(self.num_tokens(self.tokenizer_embedding_model, doc) for doc in documents)
 
         while True:

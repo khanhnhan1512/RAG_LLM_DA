@@ -72,7 +72,7 @@ def load_rules_data(path):
 
 def load_facts_data(path):
     columns = ['subject', 'relation', 'object', 'timestamp']
-    df = pd.read_csv(path, sep=' ', header=None, names=columns)
+    df = pd.read_csv(path, sep='\t', header=None, names=columns)
     return df
 
 def main_load_data(data, original_data, db_directory):

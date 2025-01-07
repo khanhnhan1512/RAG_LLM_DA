@@ -2,12 +2,7 @@ from chromadb import EmbeddingFunction, Embeddings
 from langchain_core.documents import Document
 import json
 
-METADATA_DESIGN = {
-    # metadata for rules
-    'rules': {
-        'head_rel': 'head_rel',
-    },
-    
+METADATA_DESIGN = {    
     # metadata for facts
     'facts': {
         'subject': 'subject',
@@ -18,7 +13,6 @@ METADATA_DESIGN = {
 }
 
 PAGE_CONTENT_DESIGN = {
-    'rules': ['rule'],
     'facts': ['description']
 }
 

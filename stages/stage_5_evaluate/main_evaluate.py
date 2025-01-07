@@ -28,7 +28,7 @@ def stage_6_main():
 
     dataset_path = os.path.join(data_dir, dataset)
     reasoning_result_dir = os.path.join("./result", dataset, "stage_3")
-    result_dir_path = os.path.join("./result", dataset, "stage_4")
+    result_dir_path = os.path.join("./result", dataset, "stage_5")
 
     data = DataLoader(dataset_path)
     num_entities = len(data.id2entity)

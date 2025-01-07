@@ -2,10 +2,13 @@ import json
 import argparse
 import os
 import shutil
+import re
 import numpy as np
+from langchain_chroma import Chroma
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from sklearn.metrics.pairwise import cosine_similarity
-from stages.stage_4_reasoning import rule_application as ra
+from stages.stage_3_rule_reasoning import rule_application as ra
+from process_embedding.custom_embedding_function import CustomEmbeddingFunction
 
 def get_params():
     parser = argparse.ArgumentParser()
@@ -244,6 +247,53 @@ def calculate_relation_similarity(llm_instance, all_rels, output_dir):
     similarity = cosine_similarity(embedding_A, embedding_B)
     np.fill_diagonal(similarity, 0)
     np.save(os.path.join(output_dir, 'relation_similarity.npy'), similarity)
+
+def load_vectorstore_db(llm_instance, dataset):
+    data_dict = {}
+    
+    settings = load_json_data('config/data_embedding.json')
+    for k in settings:
+        settings[k] = re.sub(r'\bdataset\b', dataset, settings[k])
+
+    collections = ['facts', 'rules']
+    path_to_chroma_db = settings['output_vector_database_load']
+
+    for collection in collections:
+        path_to_collection = os.path.join(path_to_chroma_db, collection)
+        data_dict[collection] = {}
+        data_dict[collection]['vector_db'] = Chroma(persist_directory=path_to_collection, embedding_function=CustomEmbeddingFunction(llm_instance))
+
+    return data_dict
+
+def lookup_vector_db(query_search, filter, vector_db, llm_instance, top_k=None, threshold=None):
+    """
+    """
+    documents = []
+    search_kwargs = {
+        'filter': filter,
+        'k': 20,
+    }
+
+    if top_k:
+        search_kwargs['k'] = top_k
+    if threshold:
+        search_kwargs['score_threshold'] = threshold
+    
+    try:
+        retriever = vector_db.as_retriever(
+            search_type='similarity_threshold' if threshold else 'similarity',
+            search_kwargs=search_kwargs
+        )
+    except Exception as e:
+        print(f"Error while filtering data from vectorstore: {e}")
+        return documents
+
+    try:
+        documents = retriever.invoke(query_search)
+    except Exception as e:
+        print(f"Error while invoking retriever: {e}")
+    
+    return documents
 
 def get_win_subgraph(test_data, data, learn_edges, window, win_start=0):
     unique_timestamp_id = np.unique(test_data[:, 3])

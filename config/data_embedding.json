@@ -1,5 +1,6 @@
 {
-    "facts": "facts.txt",
-    "output_vector_database_build": "result/dataset/stage_3/vector_database_build",
-    "output_vector_database_load": "result/dataset/stage_3/vector_database_load"
+    "facts": "datasets/dataset/facts.txt.inv",
+    "dataset": "dataset",
+    "output_vector_database_build": "result/dataset/vector_database_build",
+    "output_vector_database_load": "result/dataset/vector_database_load"
 }
