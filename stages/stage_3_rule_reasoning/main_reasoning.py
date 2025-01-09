@@ -254,9 +254,9 @@ def parse_arguments():
     global parsed
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", "-d", default="icews14", type=str)
-    parser.add_argument("--result_rules_path", default="./result/icews14/stage_2/temp_result.csv", type=str)
+    parser.add_argument("--result_rules_path", default="./result/icews14/stage_2/merged_historical_rules_and_current_rules_0_4.csv", type=str)
     parser.add_argument("--test_data", default="test", type=str)
-    parser.add_argument("--rules", "-r", default="reasoning_result", type=str)
+    parser.add_argument("--rules", "-r", default="reasoning_result_3_full", type=str)
     parser.add_argument("--max_rule_length", "-l", default=3, type=int, nargs="+")
     parser.add_argument("--window", "-w", default=0, type=int)
     parser.add_argument("--gpu", default=0, type=int)
@@ -284,7 +284,7 @@ def parse_arguments():
 
     return vars(parser.parse_args())
 
-def stage_5_main():
+def stage_3_main():
     parsed = parse_arguments()
     rule_lengths = (torch.arange(parsed['max_rule_length']) + 1).tolist()
 

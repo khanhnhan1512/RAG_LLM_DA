@@ -20,7 +20,7 @@ def parse_args():
     parser = vars(parser.parse_args())
     return parser
 
-def stage_6_main():
+def stage_5_main():
     args = parse_args()
     data_dir = args['data_path']
     dataset = args['dataset']

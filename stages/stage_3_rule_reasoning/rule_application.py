@@ -450,7 +450,7 @@ def save_candidates(rules_file, dir_path, all_candidates, rule_lengths, window, 
     filename = filename.replace(" ", "")
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
-        with open(os.path.join(dir_path, filename), "w", encoding="utf-8") as f:
+    with open(os.path.join(dir_path, filename), "w", encoding="utf-8") as f:
             json.dump(all_candidates, f, indent=4)
     
     # all_timestamp = {int(k): v for k, v in all_timestamp.items()}
