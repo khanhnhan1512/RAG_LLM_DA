@@ -48,7 +48,13 @@ def get_facts_of_related_entity(related_entities, vector_db, llm_instance, searc
         result.extend([doc.page_content for doc in docs])
     return result
 
-def get_related_facts(search_content, vector_db, llm_instance, related_facts, candidates_dict, seen_entities=None, n=0):  
+def get_facts_between_subject_entity_end_its_relate_entities(related_entities, subject_entity, vector_db, llm_instance, search_content):
+    result = []
+    for ent in related_entities:
+        pass
+    pass
+
+def get_related_facts(search_content, vector_db, llm_instance, related_facts, candidates_dict, related_relations, seen_entities=None, n=0):  
     # Khởi tạo sets theo dõi nếu là lần gọi đầu tiên  
     if seen_entities is None:  
         seen_entities = set()  
@@ -68,7 +74,8 @@ def get_related_facts(search_content, vector_db, llm_instance, related_facts, ca
         
         for doc in docs:  
             fact_content = doc.page_content  
-            new_entity = doc.metadata['object']  
+            new_entity = doc.metadata['object']
+            related_relations.add(doc.metadata['relation'])  
             related_facts.append(fact_content)      
             # Chỉ thêm entity mới vào candidates cho hop tiếp theo  
             if new_entity not in seen_entities:  
@@ -83,12 +90,13 @@ def get_related_facts(search_content, vector_db, llm_instance, related_facts, ca
         vector_db,   
         llm_instance,   
         related_facts,   
-        candidates_dict,   
+        candidates_dict, 
+        related_relations,  
         seen_entities,      
         n+1  
     )
  
-def reasoning( question, related_facts, related_rules, top_k_entity, related_entity_facts, llm_instance):
+def reasoning( question, related_facts, related_rules, top_k_entity, facts_between_entity_subject_and_related_entities, related_entity_facts, llm_instance):
     system_msg_content = f'''
     You are an expert in Temporal Knowledge Graphs, utilizing data consisting of events and activities worldwide involving countries, organizations, famous individuals, etc.   
     Your task is Temporal Knowledge Graph Reasoning, which involves predicting the missing object in a given fact from the test dataset. A fact is represented as a quadruple: subject, relation, object, and time.
@@ -159,6 +167,9 @@ def reasoning( question, related_facts, related_rules, top_k_entity, related_ent
     system_msg = SystemMessage(content=system_msg_content)
 
     user_msg_content = f'''
+    Here is the question you need to find the answer:
+    - {question}
+
     For the primary information:
     - Here are facts related to the query's subject and relation:
     {related_facts}
@@ -168,9 +179,10 @@ def reasoning( question, related_facts, related_rules, top_k_entity, related_ent
     For the secondary information:
     - Here are the most related entities to the entity "subject" and the facts between these related entities and the entity "subject":
     + {top_k_entity}
+    + {facts_between_entity_subject_and_related_entities}
 
     For the additional information:
-    - Here are the facts of these related entities:
+    - Here are the facts of the related entities:
     + {related_entity_facts}
     '''
     user_msg = HumanMessage(content=user_msg_content)
@@ -216,17 +228,15 @@ def stage_4_main():
     # Convert query to natural question
     question = convert_query_to_natural_question(test_query, transformed_relations)
 
-    # Get top k related relations
-    query_relation_id = data.relation2id[test_query[1]]
-    top_k_rel_id, top_k_rel = get_top_k_relations(relation_similarity_matrix, query_relation_id, data)
-    
-    # Get related rules
-    related_rules = filter_related_rules(rules_dict, data.relation2id[test_query[1]], top_k_rel_id)
-
     # Get related facts
     search_content = transformed_relations[test_query[1]]
     candidates_dict = {0: {test_query[0]}} 
-    related_facts = get_related_facts(search_content, vector_db['facts']['vector_db'], llm_instance, [], candidates_dict)
+    related_relations = set()
+    related_facts = get_related_facts(search_content, vector_db['facts']['vector_db'], llm_instance, [], candidates_dict, related_relations)
+    related_rels_id = [data.relation2id[rel] for rel in related_relations]
+
+    # Get related rules
+    related_rules = filter_related_rules(rules_dict, data.relation2id[test_query[1]], related_rels_id)
 
     # Get most related entities and their facts
     query_subject_id = data.entity2id[test_query[0]]
@@ -234,6 +244,8 @@ def stage_4_main():
     related_entity_facts = get_facts_of_related_entity(top_k_entity, vector_db['facts']['vector_db'], llm_instance, search_content)
 
     # Get facts between related entities and the entity subject
-
-
+    facts_between_entity_subject_and_related_entities = get_facts_between_subject_entity_end_its_relate_entities(
+        top_k_entity, test_query[0], vector_db['facts']['vector_db'], llm_instance, search_content
+    )
+    print(reasoning(question, related_facts, related_rules, top_k_entity, facts_between_entity_subject_and_related_entities, related_entity_facts, llm_instance))
     ##################################################################################################
