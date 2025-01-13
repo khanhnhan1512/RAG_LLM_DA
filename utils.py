@@ -241,12 +241,12 @@ def transform_relations(all_rels, llm_instance, output_dir):
     save_json_data(result, os.path.join(output_dir, 'transformed_relations.json'))
     return result.values()
 
-def calculate_relation_similarity(llm_instance, all_rels, output_dir):
-    embedding_A = llm_instance.run_embedding(all_rels)
-    embedding_B = llm_instance.run_embedding(all_rels)
+def calculate_similarity(llm_instance, all_data, output_dir, filename):
+    embedding_A = llm_instance.run_embeddings(all_data)
+    embedding_B = llm_instance.run_embeddings(all_data)
     similarity = cosine_similarity(embedding_A, embedding_B)
     np.fill_diagonal(similarity, 0)
-    np.save(os.path.join(output_dir, 'relation_similarity.npy'), similarity)
+    np.save(os.path.join(output_dir, filename), similarity)
 
 def load_vectorstore_db(llm_instance, dataset):
     data_dict = {}

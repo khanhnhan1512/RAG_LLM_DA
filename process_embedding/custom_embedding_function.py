@@ -38,7 +38,7 @@ def build_documents(df, collection):
         
         metadata = {metadata_mapping[col]: row[col] for col in metadata_mapping if col in row}
 
-        document = Document(page_content=json.dumps(page_content, indent=4), metadata=metadata, id=document_id)
+        document = Document(page_content=json.dumps(page_content, indent=4, ensure_ascii=False), metadata=metadata, id=document_id)
         documents.append(document)
 
     return documents
