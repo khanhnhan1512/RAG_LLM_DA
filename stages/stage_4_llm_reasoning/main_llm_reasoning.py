@@ -210,7 +210,7 @@ def get_candidates(test_query, i, transformed_relations, vector_db, llm_instance
     search_content = transformed_relations[test_query[1]]
     candidates_dict = {0: {test_query[0]}} 
     related_relations = set()
-    related_facts = get_related_facts(search_content, vector_db['facts']['vector_db'], llm_instance, [], candidates_dict, related_relations)
+    related_facts = get_related_facts(search_content, vector_db, llm_instance, [], candidates_dict, related_relations)
     related_rels_id = [data.relation2id[rel] for rel in related_relations]
 
     # Get related rules
@@ -219,11 +219,11 @@ def get_candidates(test_query, i, transformed_relations, vector_db, llm_instance
     # Get most related entities and their facts
     query_subject_id = data.entity2id[test_query[0]]
     top_k_entity_id, top_k_entity = get_top_k_entities(entity_similarity_matrix, query_subject_id, data)
-    related_entity_facts = get_facts_of_related_entity(top_k_entity, vector_db['facts']['vector_db'], llm_instance, search_content)
+    related_entity_facts = get_facts_of_related_entity(top_k_entity, vector_db, llm_instance, search_content)
 
     # Get facts between related entities and the entity subject
     facts_between_entity_subject_and_related_entities = get_facts_between_subject_entity_end_its_relate_entities(
-        top_k_entity, test_query[0], vector_db['facts']['vector_db'], llm_instance, search_content
+        top_k_entity, test_query[0], vector_db, llm_instance, search_content
     )
 
     # Get candidates list
@@ -232,15 +232,30 @@ def get_candidates(test_query, i, transformed_relations, vector_db, llm_instance
 
     return i, candidates, candidates_id
 
-def get_entity_max_ts(vector_db, llm_instance, test_query, data, entity):
-    pass
+def get_entity_max_ts(vector_db, llm_instance, test_query, data, entity, transformed_relations):
+    search_conent = transformed_relations[test_query[1]]
+    filter = {"$and": 
+        [
+            {"object": {"$in": [test_query[0], data.id2entity[entity]]}},
+            {"subject": {"$in": [test_query[0], data.id2entity[entity]]}},
+        ]
+    }
+    docs = lookup_vector_db(search_conent, filter, vector_db, llm_instance, top_k=100)
+    sorted_docs = sorted(docs, key=lambda doc: doc.metadata['timestamp_id'], reverse=True)
+    if sorted_docs:
+        return sorted_docs[0].metadata['timestamp_id']
+    else:
+        return None
 
-def scoring_candidates(candidates_id, test_query, data):
+def scoring_candidates(candidates_id, test_query, data, vector_db, llm_instance, transformed_relations):
     cands_score_dict = {}
     query_ts = data.ts2id[test_query[3]]
     for rank, id in enumerate(candidates_id):
-        cand_max_ts = get_entity_max_ts(vector_db, llm_instance, test_query, data, id)
-        cands_score_dict[id] = score_1(rank, cand_max_ts, query_ts, 0.5)
+        cand_max_ts = get_entity_max_ts(vector_db, llm_instance, test_query, data, id, transformed_relations)
+        if cand_max_ts:
+            cands_score_dict[id] = score_1(rank, cand_max_ts, query_ts, 0.5)
+        else:
+            cands_score_dict[id] = score_1(rank, 0, query_ts, 1.0)
     return cands_score_dict
 
 def stage_4_main():
@@ -278,14 +293,14 @@ def stage_4_main():
 
     ##################################################################################################
     query_cands_dict = {}
-    for test_query in test_data[:10]:
-        i, candidates, candidates_id = get_candidates(test_query, i, transformed_relations, vector_db, llm_instance, data, rules_dict, entity_similarity_matrix)
+    for i, test_query in enumerate(test_data[:1]):
+        i, candidates, candidates_id = get_candidates(test_query, i, transformed_relations, vector_db['facts']['vector_db'], llm_instance, data, rules_dict, entity_similarity_matrix)
         query_cands_dict[i] = candidates_id
         print(f"Query {i}: {test_query} - Candidates: {candidates}")
     
     # scoring
     for query_id, cands_id in query_cands_dict.items():
-        candidates_score = scoring_candidates(cands_id, test_data[query_id], data)
+        candidates_score = scoring_candidates(cands_id, test_data[query_id], data, vector_db['facts']['vector_db'], llm_instance, transformed_relations)
         query_cands_dict[query_id] = candidates_score
     
     ##################################################################################################
