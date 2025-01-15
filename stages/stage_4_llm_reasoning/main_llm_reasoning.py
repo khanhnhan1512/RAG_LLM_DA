@@ -1,14 +1,12 @@
 import os
 import pandas as pd
 import numpy as np
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from openai_llm.llm_init import LLM_Model
 from stages.stage_1_learn_rules_from_data.data_loader import DataLoader
-from stages.stage_1_learn_rules_from_data.temporal_walk import TemporalWalker
-from stages.stage_1_learn_rules_from_data.temporal_walk import store_edges
-from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner, rules_statistics
 from stages.stage_4_llm_reasoning.score_function import score_1
-from utils import load_json_data, save_json_data, load_vectorstore_db, load_learn_data, lookup_vector_db
+from utils import load_json_data, save_json_data, load_vectorstore_db, lookup_vector_db
 
 def convert_query_to_natural_question(test_query, transformed_relations):
     if "inv_" in test_query[1]:
@@ -105,7 +103,7 @@ def get_related_facts(search_content, vector_db, llm_instance, related_facts, ca
         n+1  
     )
  
-def candidate_reasoning( question, related_facts, related_rules, top_k_entity, facts_between_entity_subject_and_related_entities, related_entity_facts, llm_instance):
+def candidate_reasoning( question, related_facts, top_k_entity, facts_between_entity_subject_and_related_entities, related_entity_facts, llm_instance):
     system_msg_content = f'''
     You are an expert in Temporal Knowledge Graphs, utilizing data consisting of events and activities worldwide involving countries, organizations, famous individuals, etc.   
     Your task is Temporal Knowledge Graph Reasoning, which involves predicting the missing object in a given fact from the test dataset. A fact is represented as a quadruple: subject, relation, object, and time.
@@ -119,8 +117,6 @@ def candidate_reasoning( question, related_facts, related_rules, top_k_entity, f
     To support your reasoning process in finding the missing object, you will be provided with relevant facts:  
     1. Primary Information:  
     - A sequence of events (facts), known as "Reasoning Paths", related to the query's subject and relation  
-    - Learned rules from training and validation datasets that represent patterns which events typically follow. An important note is relations with the "inv_" prefix (e.g., "inv_make_statement") indicate passive relations. For example: inv_make_statement(B,A,T) means "B receives a statement from A at time T.
-    Using this source of information, your task is to infer the missing "object" through multi-hop reasoning.  
     2. Secondary Information:  
     - Most related entities to the entity subject  
     - Facts between these related entities with the entity subject.
@@ -133,7 +129,6 @@ def candidate_reasoning( question, related_facts, related_rules, top_k_entity, f
     You should follow these reasoning Process Guidelines:  
     1. Primary Analysis:  
     - Analyze direct reasoning paths connecting to the subject  
-    - Match and apply relevant rules to existing facts  
     - Identify temporal patterns and their significance  
     - Evaluate the strength of direct evidence  
 
@@ -151,7 +146,6 @@ def candidate_reasoning( question, related_facts, related_rules, top_k_entity, f
     Finally, for the candidate selection criteria:  
     1. Evidence Strength:  
     - Direct path evidence (highest weight)  
-    - Rule application matches  
     - Multi-hop reasoning paths 
     - Related entity patterns  
         
@@ -162,7 +156,6 @@ def candidate_reasoning( question, related_facts, related_rules, top_k_entity, f
 
     3. Confidence Scoring:  
     - Direct evidence: High confidence  
-    - Rule-based inference: Medium-high confidence  
     - Related entity and their patterns: Medium confidence  
     - Multi-hop paths: Weighted by path length
 
@@ -182,8 +175,6 @@ def candidate_reasoning( question, related_facts, related_rules, top_k_entity, f
     For the primary information:
     - Here are facts related to the query's subject and relation:
     {related_facts}
-    - Here are the learned rules related to query's relation:
-    {related_rules}
 
     For the secondary information:
     - Here are the most related entities to the entity "subject" and the facts between these related entities and the entity "subject":
@@ -199,11 +190,12 @@ def candidate_reasoning( question, related_facts, related_rules, top_k_entity, f
     answer_llm = llm_instance.run_task([system_msg, user_msg])
     return answer_llm['candidates']
 
-def get_candidates(test_query, i, transformed_relations, vector_db, llm_instance, data, rules_dict, entity_similarity_matrix):
+def get_candidates(test_query, i, transformed_relations, vector_db, llm_instance, data, entity_similarity_matrix):
     """
     
     """
     # Convert query to natural question
+    print(f"Processing query {i}...")
     question = convert_query_to_natural_question(test_query, transformed_relations)
 
     # Get related facts
@@ -212,9 +204,6 @@ def get_candidates(test_query, i, transformed_relations, vector_db, llm_instance
     related_relations = set()
     related_facts = get_related_facts(search_content, vector_db, llm_instance, [], candidates_dict, related_relations)
     related_rels_id = [data.relation2id[rel] for rel in related_relations]
-
-    # Get related rules
-    related_rules = filter_related_rules(rules_dict, data.relation2id[test_query[1]], related_rels_id)
 
     # Get most related entities and their facts
     query_subject_id = data.entity2id[test_query[0]]
@@ -227,7 +216,7 @@ def get_candidates(test_query, i, transformed_relations, vector_db, llm_instance
     )
 
     # Get candidates list
-    candidates = candidate_reasoning(question, related_facts, related_rules, top_k_entity, facts_between_entity_subject_and_related_entities, related_entity_facts, llm_instance)
+    candidates = candidate_reasoning(question, related_facts, top_k_entity, facts_between_entity_subject_and_related_entities, related_entity_facts, llm_instance)
     candidates_id = [data.entity2id[ent] for ent in candidates]
 
     return i, candidates, candidates_id
@@ -247,7 +236,8 @@ def get_entity_max_ts(vector_db, llm_instance, test_query, data, entity, transfo
     else:
         return None
 
-def scoring_candidates(candidates_id, test_query, data, vector_db, llm_instance, transformed_relations):
+def scoring_candidates(candidates_id, i, test_data, data, vector_db, llm_instance, transformed_relations):
+    test_query = test_data[i]
     cands_score_dict = {}
     query_ts = data.ts2id[test_query[3]]
     for rank, id in enumerate(candidates_id):
@@ -256,7 +246,9 @@ def scoring_candidates(candidates_id, test_query, data, vector_db, llm_instance,
             cands_score_dict[id] = score_1(rank, cand_max_ts, query_ts, 0.5)
         else:
             cands_score_dict[id] = score_1(rank, 0, query_ts, 1.0)
-    return cands_score_dict
+    # sort cands_score_dict
+    cands_score_dict = dict(sorted(cands_score_dict.items(), key=lambda item: item[1], reverse=True))
+    return i, cands_score_dict
 
 def stage_4_main():
     # Load LLm model
@@ -267,19 +259,6 @@ def stage_4_main():
     # Load data and test data
     data = DataLoader(dataset_dir)
     test_data = data.test_data_text
-
-    # Load rules
-    rule_regex = load_json_data("config/rule_regex.json")['icews14']
-    temporal_walk_data = load_learn_data(data, 'all')
-    temporal_walk = TemporalWalker(temporal_walk_data, data.inverse_rel_idx, 'exp')
-    rl = RuleLearner(temporal_walk.edges, data.relation2id, data.id2entity, data.id2relation, data.inverse_rel_idx, 
-                        'icews14', len(temporal_walk_data), dir_path)
-    rules_df = pd.read_csv('result/icews14/stage_2/01_only_Markovian_merged_results.csv')
-    for _, entry in rules_df.iterrows():
-        rl.create_rule_from_series_df(entry=entry, rule_regex=rule_regex)
-    rules_dict = rl.rules_dict
-    print("Rules statistics:")
-    rules_statistics(rules_dict)
 
     # Load similarity matrix
     relation_similarity_matrix = np.load('result/icews14/stage_1/relation_similarity.npy')
@@ -293,15 +272,26 @@ def stage_4_main():
 
     ##################################################################################################
     query_cands_dict = {}
-    for i, test_query in enumerate(test_data[:1]):
-        i, candidates, candidates_id = get_candidates(test_query, i, transformed_relations, vector_db['facts']['vector_db'], llm_instance, data, rules_dict, entity_similarity_matrix)
-        query_cands_dict[i] = candidates_id
-        print(f"Query {i}: {test_query} - Candidates: {candidates}")
+    futures = []
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        for i, test_query in enumerate(test_data[:2]):
+            futures.append(executor.submit(
+                get_candidates, test_query, i, transformed_relations, vector_db['facts']['vector_db'], llm_instance, data, entity_similarity_matrix))
     
-    # scoring
-    for query_id, cands_id in query_cands_dict.items():
-        candidates_score = scoring_candidates(cands_id, test_data[query_id], data, vector_db['facts']['vector_db'], llm_instance, transformed_relations)
-        query_cands_dict[query_id] = candidates_score
+    for future in as_completed(futures):
+        i, candidates, candidates_id = future.result()
+        query_cands_dict[i] = candidates_id
+    save_json_data(query_cands_dict, "result/icews14/stage_4/candidates.json")
+    # scoring for candidates
+    futures = []
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        for query_id, cands_id in query_cands_dict.items():
+            futures.append(executor.submit(
+                scoring_candidates, cands_id, query_id, test_data, data, vector_db['facts']['vector_db'], llm_instance, transformed_relations))
+    for future in as_completed(futures):
+        i, cands_score_dict = future.result()
+        query_cands_dict[i] = cands_score_dict
     
     ##################################################################################################
-    save_json_data("result/icews14/stage_4/candidates_score.json", query_cands_dict)
+    query_cands_dict = dict(sorted(query_cands_dict.items(), key=lambda item: item[0]))
+    save_json_data(query_cands_dict, "result/icews14/stage_4/candidates_score.json")

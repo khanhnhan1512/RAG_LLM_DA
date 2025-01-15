@@ -170,6 +170,8 @@ def load_json_data(file_path):
 
 def save_json_data(data, file_path):
     try:
+        if not os.path.exists(os.path.dirname(file_path)):
+            os.makedirs(os.path.dirname(file_path))
         with open(file_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
         print(f"Data has been converted to JSON and saved to {file_path}")
