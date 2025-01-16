@@ -108,6 +108,7 @@ def stage_1_main():
     dt = datetime.now().strftime("%d%m%y")
     rl.save_rules_csv(dt, 'random_walk', rule_length, num_walks, transition_choice, seed, 
                       metrics=["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score"])
+                    # metrics=["confidence_score"])
     rl.rules_statistics()
     calculate_relation_similarity(llm_instance, list(data_loader.relation2id.keys()), rl.output_dir)
 

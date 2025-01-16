@@ -82,11 +82,11 @@ class RuleLearner(object):
                 rule["conf"],
                 rule["rule_supp_count"],
                 rule["body_supp_count"],
-                rule["head_supp_count"],
-                rule["lift"],
-                rule["conviction"],
-                rule["kulczynski"],
-                rule["IR_score"]
+                # rule["head_supp_count"],
+                # rule["lift"],
+                # rule["conviction"],
+                # rule["kulczynski"],
+                # rule["IR_score"]
             ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
 
             rule["llm_confidence"] = confidence
@@ -114,11 +114,11 @@ class RuleLearner(object):
                 rule["conf"],
                 rule["rule_supp_count"],
                 rule["body_supp_count"],
-                rule["head_supp_count"],
-                rule["lift"],
-                rule["conviction"],
-                rule["kulczynski"],
-                rule["IR_score"]
+                # rule["head_supp_count"],
+                # rule["lift"],
+                # rule["conviction"],
+                # rule["kulczynski"],
+                # rule["IR_score"]
             ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
 
             rule["llm_confidence"] = confidence
@@ -179,23 +179,25 @@ class RuleLearner(object):
         body_support_count = len(unique_bodies)
         body_support = round(body_support_count / self.total_num_fact, 6)
 
-        confidence, rule_support, lift, conviction, kulczynski, IR_score = 0, 0, 0, 100, 0, 0
-        head_supp_count = self.calculate_head_supp(rule["head_rel"])
-        head_supp = round(head_supp_count / self.total_num_fact, 6)
+        # confidence, rule_support, lift, conviction, kulczynski, IR_score = 0, 0, 0, 100, 0, 0
+        confidence, rule_support = 0, 0
+        # head_supp_count = self.calculate_head_supp(rule["head_rel"])
+        # head_supp = round(head_supp_count / self.total_num_fact, 6)
         rule_support_count = self.calculate_rule_support(unique_bodies, rule["head_rel"])
         if body_support_count:
             rule_support = round(rule_support_count / self.total_num_fact, 6)
             confidence = round(rule_support / body_support, 6)
 
         
-        lift = round(confidence / head_supp, 6)
-        kulczynski = round(0.5 * (confidence + (rule_support/head_supp)), 6)
-        if confidence < 1:
-            conviction = round((1 - head_supp) / (1 - confidence), 6)
+        # lift = round(confidence / head_supp, 6)
+        # kulczynski = round(0.5 * (confidence + (rule_support/head_supp)), 6)
+        # if confidence < 1:
+        #     conviction = round((1 - head_supp) / (1 - confidence), 6)
         
-        IR_score = round(abs(body_support - head_supp)/(body_support + head_supp - rule_support), 6)
+        # IR_score = round(abs(body_support - head_supp)/(body_support + head_supp - rule_support), 6)
 
-        return confidence, rule_support_count, body_support_count, head_supp_count, lift, conviction, kulczynski, IR_score
+        # return confidence, rule_support_count, body_support_count, head_supp_count, lift, conviction, kulczynski, IR_score
+        return confidence, rule_support_count, body_support_count
 
     def sample_body(self, body_rels, var_constraints, use_relax_time=False):
         """
@@ -251,20 +253,20 @@ class RuleLearner(object):
 
         return sample_successful, body_ents_tss
 
-    def calculate_head_supp(self, head_rel):
-        """
-        Calculate the head support.
-        Parameters:
-            head_rel: relation in head part of a rule
+    # def calculate_head_supp(self, head_rel):
+    #     """
+    #     Calculate the head support.
+    #     Parameters:
+    #         head_rel: relation in head part of a rule
 
-        Returns:
-            sample_successful (bool): if a body has been successfully sampled
-            body_ents_tss (list): entities and timestamps (alternately entity and timestamp)
-                                  of the sampled body
-        """
-        if head_rel not in self.edges:
-            return 0
-        return len(self.edges[head_rel])
+    #     Returns:
+    #         sample_successful (bool): if a body has been successfully sampled
+    #         body_ents_tss (list): entities and timestamps (alternately entity and timestamp)
+    #                               of the sampled body
+    #     """
+    #     if head_rel not in self.edges:
+    #         return 0
+    #     return len(self.edges[head_rel])
 
     def calculate_rule_support(self, unique_bodies, head_rel):
         """
@@ -382,20 +384,24 @@ class RuleLearner(object):
             filename = "{0}_r{1}_n{2}_{3}_s{4}_{5}_random_rules.csv".format(
                 dt, rule_lengths, num_walks, transition_distr, seed, rule_type
             )
-            full_columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
+            # full_columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
+            #        "rule", "head_rel", "example"]
+            # default_columns = ["rule_supp_count", "body_supp_count", "head_supp_count", "rule", "head_rel", "example"]
+            full_columns = ["confidence_score", "rule_supp_count", "body_supp_count",
                    "rule", "head_rel", "example"]
             default_columns = ["rule_supp_count", "body_supp_count", "head_supp_count", "rule", "head_rel", "example"]
 
         elif rule_type == "llm":
             filename = "{0}_{1}_generated_llm_rules.csv".format(dt, rule_type)
-            full_columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
+            # full_columns = ["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score", "rule_supp_count", "body_supp_count", "head_supp_count",
+            #        "rule", "head_rel"]
+            # default_columns = ["rule_supp_count", "body_supp_count", "head_supp_count", "rule", "head_rel"]
+            full_columns = ["confidence_score", "rule_supp_count", "body_supp_count",
                    "rule", "head_rel"]
             default_columns = ["rule_supp_count", "body_supp_count", "head_supp_count", "rule", "head_rel"]
             
         filename = filename.replace(" ", "")
         output_path = self.output_dir + filename
-
-        columns_to_keep = metrics + default_columns
         
         df = pd.DataFrame(columns=full_columns)
         entries = []
@@ -405,8 +411,55 @@ class RuleLearner(object):
                 rule_str = verbalize_rule(rule, self.id2relation, rule_type)
                 entry = rule_str.split("\t")
                 entries.append(entry)
+        
         df = pd.concat([df, pd.DataFrame(entries, columns=full_columns)], ignore_index=True)
+
+        # Convert relevant columns to numeric types
+        df['rule_supp_count'] = pd.to_numeric(df['rule_supp_count'], errors='coerce')
+        df['body_supp_count'] = pd.to_numeric(df['body_supp_count'], errors='coerce')
+
+        # Step 1: Calculate head_supp_count
+        df['head_supp_count'] = df.groupby('head_rel')['rule_supp_count'].transform('sum')
+
+        # Step 2: Calculate additional metrics
+        total_num_fact = self.total_num_fact
+
+        df['kulczynski'] = 0.0
+        df['IR_score'] = 0.0
+        df['lift_score'] = 0.0
+        df['conviction_score'] = 100.0  # Default conviction score
+
+        for index, row in df.iterrows():
+            rule_supp = row['rule_supp_count']
+            body_supp = row['body_supp_count']
+            head_supp = row['head_supp_count']
+
+            if pd.isna(body_supp) or pd.isna(head_supp) or body_supp == 0 or head_supp == 0:
+                continue
+
+            confidence = round(rule_supp / body_supp, 6) if body_supp != 0 else 0
+            head_supp_ratio = round(head_supp / total_num_fact, 6)
+            rule_supp_ratio = round(rule_supp / total_num_fact, 6)
+
+            kulczynski = round(0.5 * (confidence + (rule_supp_ratio / head_supp_ratio)), 6)
+            IR_score = round(abs(body_supp - head_supp) / (body_supp + head_supp - rule_supp), 6) if (body_supp + head_supp - rule_supp) != 0 else 0
+            lift_score = round(confidence / head_supp_ratio, 6) if head_supp_ratio != 0 else 0
+            
+            # Update conviction score only if confidence < 1
+            if confidence < 1:
+                conviction_score = round((1 - head_supp_ratio) / (1 - confidence), 6)
+                df.at[index, 'conviction_score'] = conviction_score
+
+            # Assign calculated values to the DataFrame
+            df.at[index, 'kulczynski'] = kulczynski
+            df.at[index, 'IR_score'] = IR_score
+            df.at[index, 'lift_score'] = lift_score
+
+        columns_to_keep = metrics + default_columns
+
         df = df[columns_to_keep]
+        
+        # Save to CSV
         df.to_csv(output_path, index=False)
         print(f"Rules have been saved to {output_path}")
 
@@ -454,21 +507,22 @@ def verbalize_rule(rule, id2relation, rule_type):
     else:
         var_constraints = [[x] for x in range(len(rule["body_rels"]) + 1)]
 
-    rule_str = "{0:8.6f}\t{1:8.6f}\t{2:8.6f}\t{3:8.6f}\t{4:8.6f}\t{5:4}\t{6:4}\t{7:4}\t{8}(X0,X{9},T{10})<-"
+    # rule_str = "{0:8.6f}\t{1:8.6f}\t{2:8.6f}\t{3:8.6f}\t{4:8.6f}\t{5:4}\t{6:4}\t{7:4}\t{8}(X0,X{9},T{10})<-"
+    rule_str = "{0:8.6f}\t{1:4}\t{2:4}\t{3}(X0,X{4},T{5})<-"
     obj_idx = [
         idx
         for idx in range(len(var_constraints))
         if len(rule["body_rels"]) in var_constraints[idx]
     ][0]
     rule_str = rule_str.format(
-        rule["kulczynski"],
-        rule["IR_score"],
-        rule["lift"],
-        rule["conviction"],
+        # rule["kulczynski"],
+        # rule["IR_score"],
+        # rule["lift"],
+        # rule["conviction"],
         rule["conf"],
         rule["rule_supp_count"],
         rule["body_supp_count"],
-        rule["head_supp_count"],
+        # rule["head_supp_count"],
         id2relation[rule["head_rel"]],
         obj_idx,
         len(rule["body_rels"]),
@@ -528,8 +582,6 @@ def parse_verbalized_rule_to_walk(verbalized_rule, relation2id, inverse_rel_idx,
     walk["entities"].append(head_match.groups()[1])
     walk["relations"].append(relation2id[head_match.groups()[0].strip()])
 
-
-    
     parts = body.split("&")
     for part in parts[::-1]:
         match = re.search(rule_regex, part)
