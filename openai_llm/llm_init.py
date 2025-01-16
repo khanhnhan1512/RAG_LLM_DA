@@ -137,22 +137,22 @@ class LLM_Model:
 
     def run_query(self, msg):
         input_tokens = sum(self.num_tokens(self.tokenizer_chat_model, m.content) for m in msg)
-
-        while True:
-            current_time = time.time()
-            proceed, msg_list = self.check_and_update_quota(input_tokens, self.quota_query, current_time)
-            if proceed:
-                break
-            else:
-                if msg_list:
-                    for msg in msg_list:
-                        print(msg)
-                self.pause(1)
+        
+        # while True:
+        #     current_time = time.time()
+        #     proceed, msg_list = self.check_and_update_quota(input_tokens, self.quota_query, current_time)
+        #     if proceed:
+        #         break
+        #     else:
+        #         if msg_list:
+        #             for msg in msg_list:
+        #                 print(msg)
+        #         self.pause(1)
 
         result = self.chat_model.invoke(msg)
 
-        with self.lock:
-            self.update_cost_chat_model(result)
+        # with self.lock:
+        #     self.update_cost_chat_model(result)
         return result
 
     def run_embeddings(self, documents):

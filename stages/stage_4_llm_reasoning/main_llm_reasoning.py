@@ -1,7 +1,9 @@
 import os
 import pandas as pd
 import numpy as np
+import torch
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from joblib import Parallel, delayed
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from openai_llm.llm_init import LLM_Model
 from stages.stage_1_learn_rules_from_data.data_loader import DataLoader
@@ -67,7 +69,7 @@ def get_related_facts(search_content, vector_db, llm_instance, related_facts, ca
         seen_entities = set()  
     
     # Điều kiện dừng  
-    if n == 3:  
+    if n == 2:  
         return related_facts  
     
     cands = candidates_dict[n]  
@@ -217,9 +219,9 @@ def get_candidates(test_query, i, transformed_relations, vector_db, llm_instance
 
     # Get candidates list
     candidates = candidate_reasoning(question, related_facts, top_k_entity, facts_between_entity_subject_and_related_entities, related_entity_facts, llm_instance)
-    candidates_id = [data.entity2id[ent] for ent in candidates]
+    candidates_id = [data.entity2id[ent] for ent in candidates if ent in data.entity2id]
 
-    return i, candidates, candidates_id
+    return candidates, candidates_id
 
 def get_entity_max_ts(vector_db, llm_instance, test_query, data, entity, transformed_relations):
     search_conent = transformed_relations[test_query[1]]
@@ -241,14 +243,31 @@ def scoring_candidates(candidates_id, i, test_data, data, vector_db, llm_instanc
     cands_score_dict = {}
     query_ts = data.ts2id[test_query[3]]
     for rank, id in enumerate(candidates_id):
-        cand_max_ts = get_entity_max_ts(vector_db, llm_instance, test_query, data, id, transformed_relations)
-        if cand_max_ts:
-            cands_score_dict[id] = score_1(rank, cand_max_ts, query_ts, 0.5)
-        else:
-            cands_score_dict[id] = score_1(rank, 0, query_ts, 1.0)
+        # cand_max_ts = get_entity_max_ts(vector_db, llm_instance, test_query, data, id, transformed_relations)
+        # if cand_max_ts:
+        #     cands_score_dict[id] = score_1(rank, cand_max_ts, query_ts, 0.5)
+        # else:
+        cands_score_dict[id] = score_1(rank, 0, query_ts, 1.0)
     # sort cands_score_dict
     cands_score_dict = dict(sorted(cands_score_dict.items(), key=lambda item: item[1], reverse=True))
-    return i, cands_score_dict
+    return cands_score_dict
+
+def apply_llm_reasonging_parallel(test_data, process, num_queries, transformed_relations, vector_db, llm_instance, data, entity_similarity_matrix):
+    result = dict()
+    test_query_idx = range(process * num_queries, (process + 1) * num_queries) if process < 19 else range(process * num_queries, len(test_data))
+    for j in test_query_idx:
+        test_query = test_data[j]
+        result[j] = get_candidates(test_query, j, transformed_relations, vector_db, llm_instance, data, entity_similarity_matrix)[1]
+
+    return result
+
+def scoring_candidates_parallel(query_cands_dict, process, num_queries, test_data, data, vector_db, llm_instance, transformed_relation):
+    result = dict()
+    test_query_idx = range(process * num_queries, (process + 1) * num_queries) if process < 19 else range(process * num_queries, len(test_data))
+    for j in test_query_idx:
+        result[j] = scoring_candidates(query_cands_dict[j], j, test_data, data, vector_db, llm_instance, transformed_relation)
+
+    return result
 
 def stage_4_main():
     # Load LLm model
@@ -258,7 +277,7 @@ def stage_4_main():
 
     # Load data and test data
     data = DataLoader(dataset_dir)
-    test_data = data.test_data_text
+    test_data = data.test_data_text[:1000]
 
     # Load similarity matrix
     relation_similarity_matrix = np.load('result/icews14/stage_1/relation_similarity.npy')
@@ -272,26 +291,29 @@ def stage_4_main():
 
     ##################################################################################################
     query_cands_dict = {}
+    num_queries = len(test_data) // 20
     futures = []
-    with ThreadPoolExecutor(max_workers=8) as executor:
-        for i, test_query in enumerate(test_data[:2]):
-            futures.append(executor.submit(
-                get_candidates, test_query, i, transformed_relations, vector_db['facts']['vector_db'], llm_instance, data, entity_similarity_matrix))
+    with ThreadPoolExecutor(max_workers=20) as executor:
+        for i in range(20):
+            futures.append(executor.submit(apply_llm_reasonging_parallel, test_data, i, num_queries, transformed_relations, vector_db['facts']['vector_db'], llm_instance, data, entity_similarity_matrix))
     
     for future in as_completed(futures):
-        i, candidates, candidates_id = future.result()
-        query_cands_dict[i] = candidates_id
-    save_json_data(query_cands_dict, "result/icews14/stage_4/candidates.json")
+        result = future.result()
+        for key, value in result.items():
+            query_cands_dict[key] = value
+    save_json_data(query_cands_dict, "result/icews14/stage_4/candidates_1000.json")
     # scoring for candidates
-    futures = []
-    with ThreadPoolExecutor(max_workers=8) as executor:
-        for query_id, cands_id in query_cands_dict.items():
-            futures.append(executor.submit(
-                scoring_candidates, cands_id, query_id, test_data, data, vector_db['facts']['vector_db'], llm_instance, transformed_relations))
-    for future in as_completed(futures):
-        i, cands_score_dict = future.result()
-        query_cands_dict[i] = cands_score_dict
-    
+    scoring = []
+    with ThreadPoolExecutor(max_workers=20) as executor:
+        for i in range(20):
+            scoring.append(executor.submit(scoring_candidates_parallel, query_cands_dict, i, num_queries, test_data, data, vector_db['facts']['vector_db'], llm_instance, transformed_relations))
+       
+    for future in as_completed(scoring):
+        result = future.result()
+        for key, value in result.items():
+            query_cands_dict[key] = value
+
+
     ##################################################################################################
     query_cands_dict = dict(sorted(query_cands_dict.items(), key=lambda item: item[0]))
-    save_json_data(query_cands_dict, "result/icews14/stage_4/candidates_score.json")
+    save_json_data(query_cands_dict, "result/icews14/stage_4/candidates_score_1000.json")
