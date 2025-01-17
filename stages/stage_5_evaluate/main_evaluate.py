@@ -26,7 +26,7 @@ def stage_5_main():
     data_dir = args['data_path']
     dataset = args['dataset']
     rule_candidates_file = "reasoning_result_1_1000.json"
-    llm_candidates_file = "candidates_score.json"
+    llm_candidates_file = "candidates_score_1000.json"
 
     dataset_path = os.path.join(data_dir, dataset)
     rule_reasoning_result_dir = os.path.join("./result", dataset, "stage_3")
@@ -35,7 +35,7 @@ def stage_5_main():
 
     data = DataLoader(dataset_path)
     num_entities = len(data.id2entity)
-    test_data = data.test_data_idx[:2] if (args['test_data'] == "test") else data.valid_idx
+    test_data = data.test_data_idx[:1000] if (args['test_data'] == "test") else data.valid_idx
 
     all_rule_candidates = load_candidates(rule_reasoning_result_dir, rule_candidates_file)
     all_llm_candidates = load_candidates(llm_reasoning_result_dir, llm_candidates_file)
@@ -89,10 +89,11 @@ def evaluate(args, test_data, all_llm_candidates, all_rule_candidates, num_entit
     return hits_1, hits_3, hits_10, mrr
 
 def get_final_candidates(args, test_query, all_llm_candidates, all_rule_candidates, i, num_entities, test_numpy, score_numpy):
-    if args['graph_reasoning_type'] in ['TiRGN', 'REGCN']:
-        return get_candidates(args, test_query, all_rule_candidates, i, num_entities, test_numpy, score_numpy)
-    else:
-        return get_rule_llm_candidates(args, i, all_llm_candidates, all_rule_candidates, num_entities)
+    # if args['graph_reasoning_type'] in ['TiRGN', 'REGCN']:
+    #     return get_candidates(args, test_query, all_rule_candidates, i, num_entities, test_numpy, score_numpy)
+    # else:
+    # return get_rule_llm_candidates(args, i, all_llm_candidates, all_rule_candidates, num_entities)
+    return all_rule_candidates[i]
 
 def get_rule_llm_candidates(args, i, all_llm_candidates, all_rule_candidates, num_entities):
     temp_candidates = {k: 0 for k in range(num_entities)}
