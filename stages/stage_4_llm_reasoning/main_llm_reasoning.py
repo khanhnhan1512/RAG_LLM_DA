@@ -131,9 +131,9 @@ def candidate_reasoning( question, related_facts, top_k_entity, facts_between_en
     Your task is Temporal Knowledge Graph Reasoning, which involves predicting the missing object in a given fact from the test dataset. A fact is represented as a quadruple: subject, relation, object, and time.
 
     In this context:  
-    - "subject" is the entity mentioned in the query  
+    - "subject" entity is the entity mentioned in the query  
     - "relation" is an action/event performed by the subject  
-    - "object" is the entity you need to infer through reasoning  
+    - "object" entity is the entity you need to infer through reasoning  
     - "timestamp": The temporal aspect of the fact
 
     To support your reasoning process in finding the missing object, you will be provided with relevant facts:  
@@ -145,8 +145,8 @@ def candidate_reasoning( question, related_facts, top_k_entity, facts_between_en
     This information aids your reasoning process, especially because:     
     - These entities can be candidates because they might have relationships with the entity subject, which are also similar to the relationship between the entity subject and the missing object,
     3. Additional Information:
-    - The facts of these related entities.
-    This information is useful especiall when there are no facts about the entity subject in the past. So, patterns from these similar entities might apply to the entity subject to infer the missing object.
+    - Facts about entities "related" to the "subject" entity.
+    These facts are also very useful when you have too few or no facts directly related to the "subject" entity. If so, the pattern of these facts can be viewed as belonging to the "subject" entity, and the actions that these similar entities have performed can also be considered as actions of the subject entity, thereby helping to find candidates for the given query.
 
     You should follow these reasoning Process Guidelines:  
     1. Primary Analysis:  
@@ -160,32 +160,29 @@ def candidate_reasoning( question, related_facts, top_k_entity, facts_between_en
     - Consider temporal sequence of connected facts  
     - Weight evidence based on path length and temporal proximity  
 
-    3. Similar Entity Analysis:  
+    3. Related Entity Analysis: 
+    If direct evidence is insufficient, consider related entities:
     - Consider most related entities as potential candidates because they might have relationships with the entity subject in the past.
-    - Examine patterns from semantically similar entities  
-    - Apply successful patterns from similar entities  
+    - Examine patterns/facts from semantically related entities and apply successful patterns from them  
 
-    Finally, for the candidate selection criteria:  
+    For the candidate selection criteria:  
     1. Evidence Strength:  
     - Direct path evidence (highest weight)  
     - Multi-hop reasoning paths 
-    - Related entity patterns  
+    - Related entity and their patterns/facts  
         
     2. Temporal Relevance:  
     - Recency of connections  
     - Pattern consistency over time  
     - Temporal proximity to query time  
-
-    3. Confidence Scoring:  
-    - Direct evidence: High confidence  
-    - Related entity and their patterns: Medium confidence  
-    - Multi-hop paths: Weighted by path length
-
+    
+    Finally, remember that when there are too few or no facts directly related to the "subject" entity, use the "Additional Information" to find candidates for the given query.
     Your answer should be in the following JSON format:  
     {{  
         "candidates": // An ordered list of up to 10 candidates, from highest to lowest likelihood of being the correct answer.   
                     // Each candidate should be an entity name exactly as it appears in the given facts.  
                     // The list should be ordered by decreasing probability of being the correct answer.
+                    // You will not be allowed to give the empty list as an answer. Remember that when there are too few or no facts directly related to the "subject" entity, use the "Additional Information" to find candidates for the given query.
     }}
     '''
     system_msg = SystemMessage(content=system_msg_content)
@@ -250,61 +247,60 @@ def get_candidates(test_query, i, transformed_relations, vector_db, llm_instance
     print(f"Finish query {i}...")
     return candidates, candidates_id
 
-def get_entity_max_ts(vector_db, llm_instance, test_query, data, entity, transformed_relations):
-    search_conent = transformed_relations[test_query[1]]
-    filter = {"$and": 
-        [
-            {"object": {"$in": [test_query[0], data.id2entity[entity]]}},
-            {"subject": {"$in": [test_query[0], data.id2entity[entity]]}},
-        ]
-    }
-    docs = lookup_vector_db(search_conent, filter, vector_db, llm_instance, top_k=100)
-    sorted_docs = sorted(docs, key=lambda doc: doc.metadata['timestamp_id'], reverse=True)
-    if sorted_docs:
-        return sorted_docs[0].metadata['timestamp_id']
+def get_entity_max_ts(test_query_subject, candidate, historical_data):
+    other_answers = historical_data[
+        (historical_data[:, 0] == test_query_subject)
+        * (historical_data[:, 2] == candidate)
+    ]
+    # sort by timestamp in descending order
+    other_answers = other_answers[other_answers[:, 3].argsort()[::-1]]
+    # return the max timestamp
+    if len(other_answers) > 0:
+        return other_answers[0, 3]
     else:
         return None
 
-def scoring_candidates(candidates_id, i, test_data, data, vector_db, llm_instance, transformed_relations):
-    test_query = test_data[i]
+def scoring_candidates(candidates_id, i, test_data_dict, data):
+    test_id, test_query = next(iter(test_data_dict[i].items()))
     cands_score_dict = {}
     query_ts = data.ts2id[test_query[3]]
+    historical_data = np.vstack((data.train_data_idx, data.valid_data_idx))
     for rank, id in enumerate(candidates_id):
-        # cand_max_ts = get_entity_max_ts(vector_db, llm_instance, test_query, data, id, transformed_relations)
-        # if cand_max_ts:
-        #     cands_score_dict[id] = score_1(rank, cand_max_ts, query_ts, 0.5)
-        # else:
-        cands_score_dict[id] = score_1(rank, 0, query_ts, 1.0)
+        cand_max_ts = get_entity_max_ts(data.entity2id[test_query[0]], id, historical_data)
+        if cand_max_ts:
+            cands_score_dict[id] = score_1(rank, cand_max_ts, query_ts, 0.5)
+        else:
+            cands_score_dict[id] = score_1(rank, 0, query_ts, 1.0)
     # sort cands_score_dict
     cands_score_dict = dict(sorted(cands_score_dict.items(), key=lambda item: item[1], reverse=True))
     return cands_score_dict
 
-def apply_llm_reasonging_parallel(test_data, process, num_queries, transformed_relations, vector_db, llm_instance, data, entity_similarity_matrix, num_process):
+def apply_llm_reasonging_parallel(test_data_dict, process, num_queries, transformed_relations, vector_db, llm_instance, data, entity_similarity_matrix, num_process):
     result = dict()
     base_filename = f"result/icews14/stage_4/candidates_part_{process}.jsonl"
-    test_query_idx = range(process * num_queries, (process + 1) * num_queries) if process < num_process-1 else range(process * num_queries, len(test_data))
+    test_query_idx = range(process * num_queries, (process + 1) * num_queries) if process < num_process-1 else range(process * num_queries, len(test_data_dict))
     for j in test_query_idx:
-        test_query = test_data[j]
-        candidates = get_candidates(test_query, j, transformed_relations, vector_db, llm_instance, data, entity_similarity_matrix)[1]  
+        test_id, test_query = next(iter(test_data_dict[j].items()))
+        candidates = get_candidates(test_query, test_id, transformed_relations, vector_db, llm_instance, data, entity_similarity_matrix)[1]  
         
         # Lưu từng phần kết quả ngay lập tức  
-        safe_save_results({j: candidates}, base_filename)  
+        safe_save_results({test_id: candidates}, base_filename)  
         
-        result[j] = candidates
+        result[test_id] = candidates
 
     return result
 
-def scoring_candidates_parallel(query_cands_dict, process, num_queries, test_data, data, vector_db, llm_instance, transformed_relation):
+def scoring_candidates_parallel(query_cands_dict, process, num_queries, test_data_dict, data, num_process):
     result = dict()
-    test_query_idx = range(process * num_queries, (process + 1) * num_queries ) if process < 24 else range(process * num_queries, len(test_data))
+    test_query_idx = range(process * num_queries, (process + 1) * num_queries) if process < num_process-1 else range(process * num_queries, len(test_data_dict))
     for j in test_query_idx:
-        result[j] = scoring_candidates(query_cands_dict[j], j, test_data, data, vector_db, llm_instance, transformed_relation)
+        result[j] = scoring_candidates(query_cands_dict[str(j)], j, test_data_dict, data)
 
     return result
 
 def stage_4_main():
     # number of processes
-    num_process = 12
+    num_process = 1
 
     # Load LLm model
     llm_instance = LLM_Model()
@@ -313,7 +309,10 @@ def stage_4_main():
 
     # Load data and test data
     data = DataLoader(dataset_dir)
-    test_data = data.test_data_text[:7371]
+    test_data = data.test_data_text
+
+    test_data_dict = [{i:v} for i, v in enumerate(test_data)]
+    test_data_dict = test_data_dict[:7371]
 
     # Load similarity matrix
     relation_similarity_matrix = np.load('result/icews14/stage_1/relation_similarity.npy')
@@ -326,48 +325,48 @@ def stage_4_main():
         print(f"{collection}: {len(vector_db[collection]['vector_db'].get()['documents'])} documents")
 
     ##################################################################################################
-    query_cands_dict = {}
-    num_queries = math.ceil(len(test_data) / num_process)
+    # query_cands_dict = {}
+    num_queries = math.ceil(len(test_data_dict) / num_process)
     futures = []
-    with ThreadPoolExecutor(max_workers=num_process) as executor:
-        for i in range(num_process):
-            futures.append(executor.submit(apply_llm_reasonging_parallel, test_data, i, num_queries, transformed_relations, vector_db['facts']['vector_db'], llm_instance, data, entity_similarity_matrix, num_process))
-    
-        for future in as_completed(futures):
-            result = future.result()
-            query_cands_dict.update(result)
-
-    # Sau khi chạy xong, merge các file kết quả  
-    def merge_result_files():  
-        final_results = {}  
-        for i in range(num_process):  
-            filename = f"result/icews14/stage_4/candidates_part_{i}.jsonl"  
-            if os.path.exists(filename):  
-                with open(filename, 'r') as f:  
-                    for line in f:  
-                        part_result = json.loads(line)  
-                        final_results.update(part_result)  
-        
-        # Sắp xếp và lưu kết quả cuối cùng  
-        sorted_results = dict(sorted(final_results.items(), key=lambda x: int(x[0])))  
-        with open("result/icews14/stage_4/final_candidates.json", 'w') as f:  
-            json.dump(sorted_results, f, indent=4)  
-
-    # Gọi hàm merge kết quả  
-    merge_result_files()
-
-    # # scoring for candidates
-    # scoring = []
     # with ThreadPoolExecutor(max_workers=num_process) as executor:
     #     for i in range(num_process):
-    #         scoring.append(executor.submit(scoring_candidates_parallel, query_cands_dict, i, num_queries, test_data, data, vector_db['facts']['vector_db'], llm_instance, transformed_relations))
-       
-    #     for future in as_completed(scoring):
+    #         futures.append(executor.submit(apply_llm_reasonging_parallel, test_data_dict, i, num_queries, transformed_relations, vector_db['facts']['vector_db'], llm_instance, data, entity_similarity_matrix, num_process))
+    
+    #     for future in as_completed(futures):
     #         result = future.result()
-    #         for key, value in result.items():
-    #             query_cands_dict[key] = value
+
+    # # Sau khi chạy xong, merge các file kết quả  
+    # def merge_result_files():  
+    #     final_results = {}  
+    #     for i in range(num_process):  
+    #         filename = f"result/icews14/stage_4/candidates_part_{i}.jsonl"  
+    #         if os.path.exists(filename):  
+    #             with open(filename, 'r') as f:  
+    #                 for line in f:  
+    #                     part_result = json.loads(line)  
+    #                     final_results.update(part_result)  
+        
+    #     # Sắp xếp và lưu kết quả cuối cùng  
+    #     sorted_results = dict(sorted(final_results.items(), key=lambda x: int(x[0])))  
+    #     with open("result/icews14/stage_4/final_candidates.json", 'w') as f:  
+    #         json.dump(sorted_results, f, indent=4)  
+
+    # Gọi hàm merge kết quả  
+    # merge_result_files()
+
+    # scoring for candidates
+    query_cands_dict = load_json_data("result/icews14/stage_4/final_candidates.json")
+    query_cands_score_dict = {}
+    scoring = []
+    with ThreadPoolExecutor(max_workers=num_process) as executor:
+        for i in range(num_process):
+            scoring.append(executor.submit(scoring_candidates_parallel, query_cands_dict, i, num_queries, test_data_dict, data, num_process))
+       
+        for future in as_completed(scoring):
+            query_cands_score_dict.update(future.result())
+            
 
 
     # ##################################################################################################
     # query_cands_dict = dict(sorted(query_cands_dict.items(), key=lambda item: item[0]))
-    # save_json_data(query_cands_dict, "result/icews14/stage_4/candidates_score.json")
+    save_json_data(query_cands_score_dict, "result/icews14/stage_4/candidates_score.json")
