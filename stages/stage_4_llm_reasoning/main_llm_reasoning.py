@@ -125,64 +125,63 @@ def get_related_facts(search_content, vector_db, llm_instance, related_facts, ca
         n+1  
     )
  
-def candidate_reasoning( question, related_facts, top_k_entity, facts_between_entity_subject_and_related_entities, related_entity_facts, llm_instance):
+def candidate_reasoning( question, related_facts, top_k_entity, facts_between_entity_subject_and_related_entities, related_entity_facts, ground_truth_answers, llm_instance):
     system_msg_content = f'''
-    You are an expert in Temporal Knowledge Graphs, utilizing data consisting of events and activities worldwide involving countries, organizations, famous individuals, etc.   
-    Your task is Temporal Knowledge Graph Reasoning, which involves predicting the missing object in a given fact from the test dataset. A fact is represented as a quadruple: subject, relation, object, and time.
+    You are an advanced reasoning assistant tasked with solving Temporal Knowledge Graph (TKG) reasoning problems. Your goal is to predict the missing object in a query given the subject, relation, and timestamp. To achieve this, you will use a Retrieval-Augmented Generation (RAG) approach, leveraging the following groups of retrieved information:
+    ---
+    # Instruction for Reasoning:
+    1. Understand the Query:
+    - The query will always include a subject, a relation, and a timestamp.
+    - Example: "Malaysia expressed intent to cooperate to/with whom on 2014-12-09?"
+    - Your task is to predict the missing object (e.g., a country, organization, or entity) that best fits the query.
+    2. Leverage Multi-Hop Reasoning (Group 1):
+    - You will be provided with a sequence of multi-hop facts related to the subject entity. These facts are connected directly or indirectly to the subject and share a semantic similarity with the query's relation.
+    - Example facts:
+        + "Malaysia were the recipients of expressed intent to cooperate to/with Thailand on 2014-12-02"
+        + "Malaysia expressed intent to cooperate to/with China on 2014-04-11"
+    - Perform multi-hop reasoning by analyzing these facts and their relationships. Pay close attention to the timestamps of the facts to ensure temporal consistency with the query.
+    3. Expand Candidate Entities (Group 2):
+    - If the multi-hop facts are insufficient, use additional facts involving semantically similar entities to the subject.
+    - Example: For "Malaysia", semantically similar entities might include "Men_(Malaysia)", "Police_(Malaysia)", etc.
+    - Example fact: "Police_(Malaysia) Made a statement to/with Malaysia on 2014-12-08".
+    - Use these facts to expand the list of candidate objects for the query.
+    4. Infer from Semantically Similar Entities (Group 3):
+    - If no direct facts about the subject entity exist before the query's timestamp, infer the missing object by analyzing patterns from semantically similar entities.
+    - Example: If "Police_(Malaysia) Expressed intent to meet or negotiate to/with Citizen_(Malaysia) on 2014-02-21", you can infer that "Malaysia" might have a similar pattern of cooperation with "Citizen_(Malaysia)".
+    - Use this approach to make educated predictions when direct evidence is lacking.
+    5. Learn from Historical Query Patterns (Group 4):
+    - If the query is part of a series of similar queries with different timestamps, you will be provided with ground truth answers for previous queries.
+    - Example:
+        + Query: "Malaysia expressed intent to cooperate to/with whom on 2014-12-09?"
+        + Ground truth: "Thailand"
+    - Use these ground truths as hints to avoid repeating mistakes and improve accuracy for the current query.
+    ---
+    # Reasoning steps:
+    - Analyze the Query: Identify the subject, relation, and timestamp. Determine the type of object you are predicting (e.g., country, organization, person).
+    - Retrieve and Prioritize Facts: Start with Group 1 (multi-hop facts) and prioritize facts with timestamps closest to the query's timestamp. If insufficient, move to Group 2 (semantically similar entities) and Group 3 (inference from similar entities).
+    - Perform Multi-Hop Reasoning: Trace connections between facts to identify potential candidate objects. Ensure the reasoning process respects the temporal order of events.
+    - Expand and Infer: Use facts from semantically similar entities to expand the candidate pool. Infer patterns from similar entities if direct evidence is unavailable.
+    - Incorporate Historical Patterns: Use ground truths from similar historical queries to guide your prediction.
+    ---
+    Example:
+    Query: "Malaysia expressed intent to cooperate to/with whom on 2014-12-09?"
+    Retrieved Facts:
+        - "Malaysia were the recipients of expressed intent to cooperate to/with Thailand on 2014-12-02"
+        - "Police_(Malaysia) Made a statement to/with Malaysia on 2014-12-08".
+        - "Police_(Malaysia) Expressed intent to meet or negotiate to/with Citizen_(Malaysia) on 2014-02-21"
+        - Ground Truth Hint: "Thailand" (from a similar query)
+    Reasoning:
+        - The fact from 2014-12-02 shows Malaysia cooperating with Thailand, which is temporally close to the query's timestamp.
+        - The fact from 2014-12-08 involves "Police_(Malaysia)", suggesting a pattern of cooperation with domestic entities.
+        - The historical ground truth hints that "Thailand" is a likely candidate.
+    Prediction: "Thailand" is the most likely object for the query.
 
-    In this context:  
-    - "subject" entity is the entity mentioned in the query  
-    - "relation" is an action/event performed by the subject  
-    - "object" entity is the entity you need to infer through reasoning  
-    - "timestamp": The temporal aspect of the fact
-
-    To support your reasoning process in finding the missing object, you will be provided with relevant facts:  
-    1. Primary Information:  
-    - A sequence of events (facts), known as "Reasoning Paths", related to the query's subject and relation  
-    2. Secondary Information:  
-    - Most related entities to the entity subject  
-    - Facts between these related entities with the entity subject.
-    This information aids your reasoning process, especially because:     
-    - These entities can be candidates because they might have relationships with the entity subject, which are also similar to the relationship between the entity subject and the missing object,
-    3. Additional Information:
-    - Facts about entities "related" to the "subject" entity.
-    These facts are also very useful when you have too few or no facts directly related to the "subject" entity. If so, the pattern of these facts can be viewed as belonging to the "subject" entity, and the actions that these similar entities have performed can also be considered as actions of the subject entity, thereby helping to find candidates for the given query.
-
-    You should follow these reasoning Process Guidelines:  
-    1. Primary Analysis:  
-    - Analyze direct reasoning paths connecting to the subject  
-    - Identify temporal patterns and their significance  
-    - Evaluate the strength of direct evidence  
-
-    2. Multi-hop Reasoning:  
-    - Consider indirect connections through intermediate entities  
-    - Evaluate path length and relevance  
-    - Consider temporal sequence of connected facts  
-    - Weight evidence based on path length and temporal proximity  
-
-    3. Related Entity Analysis: 
-    If direct evidence is insufficient, consider related entities:
-    - Consider most related entities as potential candidates because they might have relationships with the entity subject in the past.
-    - Examine patterns/facts from semantically related entities and apply successful patterns from them  
-
-    For the candidate selection criteria:  
-    1. Evidence Strength:  
-    - Direct path evidence (highest weight)  
-    - Multi-hop reasoning paths 
-    - Related entity and their patterns/facts  
-        
-    2. Temporal Relevance:  
-    - Recency of connections  
-    - Pattern consistency over time  
-    - Temporal proximity to query time  
-    
-    Finally, remember that when there are too few or no facts directly related to the "subject" entity, use the "Additional Information" to find candidates for the given query.
     Your answer should be in the following JSON format:  
     {{  
         "candidates": // An ordered list of up to 10 candidates, from highest to lowest likelihood of being the correct answer.   
                     // Each candidate should be an entity name exactly as it appears in the given facts.  
                     // The list should be ordered by decreasing probability of being the correct answer.
-                    // You will not be allowed to give the empty list as an answer. Remember that when there are too few or no facts directly related to the "subject" entity, use the "Additional Information" to find candidates for the given query.
+                    // You will not be allowed to give the empty list as an answer.
     }}
     '''
     system_msg = SystemMessage(content=system_msg_content)
@@ -191,18 +190,18 @@ def candidate_reasoning( question, related_facts, top_k_entity, facts_between_en
     Here is the question you need to find the answer:
     - {question}
 
-    For the primary information:
-    - Here are facts related to the query's subject and relation:
-    {related_facts}
+    Here are multi-hop facts related to the query's subject entity (group 1):
+    - {related_facts}
 
-    For the secondary information:
-    - Here are the most related entities to the entity "subject" and the facts between these related entities and the entity "subject":
-    + {top_k_entity}
-    + {facts_between_entity_subject_and_related_entities}
+    Here are top {len(top_k_entity)} semantically similar entities to the subject entity and facts between them and the subject entity (Group 2):
+    - {top_k_entity}
+    - {facts_between_entity_subject_and_related_entities}
 
-    For the additional information:
-    - Here are the facts of the related entities:
-    + {related_entity_facts}
+    Here are facts from semantically similar entities to the subject entity (group 3):
+    - {related_entity_facts}
+
+    Here are ground truth answers for previous queries, which are part of a series of similar queries with different timestamps (Group 4):
+    - {ground_truth_answers}
     '''
     user_msg = HumanMessage(content=user_msg_content)
 
@@ -312,7 +311,7 @@ def stage_4_main():
     test_data = data.test_data_text
 
     test_data_dict = [{i:v} for i, v in enumerate(test_data)]
-    test_data_dict = test_data_dict[:7371]
+    test_data_dict = test_data_dict[:1]
 
     # Load similarity matrix
     relation_similarity_matrix = np.load('result/icews14/stage_1/relation_similarity.npy')
@@ -328,45 +327,45 @@ def stage_4_main():
     # query_cands_dict = {}
     num_queries = math.ceil(len(test_data_dict) / num_process)
     futures = []
-    # with ThreadPoolExecutor(max_workers=num_process) as executor:
-    #     for i in range(num_process):
-    #         futures.append(executor.submit(apply_llm_reasonging_parallel, test_data_dict, i, num_queries, transformed_relations, vector_db['facts']['vector_db'], llm_instance, data, entity_similarity_matrix, num_process))
+    with ThreadPoolExecutor(max_workers=num_process) as executor:
+        for i in range(num_process):
+            futures.append(executor.submit(apply_llm_reasonging_parallel, test_data_dict, i, num_queries, transformed_relations, vector_db['facts']['vector_db'], llm_instance, data, entity_similarity_matrix, num_process))
     
-    #     for future in as_completed(futures):
-    #         result = future.result()
+        for future in as_completed(futures):
+            result = future.result()
 
-    # # Sau khi chạy xong, merge các file kết quả  
-    # def merge_result_files():  
-    #     final_results = {}  
-    #     for i in range(num_process):  
-    #         filename = f"result/icews14/stage_4/candidates_part_{i}.jsonl"  
-    #         if os.path.exists(filename):  
-    #             with open(filename, 'r') as f:  
-    #                 for line in f:  
-    #                     part_result = json.loads(line)  
-    #                     final_results.update(part_result)  
+    # Sau khi chạy xong, merge các file kết quả  
+    def merge_result_files():  
+        final_results = {}  
+        for i in range(num_process):  
+            filename = f"result/icews14/stage_4/candidates_part_{i}.jsonl"  
+            if os.path.exists(filename):  
+                with open(filename, 'r') as f:  
+                    for line in f:  
+                        part_result = json.loads(line)  
+                        final_results.update(part_result)  
         
-    #     # Sắp xếp và lưu kết quả cuối cùng  
-    #     sorted_results = dict(sorted(final_results.items(), key=lambda x: int(x[0])))  
-    #     with open("result/icews14/stage_4/final_candidates.json", 'w') as f:  
-    #         json.dump(sorted_results, f, indent=4)  
+        # Sắp xếp và lưu kết quả cuối cùng  
+        sorted_results = dict(sorted(final_results.items(), key=lambda x: int(x[0])))  
+        with open("result/icews14/stage_4/final_candidates.json", 'w') as f:  
+            json.dump(sorted_results, f, indent=4)  
 
     # Gọi hàm merge kết quả  
     # merge_result_files()
 
     # scoring for candidates
-    query_cands_dict = load_json_data("result/icews14/stage_4/final_candidates.json")
-    query_cands_score_dict = {}
-    scoring = []
-    with ThreadPoolExecutor(max_workers=num_process) as executor:
-        for i in range(num_process):
-            scoring.append(executor.submit(scoring_candidates_parallel, query_cands_dict, i, num_queries, test_data_dict, data, num_process))
+    # query_cands_dict = load_json_data("result/icews14/stage_4/final_candidates.json")
+    # query_cands_score_dict = {}
+    # scoring = []
+    # with ThreadPoolExecutor(max_workers=num_process) as executor:
+    #     for i in range(num_process):
+    #         scoring.append(executor.submit(scoring_candidates_parallel, query_cands_dict, i, num_queries, test_data_dict, data, num_process))
        
-        for future in as_completed(scoring):
-            query_cands_score_dict.update(future.result())
+    #     for future in as_completed(scoring):
+    #         query_cands_score_dict.update(future.result())
             
 
 
     # ##################################################################################################
     # query_cands_dict = dict(sorted(query_cands_dict.items(), key=lambda item: item[0]))
-    save_json_data(query_cands_score_dict, "result/icews14/stage_4/candidates_score.json")
+    # save_json_data(query_cands_score_dict, "result/icews14/stage_4/candidates_score.json")
