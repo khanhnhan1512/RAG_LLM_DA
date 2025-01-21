@@ -83,7 +83,7 @@ def get_facts_between_subject_entity_end_its_relate_entities(related_entities, s
     
     return result
 
-def get_related_facts(search_content, vector_db, llm_instance, related_facts, candidates_dict, related_relations, seen_entities=None, n=0):  
+def get_related_facts(search_content, vector_db, llm_instance, related_facts, candidates_dict, related_relations, query_timestamp_id, seen_entities=None, n=0):  
     # Khởi tạo sets theo dõi nếu là lần gọi đầu tiên  
     if seen_entities is None:  
         seen_entities = set()  
@@ -95,11 +95,21 @@ def get_related_facts(search_content, vector_db, llm_instance, related_facts, ca
     cands = candidates_dict[n]  
     seen_entities.update(cands)
     candidates_dict[n+1] = set()  
-    
+    num_docs = 30//(len(cands))
     # Xử lý từng candidate  
     for can in cands:   
         filter = {"subject": can}
-        docs = lookup_vector_db(search_content, filter, vector_db, llm_instance, top_k=20//(len(cands)))  
+        filter = {
+            "$and":
+            [{"subject": can}, 
+            {"timestamp_id": {"$lt": query_timestamp_id}}]
+        }
+        num_recently_docs = num_docs * 2 // 3
+        num_history_docs = num_docs - num_recently_docs
+        retrieved_docs = lookup_vector_db(search_content, filter, vector_db, llm_instance, top_k=1000)  
+        retrieved_docs = sorted(retrieved_docs, key= lambda doc: doc.metadata['timestamp_id'], reverse=True)
+        docs = retrieved_docs[:num_recently_docs]
+        docs.extend(retrieved_docs[:-num_history_docs])
         
         for doc in docs:  
             fact_content = doc.page_content  
@@ -218,10 +228,11 @@ def get_candidates(test_query, i, transformed_relations, vector_db, llm_instance
 
     # Get related facts
     search_content = transformed_relations[test_query[1]]
+    query_timestamp_id = data.ts2id[test_query[3]]
     candidates_dict = {0: {test_query[0]}} 
     related_relations = set()
     try:
-        related_facts = get_related_facts(search_content, vector_db, llm_instance, [], candidates_dict, related_relations)
+        related_facts = get_related_facts(search_content, vector_db, llm_instance, [], candidates_dict, related_relations, query_timestamp_id)
     except:
         related_facts = []
     # Get most related entities and their facts
