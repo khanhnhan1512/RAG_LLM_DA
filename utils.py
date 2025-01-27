@@ -157,7 +157,7 @@ def read_lines_from_file(file_path):
     :param file_path: Path to the text file to read.
     :return: A list of strings, each representing a line from the file.
     """
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
     # Strip newline characters from each line
     lines = [line.strip() for line in lines]
@@ -170,7 +170,7 @@ def write_lines_to_file(file_path, lines):
     :param file_path: Path to the text file to write.
     :param lines: List of strings to write to the file.
     """
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         for line in lines:
             file.write(f"{line}\n")
 

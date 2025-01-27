@@ -1,0 +1,25 @@
+Position_held	0
+Award_received	1
+Located_in_the_administrative_territorial_entity	2
+Twinned_administrative_body	3
+Employer	4
+Nominated_for	5
+Instance_of	6
+Winner	7
+Educated_at	8
+Member_of_sports_team	9
+Country_of_citizenship	10
+Title_of_chess_person	11
+Member_of_political_party	12
+Contains_administrative_territorial_entity	13
+Spouse	14
+Country	15
+Member_of	16
+Head_of_government	17
+Significant_event	18
+Heritage_designation	19
+Academic_degree	20
+Capital_of	21
+Residence	22
+[mask]	23
+
