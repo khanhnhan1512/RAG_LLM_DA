@@ -219,7 +219,7 @@ def transform_relations(all_rels, llm_instance, output_dir):
     You are an expert in Temporal Knowledge Graph. Your task is to transform the given relations into a natural language term.
     - Each given relation represents for an action between two entities in the past.
     - Remove underscores and technical formatting  
-    - An important note is that if the relation has a prefix 'inv', it means that the action is an inverse action. You need to consider this information when transforming the relation.
+    - Use simple past tense (historical context)
 
     Your answer should be in a json format as below:
     {{
@@ -239,7 +239,10 @@ def transform_relations(all_rels, llm_instance, output_dir):
 
         for k, v in zip(answer_llm['original_relations'], answer_llm['transformed_relations']):
             result[k] = v
-    
+    inv_result = {}
+    for k, v in result.items():
+        inv_result[f"inv_{k}"] = f"was {v} by"
+    result.update(inv_result)
     save_json_data(result, os.path.join(output_dir, 'transformed_relations.json'))
     return result.values()
 

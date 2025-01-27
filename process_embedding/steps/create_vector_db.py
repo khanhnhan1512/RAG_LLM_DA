@@ -82,7 +82,7 @@ def main_create_vector_db(data, llm_instance, db_directory):
     except FileExistsError:
         pass
 
-    for i, collection in enumerate(data):
+    for _, collection in enumerate(data):
         documents = data[collection]['data']['New_Documents']
         ids_to_delete = data[collection]['data']['Deleting_Documents']
 

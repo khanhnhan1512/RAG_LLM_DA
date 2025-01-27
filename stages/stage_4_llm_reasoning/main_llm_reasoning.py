@@ -32,7 +32,7 @@ def safe_save_results(results, base_filename):
 
 def convert_query_to_natural_question(test_query, transformed_relations):
     if "inv_" in test_query[1]:
-        question = f"{test_query[0]} {transformed_relations[test_query[1]]} by whom on {test_query[3]}?"
+        question = f"{test_query[0]} {transformed_relations[test_query[1]]} whom on {test_query[3]}?"
     else:
         question = f"{test_query[0]} {transformed_relations[test_query[1]]} to/with whom on {test_query[3]}?"
     return question
@@ -61,20 +61,49 @@ def filter_related_rules(rules_dict, rel_id, top_k_id):
 
     return related_rules
 
-def get_facts_of_related_entity(related_entities, vector_db, llm_instance, search_content):
+def get_ground_truth_answers(test_query, data, vector_db, llm_instance, test_data_start_timestamp, test_size):
+    subject_ent = test_query[0]
+    relation = test_query[1]
+    query_timestamp_id = data.ts2id[test_query[3]]
+    filter = {
+        "$and":[
+            {"subject": subject_ent}, 
+            {"relation": relation},
+            {"timestamp_id": {"$lt": query_timestamp_id}},
+            {"timestamp_id": {"$gte": test_data_start_timestamp}},
+        ]
+    }
+    retrieved_docs = lookup_vector_db("", filter, vector_db, llm_instance, top_k=test_size)
+    ground_truth_answers = [doc.metadata['object'] for doc in retrieved_docs]
+    return ground_truth_answers
+
+def get_facts_of_related_entity(related_entities, vector_db, llm_instance, search_content, query_timestamp_id):
     result = []
     for ent in related_entities:
-        filter = {"subject": ent}
-        docs = lookup_vector_db(search_content, filter, vector_db, llm_instance, top_k=10)
+        filter = {
+            "$and":[
+            {"subject": ent}, 
+            {"timestamp_id": {"$lt": query_timestamp_id}}
+            ]
+        }
+        retrieved_docs = lookup_vector_db(search_content, filter, vector_db, llm_instance, top_k=100)
+        if len(retrieved_docs) < 10:
+            docs = retrieved_docs
+        else:
+            retrieved_docs = sorted(retrieved_docs, key= lambda doc: doc.metadata['timestamp_id'], reverse=True)
+            docs = retrieved_docs[:5]
+            docs.extend(retrieved_docs[-5:])
+
         result.extend([doc.page_content for doc in docs])
     return result
 
-def get_facts_between_subject_entity_end_its_relate_entities(related_entities, subject_entity, vector_db, llm_instance, search_content):
+def get_facts_between_subject_entity_end_its_relate_entities(related_entities, subject_entity, vector_db, llm_instance, search_content, query_timestamp_id):
     result = []
     for ent in related_entities:
         filter = {"$and": [
             {"object": {"$in": [subject_entity, ent]}},
-            {"subject": {"$in": [subject_entity, ent]}}
+            {"subject": {"$in": [subject_entity, ent]}},
+            {"timestamp_id": {"$lt": query_timestamp_id}}
             ]   
         }
         docs = lookup_vector_db(search_content, filter, vector_db, llm_instance, top_k=5)
@@ -98,7 +127,6 @@ def get_related_facts(search_content, vector_db, llm_instance, related_facts, ca
     num_docs = 30//(len(cands))
     # Xử lý từng candidate  
     for can in cands:   
-        filter = {"subject": can}
         filter = {
             "$and":
             [{"subject": can}, 
@@ -106,10 +134,13 @@ def get_related_facts(search_content, vector_db, llm_instance, related_facts, ca
         }
         num_recently_docs = num_docs * 2 // 3
         num_history_docs = num_docs - num_recently_docs
-        retrieved_docs = lookup_vector_db(search_content, filter, vector_db, llm_instance, top_k=1000)  
+        retrieved_docs = lookup_vector_db(search_content, filter, vector_db, llm_instance, top_k=100)  
         retrieved_docs = sorted(retrieved_docs, key= lambda doc: doc.metadata['timestamp_id'], reverse=True)
-        docs = retrieved_docs[:num_recently_docs]
-        docs.extend(retrieved_docs[:-num_history_docs])
+        if len(retrieved_docs) < num_docs:
+            docs = retrieved_docs
+        else:
+            docs = retrieved_docs[:num_recently_docs]
+            docs.extend(retrieved_docs[-num_history_docs:])
         
         for doc in docs:  
             fact_content = doc.page_content  
@@ -131,6 +162,7 @@ def get_related_facts(search_content, vector_db, llm_instance, related_facts, ca
         related_facts,   
         candidates_dict, 
         related_relations,  
+        query_timestamp_id,
         seen_entities,      
         n+1  
     )
@@ -173,19 +205,17 @@ def candidate_reasoning( question, related_facts, top_k_entity, facts_between_en
     - Expand and Infer: Use facts from semantically similar entities to expand the candidate pool. Infer patterns from similar entities if direct evidence is unavailable.
     - Incorporate Historical Patterns: Use ground truths from similar historical queries to guide your prediction.
     ---
-    Example:
     Query: "Malaysia expressed intent to cooperate to/with whom on 2014-12-09?"
     Retrieved Facts:
         - "Malaysia were the recipients of expressed intent to cooperate to/with Thailand on 2014-12-02"
-        - "Police_(Malaysia) Made a statement to/with Malaysia on 2014-12-08".
         - "Police_(Malaysia) Expressed intent to meet or negotiate to/with Citizen_(Malaysia) on 2014-02-21"
         - Ground Truth Hint: "Thailand" (from a similar query)
     Reasoning:
         - The fact from 2014-12-02 shows Malaysia cooperating with Thailand, which is temporally close to the query's timestamp.
-        - The fact from 2014-12-08 involves "Police_(Malaysia)", suggesting a pattern of cooperation with domestic entities.
+        - The fact from 2014-02-21 involves "Police_(Malaysia)", suggesting a pattern of cooperation with domestic entities.
         - The historical ground truth hints that "Thailand" is a likely candidate.
-    Prediction: "Thailand" is the most likely object for the query.
-
+    Prediction: "Thailand"
+    ---
     Your answer should be in the following JSON format:  
     {{  
         "candidates": // An ordered list of up to 10 candidates, from highest to lowest likelihood of being the correct answer.   
@@ -218,7 +248,7 @@ def candidate_reasoning( question, related_facts, top_k_entity, facts_between_en
     answer_llm = llm_instance.run_task([system_msg, user_msg])
     return answer_llm['candidates']
 
-def get_candidates(test_query, i, transformed_relations, vector_db, llm_instance, data, entity_similarity_matrix):
+def get_candidates(test_query, i, transformed_relations, vector_db, llm_instance, data, entity_similarity_matrix, test_data_start_ts, test_size):
     """
     
     """
@@ -233,31 +263,36 @@ def get_candidates(test_query, i, transformed_relations, vector_db, llm_instance
     related_relations = set()
     try:
         related_facts = get_related_facts(search_content, vector_db, llm_instance, [], candidates_dict, related_relations, query_timestamp_id)
-    except:
+    except Exception as e:
         related_facts = []
     # Get most related entities and their facts
     query_subject_id = data.entity2id[test_query[0]]
     top_k_entity_id, top_k_entity = get_top_k_entities(entity_similarity_matrix, query_subject_id, data)
     try:
-        related_entity_facts = get_facts_of_related_entity(top_k_entity, vector_db, llm_instance, search_content)
+        related_entity_facts = get_facts_of_related_entity(top_k_entity, vector_db, llm_instance, search_content, query_timestamp_id)
     except:
         related_entity_facts = []
 
     # Get facts between related entities and the entity subject
     try:
         facts_between_entity_subject_and_related_entities = get_facts_between_subject_entity_end_its_relate_entities(
-            top_k_entity, test_query[0], vector_db, llm_instance, search_content
+            top_k_entity, test_query[0], vector_db, llm_instance, search_content, query_timestamp_id
         )
     except:
         facts_between_entity_subject_and_related_entities = []
 
+    # Get ground truth answers
+    ground_truth_answers = get_ground_truth_answers(test_query, data, vector_db, llm_instance, test_data_start_ts, test_size)
+
     # Get candidates list
-    candidates = candidate_reasoning(question, related_facts, top_k_entity, facts_between_entity_subject_and_related_entities, related_entity_facts, llm_instance)
+    candidates = candidate_reasoning(question, related_facts, top_k_entity, facts_between_entity_subject_and_related_entities, related_entity_facts, ground_truth_answers, llm_instance)
     candidates_id = [data.entity2id[ent] for ent in candidates if ent in data.entity2id]
     print(f"Finish query {i}...")
     return candidates, candidates_id
 
-def get_entity_max_ts(test_query_subject, candidate, historical_data):
+def get_entity_max_ts(test_query_subject, candidate, historical_data, query_ts):
+    historical_data = historical_data[historical_data[:, 3] < query_ts]
+
     other_answers = historical_data[
         (historical_data[:, 0] == test_query_subject)
         * (historical_data[:, 2] == candidate)
@@ -274,9 +309,9 @@ def scoring_candidates(candidates_id, i, test_data_dict, data):
     test_id, test_query = next(iter(test_data_dict[i].items()))
     cands_score_dict = {}
     query_ts = data.ts2id[test_query[3]]
-    historical_data = np.vstack((data.train_data_idx, data.valid_data_idx))
+    historical_data = np.vstack((data.train_data_idx, data.valid_data_idx, data.test_data_idx))
     for rank, id in enumerate(candidates_id):
-        cand_max_ts = get_entity_max_ts(data.entity2id[test_query[0]], id, historical_data)
+        cand_max_ts = get_entity_max_ts(data.entity2id[test_query[0]], id, historical_data, query_ts)
         if cand_max_ts:
             cands_score_dict[id] = score_1(rank, cand_max_ts, query_ts, 0.5)
         else:
@@ -285,13 +320,14 @@ def scoring_candidates(candidates_id, i, test_data_dict, data):
     cands_score_dict = dict(sorted(cands_score_dict.items(), key=lambda item: item[1], reverse=True))
     return cands_score_dict
 
-def apply_llm_reasonging_parallel(test_data_dict, process, num_queries, transformed_relations, vector_db, llm_instance, data, entity_similarity_matrix, num_process):
+def apply_llm_reasonging_parallel(test_data_dict, process, num_queries, transformed_relations, vector_db, llm_instance, 
+                                  data, entity_similarity_matrix, num_process, test_data_start_ts=0, test_size=None):
     result = dict()
     base_filename = f"result/icews14/stage_4/candidates_part_{process}.jsonl"
     test_query_idx = range(process * num_queries, (process + 1) * num_queries) if process < num_process-1 else range(process * num_queries, len(test_data_dict))
     for j in test_query_idx:
         test_id, test_query = next(iter(test_data_dict[j].items()))
-        candidates = get_candidates(test_query, test_id, transformed_relations, vector_db, llm_instance, data, entity_similarity_matrix)[1]  
+        candidates = get_candidates(test_query, test_id, transformed_relations, vector_db, llm_instance, data, entity_similarity_matrix, test_data_start_ts, test_size)[1]  
         
         # Lưu từng phần kết quả ngay lập tức  
         safe_save_results({test_id: candidates}, base_filename)  
@@ -310,7 +346,7 @@ def scoring_candidates_parallel(query_cands_dict, process, num_queries, test_dat
 
 def stage_4_main():
     # number of processes
-    num_process = 1
+    num_process = 8
 
     # Load LLm model
     llm_instance = LLM_Model()
@@ -321,62 +357,65 @@ def stage_4_main():
     data = DataLoader(dataset_dir)
     test_data = data.test_data_text
 
+    # timestamp of test data
+    test_data_start_timestamp = data.ts2id[test_data[0][3]]
+
     test_data_dict = [{i:v} for i, v in enumerate(test_data)]
-    test_data_dict = test_data_dict[:1]
+    test_data_dict = test_data_dict
 
     # Load similarity matrix
     relation_similarity_matrix = np.load('result/icews14/stage_1/relation_similarity.npy')
-    entity_similarity_matrix = np.load('./entity_similarity.npy')
+    entity_similarity_matrix = np.load('result/icews14/stage_1/entity_similarity.npy')
     transformed_relations = load_json_data('result/icews14/stage_1/transformed_relations.json')
 
     # Load vectorstore db
-    vector_db = load_vectorstore_db(llm_instance, 'icews14')
-    for collection in vector_db:
-        print(f"{collection}: {len(vector_db[collection]['vector_db'].get()['documents'])} documents")
+    # vector_db = load_vectorstore_db(llm_instance, 'icews14')
+    # for collection in vector_db:
+    #     print(f"{collection}: {len(vector_db[collection]['vector_db'].get()['documents'])} documents")
 
-    ##################################################################################################
-    # query_cands_dict = {}
+    # ##################################################################################################
+    query_cands_dict = {}
     num_queries = math.ceil(len(test_data_dict) / num_process)
-    futures = []
-    with ThreadPoolExecutor(max_workers=num_process) as executor:
-        for i in range(num_process):
-            futures.append(executor.submit(apply_llm_reasonging_parallel, test_data_dict, i, num_queries, transformed_relations, vector_db['facts']['vector_db'], llm_instance, data, entity_similarity_matrix, num_process))
+    # futures = []
+    # with ThreadPoolExecutor(max_workers=2) as executor:
+    #     for i in range(num_process):
+    #         futures.append(executor.submit(apply_llm_reasonging_parallel, test_data_dict, i, num_queries, 
+    #                                        transformed_relations, vector_db['facts']['vector_db'], llm_instance, 
+    #                                        data, entity_similarity_matrix, num_process, test_data_start_timestamp, len(test_data)//2))
     
-        for future in as_completed(futures):
-            result = future.result()
+    #     for future in as_completed(futures):
+    #         result = future.result()
 
-    # Sau khi chạy xong, merge các file kết quả  
-    def merge_result_files():  
-        final_results = {}  
-        for i in range(num_process):  
-            filename = f"result/icews14/stage_4/candidates_part_{i}.jsonl"  
-            if os.path.exists(filename):  
-                with open(filename, 'r') as f:  
-                    for line in f:  
-                        part_result = json.loads(line)  
-                        final_results.update(part_result)  
+    # # Sau khi chạy xong, merge các file kết quả  
+    # def merge_result_files():  
+    #     final_results = {}  
+    #     for i in range(num_process):  
+    #         filename = f"result/icews14/stage_4/candidates_part_{i}.jsonl"  
+    #         if os.path.exists(filename):  
+    #             with open(filename, 'r') as f:  
+    #                 for line in f:  
+    #                     part_result = json.loads(line)  
+    #                     final_results.update(part_result)  
         
-        # Sắp xếp và lưu kết quả cuối cùng  
-        sorted_results = dict(sorted(final_results.items(), key=lambda x: int(x[0])))  
-        with open("result/icews14/stage_4/final_candidates.json", 'w') as f:  
-            json.dump(sorted_results, f, indent=4)  
+    #     # Sắp xếp và lưu kết quả cuối cùng  
+    #     sorted_results = dict(sorted(final_results.items(), key=lambda x: int(x[0])))  
+    #     with open("result/icews14/stage_4/final_candidates.json", 'w') as f:  
+    #         json.dump(sorted_results, f, indent=4)  
 
-    # Gọi hàm merge kết quả  
+    # # Gọi hàm merge kết quả  
     # merge_result_files()
 
     # scoring for candidates
-    # query_cands_dict = load_json_data("result/icews14/stage_4/final_candidates.json")
-    # query_cands_score_dict = {}
-    # scoring = []
-    # with ThreadPoolExecutor(max_workers=num_process) as executor:
-    #     for i in range(num_process):
-    #         scoring.append(executor.submit(scoring_candidates_parallel, query_cands_dict, i, num_queries, test_data_dict, data, num_process))
+    query_cands_dict = load_json_data("result/icews14/stage_4/final_candidates.json")
+    query_cands_score_dict = {}
+    scoring = []
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        for i in range(num_process):
+            scoring.append(executor.submit(scoring_candidates_parallel, query_cands_dict, i, num_queries, test_data_dict, data, num_process))
        
-    #     for future in as_completed(scoring):
-    #         query_cands_score_dict.update(future.result())
+        for future in as_completed(scoring):
+            query_cands_score_dict.update(future.result())
             
-
-
-    # ##################################################################################################
-    # query_cands_dict = dict(sorted(query_cands_dict.items(), key=lambda item: item[0]))
-    # save_json_data(query_cands_score_dict, "result/icews14/stage_4/candidates_score.json")
+    ##################################################################################################
+    query_cands_score_dict = dict(sorted(query_cands_score_dict.items(), key=lambda item: int(item[0])))
+    save_json_data(query_cands_score_dict, "result/icews14/stage_4/candidates_score.json")
