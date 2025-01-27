@@ -150,6 +150,29 @@ def str_to_bool(value):
     else:
         raise argparse.ArgumentTypeError('Boolean value expected.')
 
+def read_lines_from_file(file_path):
+    """
+    Reads each line from a text file and returns them as a list of strings.
+
+    :param file_path: Path to the text file to read.
+    :return: A list of strings, each representing a line from the file.
+    """
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    # Strip newline characters from each line
+    lines = [line.strip() for line in lines]
+    return lines
+
+def write_lines_to_file(file_path, lines):
+    """
+    Writes each element of a list into a text file, with each element on a new line.
+
+    :param file_path: Path to the text file to write.
+    :param lines: List of strings to write to the file.
+    """
+    with open(file_path, 'w') as file:
+        for line in lines:
+            file.write(f"{line}\n")
 
 def print_sorted_params(params):
     params_dict = vars(params)
