@@ -235,6 +235,5 @@
     "Demand_military_cooperation": 233,
     "Reject_request_for_policy_change": 234,
     "Halt_mediation": 235,
-    "Reject_mediation": 236,
-    "[mask]": 237
+    "Reject_mediation": 236
 }

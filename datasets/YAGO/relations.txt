@@ -21,4 +21,3 @@ Heritage_designation
 Academic_degree
 Capital_of
 Residence
-[mask]
