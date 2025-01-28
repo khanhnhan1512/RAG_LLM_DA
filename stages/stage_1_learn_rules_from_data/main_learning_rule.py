@@ -21,7 +21,7 @@ def parse_args():
     parser.add_argument('--random_walk', type=int, default=200, help='Number of random walks')
     parser.add_argument('--num_process', type=int, default=16, help='Number of learning rule processes')
     parser.add_argument('--seed', '--s', type=int, default=42, help='random seed')
-    parser.add_argument("--version", default="train", type=str,
+    parser.add_argument("--version", default="valid", type=str,
                         choices=['train', 'test', 'train_valid', 'valid', 'all'])
     parser.add_argument("--is_relax_time", default=False, type=bool)
     parser = vars(parser.parse_args())

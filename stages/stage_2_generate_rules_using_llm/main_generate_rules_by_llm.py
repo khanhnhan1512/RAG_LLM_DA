@@ -51,6 +51,8 @@ def stage_2_main():
     
     rl.sort_rules_dict()
     dt = datetime.now().strftime("%Y%m%d")
-    rl.save_rules_csv(dt, "llm", metrics=["confidence_score"])
+    rl.save_rules_csv(dt, "llm", metrics=["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score"])
+                    #   , metrics=["confidence_score"])
+    
     rl.rules_statistics()
 

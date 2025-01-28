@@ -3,5 +3,5 @@ from stages.stage_2_generate_rules_using_llm.main_generate_rules_by_llm import s
 
 
 if __name__ == '__main__':
-    stage_1_main()
-    # stage_2_main()
+    # stage_1_main()
+    stage_2_main()

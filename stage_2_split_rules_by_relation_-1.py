@@ -33,9 +33,9 @@ def split_rules_by_relation(input_csv_path, unique_relations, common_output_path
 
 # File paths
 unique_relations_file = r'result\icews14\stage_2\unique_relations.txt'
-input_csv_file = r'result\icews14\stage_1\08_historical_random_walk_random_rules.csv'
+input_csv_file = r'result\icews14\stage_1\kulc_05_historical_random_walk_random_rules.csv'
 common_output_file = r'result\icews14\stage_2\common_rule_heads_historical_data.csv'
-specific_output_file = r'result\icews14\stage_2\saved_results\08_scored_historical_rules_on_historical_data.csv'
+specific_output_file = r'result\icews14\stage_2\saved_results\kulc_05_scored_historical_rules_on_historical_data.csv'
 
 # Step 1: Read unique relations
 unique_relations = read_unique_relations(unique_relations_file)

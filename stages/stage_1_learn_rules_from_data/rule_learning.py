@@ -161,10 +161,10 @@ class RuleLearner(object):
         """
 
         if any(body_rel not in self.edges for body_rel in rule["body_rels"]):
-            return 0, 0, 0, 0, 0, 0, 0, 0
+            return 0, 0, 0
 
         if rule['head_rel'] not in self.edges:
-            return 0, 0, 0, 0, 0, 0, 0, 0
+            return 0, 0, 0
 
         all_bodies = []
         for _ in range(num_samples):
