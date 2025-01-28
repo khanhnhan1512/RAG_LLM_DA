@@ -7,10 +7,10 @@ from joblib import Parallel, delayed
 from datetime import datetime
 
 from stages.stage_1_learn_rules_from_data.data_loader import DataLoader
-from utils import load_learn_data, calculate_relation_similarity
+from utils import load_learn_data, calculate_similarity, transform_relations
 from openai_llm.llm_init import LLM_Model
 from stages.stage_1_learn_rules_from_data.temporal_walk import TemporalWalker
-from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner
+from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner, rules_statistics
 
 def parse_args():
     parser = argparse.ArgumentParser()

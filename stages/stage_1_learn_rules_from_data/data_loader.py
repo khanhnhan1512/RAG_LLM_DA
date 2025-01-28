@@ -5,8 +5,9 @@ from utils import load_json_data
 
 
 class DataLoader():
-    def __init__(self, data_dir):
+    def __init__(self, data_dir, args=None, test_mask=None):
         self.data_dir = data_dir
+        self.args = args
         self.entity2id = load_json_data(os.path.join(data_dir, 'entity2id.json'))
         self.relation2id = load_json_data(os.path.join(data_dir, 'relation2id.json'))
         self.ts2id = load_json_data(os.path.join(data_dir, 'ts2id.json'))
@@ -22,6 +23,26 @@ class DataLoader():
         self.train_data_idx, self.train_data_text = self.load_fact(os.path.join(data_dir, 'train.txt'))
         self.valid_data_idx, self.valid_data_text = self.load_fact(os.path.join(data_dir, 'valid.txt'))
         self.test_data_idx, self.test_data_text = self.load_fact(os.path.join(data_dir, 'test.txt'))
+
+        if test_mask:
+            mask = (self.test_data_idx[:, 3] >= test_mask[0]) * (self.test_data_idx[:, 3] <= test_mask[1])
+            self.test_data_idx = self.test_data_idx[mask]
+        
+        if self.args:
+            if self.args['bgkg'] == 'all':
+                self.all_idx = np.vstack((self.train_data_idx, self.valid_data_idx, self.test_data_idx))
+            elif self.args['bgkg'] == 'train':
+                self.all_idx = self.train_data_idx
+            elif self.args['bgkg'] == 'valid':
+                self.all_idx = self.valid_data_idx
+            elif self.args['bgkg'] == 'test':
+                self.all_idx = self.test_data_idx
+            elif self.args['bgkg'] == 'train_valid':
+                self.all_idx = np.vstack((self.train_data_idx, self.valid_data_idx))
+            elif self.args['bgkg'] == 'train_test':
+                self.all_idx = np.vstack((self.train_data_idx, self.test_data_idx))
+            elif self.args['bgkg'] == 'valid_test':
+                self.all_idx = np.vstack((self.valid_data_idx, self.test_data_idx))
         
 
     def add_inverse_relation(self):
