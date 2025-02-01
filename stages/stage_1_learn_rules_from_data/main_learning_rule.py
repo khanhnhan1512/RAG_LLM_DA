@@ -15,7 +15,7 @@ from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner, rule
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='datasets', help='path to the dataset')
-    parser.add_argument('--dataset', "-d", type=str, default='icews14', help='dataset name')
+    parser.add_argument('--dataset', "-d", type=str, default='icews18', help='dataset name')
     parser.add_argument('--transition_choice', type=str, default='exp', help='transition choice')
     parser.add_argument('--max_rule_length', type=int, default=3, help='Maximum length of a rule')
     parser.add_argument('--random_walk', type=int, default=200, help='Number of random walks')
@@ -108,7 +108,9 @@ def stage_1_main():
     dt = datetime.now().strftime("%d%m%y")
     rl.save_rules_csv(dt, 'random_walk', rule_length, num_walks, transition_choice, seed, 
                       metrics=["kulczynski", "IR_score", "lift_score", "conviction_score", "confidence_score"])
-                    # metrics=["confidence_score"])
-    rl.rules_statistics()
-    calculate_relation_similarity(llm_instance, list(data_loader.relation2id.keys()), rl.output_dir)
+    rules_statistics(rl.rules_dict)
+    all_rels_text = list(data_loader.relation2id.keys())
+    num_rels = len(all_rels_text)
+    relations = transform_relations(all_rels_text[:num_rels//2], llm_instance, rl.output_dir)
+    calculate_similarity(llm_instance, relations, rl.output_dir, 'relation_similarity.npy')
 

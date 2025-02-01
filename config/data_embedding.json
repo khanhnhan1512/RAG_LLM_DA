@@ -1,5 +1,5 @@
 {
-    "facts": "datasets/dataset/facts.txt.inv",
+    "facts": "datasets/dataset",
     "dataset": "dataset",
     "output_vector_database_build": "result/dataset/vector_database_build",
     "output_vector_database_load": "result/dataset/vector_database_load"

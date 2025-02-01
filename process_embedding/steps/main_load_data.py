@@ -71,8 +71,14 @@ def load_rules_data(path):
     return data
 
 def load_facts_data(path):
-    columns = ['subject', 'relation', 'object', 'timestamp']
-    df = pd.read_csv(path, sep='\t', header=None, names=columns)
+    """
+    """
+    fact_files = [os.path.join(path, f) for f in os.listdir(path) if f.endswith('.inv')]
+    df = pd.DataFrame()
+    for f in fact_files:
+        columns = ['subject', 'relation', 'object', 'timestamp']
+        temp_df = pd.read_csv(f, sep='\t', header=None, names=columns)
+        df = pd.concat([df, temp_df], ignore_index=True)
     return df
 
 def main_load_data(data, original_data, db_directory):
