@@ -6,6 +6,6 @@ from stages.stage_5_evaluate.main_evaluate import stage_5_main
 if __name__ == '__main__':
     # stage_1_main()
     # stage_3_main()
-    # stage_4_main()
-    stage_5_main()
+    stage_4_main()
+    # stage_5_main()
     # stage_6_main()

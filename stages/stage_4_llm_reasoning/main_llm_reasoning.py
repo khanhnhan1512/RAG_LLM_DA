@@ -323,7 +323,7 @@ def scoring_candidates(candidates_id, i, test_data_dict, data):
 def apply_llm_reasonging_parallel(test_data_dict, process, num_queries, transformed_relations, vector_db, llm_instance, 
                                   data, entity_similarity_matrix, num_process, test_data_start_ts=0, test_size=None):
     result = dict()
-    base_filename = f"result/icews14/stage_4/candidates_part_{process}.jsonl"
+    base_filename = f"result/GDELT/stage_4/candidates_part_{process}.jsonl"
     test_query_idx = range(process * num_queries, (process + 1) * num_queries) if process < num_process-1 else range(process * num_queries, len(test_data_dict))
     for j in test_query_idx:
         test_id, test_query = next(iter(test_data_dict[j].items()))
@@ -350,8 +350,7 @@ def stage_4_main():
 
     # Load LLm model
     llm_instance = LLM_Model()
-    dataset_dir = os.path.join(".", "datasets", 'icews14')
-    dir_path = os.path.join(".", "result", 'icews14', "stage_3")
+    dataset_dir = os.path.join(".", "datasets", 'GDELT')
 
     # Load data and test data
     data = DataLoader(dataset_dir)
@@ -361,61 +360,61 @@ def stage_4_main():
     test_data_start_timestamp = data.ts2id[test_data[0][3]]
 
     test_data_dict = [{i:v} for i, v in enumerate(test_data)]
-    test_data_dict = test_data_dict
+    test_data_dict = test_data_dict[12000:]
 
     # Load similarity matrix
-    relation_similarity_matrix = np.load('result/icews14/stage_1/relation_similarity.npy')
-    entity_similarity_matrix = np.load('result/icews14/stage_1/entity_similarity.npy')
-    transformed_relations = load_json_data('result/icews14/stage_1/transformed_relations.json')
+    relation_similarity_matrix = np.load('result/GDELT/stage_1/relation_similarity.npy')
+    entity_similarity_matrix = np.load('result/GDELT/stage_1/entity_similarity.npy')
+    transformed_relations = load_json_data('result/GDELT/stage_1/transformed_relations.json')
 
     # Load vectorstore db
-    # vector_db = load_vectorstore_db(llm_instance, 'icews14')
-    # for collection in vector_db:
-    #     print(f"{collection}: {len(vector_db[collection]['vector_db'].get()['documents'])} documents")
+    vector_db = load_vectorstore_db(llm_instance, 'GDELT')
+    for collection in vector_db:
+        print(f"{collection}: {len(vector_db[collection]['vector_db'].get()['documents'])} documents")
 
-    # ##################################################################################################
+    ##################################################################################################
     query_cands_dict = {}
     num_queries = math.ceil(len(test_data_dict) / num_process)
-    # futures = []
-    # with ThreadPoolExecutor(max_workers=2) as executor:
-    #     for i in range(num_process):
-    #         futures.append(executor.submit(apply_llm_reasonging_parallel, test_data_dict, i, num_queries, 
-    #                                        transformed_relations, vector_db['facts']['vector_db'], llm_instance, 
-    #                                        data, entity_similarity_matrix, num_process, test_data_start_timestamp, len(test_data)//2))
-    
-    #     for future in as_completed(futures):
-    #         result = future.result()
-
-    # # Sau khi chạy xong, merge các file kết quả  
-    # def merge_result_files():  
-    #     final_results = {}  
-    #     for i in range(num_process):  
-    #         filename = f"result/icews14/stage_4/candidates_part_{i}.jsonl"  
-    #         if os.path.exists(filename):  
-    #             with open(filename, 'r') as f:  
-    #                 for line in f:  
-    #                     part_result = json.loads(line)  
-    #                     final_results.update(part_result)  
-        
-    #     # Sắp xếp và lưu kết quả cuối cùng  
-    #     sorted_results = dict(sorted(final_results.items(), key=lambda x: int(x[0])))  
-    #     with open("result/icews14/stage_4/final_candidates.json", 'w') as f:  
-    #         json.dump(sorted_results, f, indent=4)  
-
-    # # Gọi hàm merge kết quả  
-    # merge_result_files()
-
-    # scoring for candidates
-    query_cands_dict = load_json_data("result/icews14/stage_4/final_candidates.json")
-    query_cands_score_dict = {}
-    scoring = []
+    futures = []
     with ThreadPoolExecutor(max_workers=4) as executor:
         for i in range(num_process):
-            scoring.append(executor.submit(scoring_candidates_parallel, query_cands_dict, i, num_queries, test_data_dict, data, num_process))
+            futures.append(executor.submit(apply_llm_reasonging_parallel, test_data_dict, i, num_queries, 
+                                           transformed_relations, vector_db['facts']['vector_db'], llm_instance, 
+                                           data, entity_similarity_matrix, num_process, test_data_start_timestamp, len(test_data)//2))
+    
+        for future in as_completed(futures):
+            result = future.result()
+
+    # Sau khi chạy xong, merge các file kết quả  
+    def merge_result_files():  
+        final_results = {}  
+        for i in range(num_process):  
+            filename = f"result/GDELT/stage_4/candidates_part_{i}.jsonl"  
+            if os.path.exists(filename):  
+                with open(filename, 'r') as f:  
+                    for line in f:  
+                        part_result = json.loads(line)  
+                        final_results.update(part_result)  
+        
+        # Sắp xếp và lưu kết quả cuối cùng  
+        sorted_results = dict(sorted(final_results.items(), key=lambda x: int(x[0])))  
+        with open("result/GDELT/stage_4/final_candidates.json", 'w') as f:  
+            json.dump(sorted_results, f, indent=4)  
+
+    # Gọi hàm merge kết quả  
+    merge_result_files()
+
+    # # scoring for candidates
+    # query_cands_dict = load_json_data("result/GDELT/stage_4/final_candidates.json")
+    # query_cands_score_dict = {}
+    # scoring = []
+    # with ThreadPoolExecutor(max_workers=4) as executor:
+    #     for i in range(num_process):
+    #         scoring.append(executor.submit(scoring_candidates_parallel, query_cands_dict, i, num_queries, test_data_dict, data, num_process))
        
-        for future in as_completed(scoring):
-            query_cands_score_dict.update(future.result())
+    #     for future in as_completed(scoring):
+    #         query_cands_score_dict.update(future.result())
             
-    ##################################################################################################
-    query_cands_score_dict = dict(sorted(query_cands_score_dict.items(), key=lambda item: int(item[0])))
-    save_json_data(query_cands_score_dict, "result/icews14/stage_4/candidates_score.json")
+    # ##################################################################################################
+    # query_cands_score_dict = dict(sorted(query_cands_score_dict.items(), key=lambda item: int(item[0])))
+    # save_json_data(query_cands_score_dict, "result/GDELT/stage_4/candidates_score.json")

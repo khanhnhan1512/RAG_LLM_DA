@@ -9,7 +9,7 @@ from utils import filter_candidates, calculate_rank
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='datasets', help='path to the dataset')
-    parser.add_argument('--dataset', "-d", type=str, default='icews14', help='dataset name')
+    parser.add_argument('--dataset', "-d", type=str, default='GDELT', help='dataset name')
     parser.add_argument("--test_data", default="test", type=str)
     parser.add_argument('--graph_reasoning_type', type=str,
                         choices=['transformer', 'timestamp', 'based_source_with_timestamp', 'origin', 'fusion',
@@ -25,7 +25,7 @@ def stage_5_main():
     args = parse_args()
     data_dir = args['data_path']
     dataset = args['dataset']
-    rule_candidates_file = "reasoning_result_1_full.json"
+    rule_candidates_file = "reasoning_result_3_full.json"
     llm_candidates_file = "candidates_score.json"
 
     dataset_path = os.path.join(data_dir, dataset)
@@ -35,7 +35,7 @@ def stage_5_main():
 
     data = DataLoader(dataset_path)
     num_entities = len(data.id2entity)
-    test_data = data.test_data_idx if (args['test_data'] == "test") else data.valid_idx
+    test_data = data.test_data_idx[:2000] if (args['test_data'] == "test") else data.valid_idx
 
     all_rule_candidates = load_candidates(rule_reasoning_result_dir, rule_candidates_file)
     all_llm_candidates = load_candidates(llm_reasoning_result_dir, llm_candidates_file)
@@ -92,8 +92,8 @@ def get_final_candidates(args, test_query, all_llm_candidates, all_rule_candidat
     # if args['graph_reasoning_type'] in ['TiRGN', 'REGCN']:
     #     return get_candidates(args, test_query, all_rule_candidates, i, num_entities, test_numpy, score_numpy)
     # else:
-    return get_rule_llm_candidates(args, i, all_llm_candidates, all_rule_candidates, num_entities)
-    # return all_llm_candidates[i]
+    # return get_rule_llm_candidates(args, i, all_llm_candidates, all_rule_candidates, num_entities)
+    return all_llm_candidates[i]
     # return all_rule_candidates[i]
 
 def get_rule_llm_candidates(args, i, all_llm_candidates, all_rule_candidates, num_entities):
