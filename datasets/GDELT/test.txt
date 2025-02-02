@@ -2055,7 +2055,7 @@ Antonio_Guterres	Praise_or_endorse	Republic_Of_Korea	T_4650
 Nepal	Engage_in_diplomatic_cooperation	China	T_4650
 Congress	Demand	The_Opposition	T_4650
 Government	Make_statement	Bank	T_4650
-Russia	Meet_at_a_”third”_location	Kurd	T_4650
+Russia	Meet_at_a_'third'_location	Kurd	T_4650
 Ethiopia	Return_release_person(s)	Political_Prisoner	T_4650
 Prime_Minister	Consult	New_Delhi	T_4650
 China	Make_statement	Website	T_4650

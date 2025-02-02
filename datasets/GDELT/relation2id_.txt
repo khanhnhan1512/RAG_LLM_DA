@@ -24,7 +24,7 @@ Fight_with_small_arms_and_light_weapons	22
 Use_conventional_military_force	23
 Criticize_or_denounce	24
 Express_intent_to_engage_in_material_cooperation	25
-Meet_at_a_”third”_location	26
+Meet_at_a_'third'_location	26
 Engage_in_material_cooperation	27
 Demonstrate_or_rally	28
 Provide_humanitarian_aid	29
