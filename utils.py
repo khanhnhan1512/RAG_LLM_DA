@@ -381,9 +381,7 @@ def calculate_rank(test_query_answer, candidates, num_entities, setting="best"):
         all_confs = list(candidates.values())
         all_confs = sorted(all_confs, reverse=True)
         ranks = [idx for idx, x in enumerate(all_confs) if x == conf]
-
         try:
-
             if setting == "average":
                 rank = (ranks[0] + ranks[-1]) // 2 + 1
             elif setting == "best":

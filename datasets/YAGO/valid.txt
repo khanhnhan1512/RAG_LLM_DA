@@ -410,7 +410,7 @@ Ricardo_González_Fonseca	Member_of_sports_team	Los_Ticos	T_72
 Avernes	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_72
 Kelme	Instance_of	City_(Kentucky)	T_72
 Nouveau-Rhone	Contains_administrative_territorial_entity	Albigny-Sur-Saone	T_72
-"Francis_""Kiko""_Pangilinan"	Spouse	Sharon_Cuneta	T_72
+Francis_Kiko_Pangilinan	Spouse	Sharon_Cuneta	T_72
 Fontenoy-Le-Château	Instance_of	Communes_In_France	T_72
 Seyssel_(Ain)	Located_in_the_administrative_territorial_entity	Canton_Of_Seyssel_(Ain)	T_72
 Algrange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_72
@@ -789,7 +789,7 @@ History_Of_Nagoya	Twinned_administrative_body	Los_Angelas	T_72
 Bougherra	Member_of_sports_team	Rangers_F._C.	T_72
 Dino_Fava_Passaro	Member_of_sports_team	Treviso_F.B.C.	T_72
 Leandro_Salino	Member_of_sports_team	Ipatinga_Futebol_Clube	T_72
-Manuel_Agudo_Duran	Member_of_sports_team	"Fútbol_Club_Barcelona_""B"""	T_72
+Manuel_Agudo_Duran	Member_of_sports_team	Fútbol_Club_Barcelona_B	T_72
 Reino_Hulandes	Member_of	International_Development_Association	T_72
 Zoltán_Szélesi	Member_of_sports_team	Hungarian_Football_Team	T_72
 Belgorodskaya_Oblast'_Russia	Country	Оросын_Холбооны_Улс	T_72
@@ -810,7 +810,7 @@ Pugieu	Instance_of	Communes_In_France	T_72
 Michael_Powell_(Mathematician)	Member_of	Royal_Society_Of_Great_Britain	T_72
 🇹🇬	Member_of	United_Nations	T_72
 Cioran	Residence	Sport_In_Paris	T_72
-Meyong	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_72
+Meyong	Member_of_sports_team	C.F_Os_Beleneneses	T_72
 Mikhail_Gurevich_(Chess_Player)	Title_of_chess_person	Chess_Grand_Master	T_72
 Ilaria_Occhini	Spouse	Raffaele_La_Capria	T_72
 André_Castro_Pereira	Member_of_sports_team	Portugal_National_Under-21_Football_Team	T_72
@@ -1012,7 +1012,7 @@ Willy_Hellpach	Member_of	Heidelberg_Academy_For_Sciences_And_Humanities	T_72
 Boyden_Observatory	Country	Suid_Africa	T_72
 Adrian_Ropotan	Member_of_sports_team	Romania_National_Under-21_Football_Team	T_72
 Damir_Pekic	Member_of_sports_team	Zalaegerszegi_Torna_Egylet	T_72
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Republic_Of_Ireland_National_Under-17_Football_Team	T_72
+Robert_Robbie_Brady	Member_of_sports_team	Republic_Of_Ireland_National_Under-17_Football_Team	T_72
 Siersthal	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_72
 Hermann_Hreiðarsson	Member_of_sports_team	Iceland_Men'S_National_Football_Team	T_72
 Stra	Located_in_the_administrative_territorial_entity	Province_Of_Venice	T_72
@@ -1054,7 +1054,7 @@ Emil_Gargorov	Member_of_sports_team	Александър_Тодоров	T_72
 Gianni_Zuiverloon	Member_of_sports_team	Netherlands_National_U-21_Football_Team	T_72
 Dimitris_Salpingidis	Member_of_sports_team	National_Football_Team_Of_Greece	T_72
 British_Virgin_Islands_Fa	Member_of	Cfu	T_72
-"Edward_Moore_""Ted""_Kennedy"	Award_received	Aguila_Azteca	T_72
+Edward_Moore_Ted_Kennedy	Award_received	Aguila_Azteca	T_72
 Crehange	Located_in_the_administrative_territorial_entity	Bezirk_Lothringen	T_72
 Ante_Čović_(Croatian_Footballer)	Member_of_sports_team	Hertha_Bsc_Amateure	T_72
 Lombardore	Located_in_the_administrative_territorial_entity	Torino_(Province)	T_72
@@ -1613,7 +1613,7 @@ Achille_Emaná	Member_of_sports_team	Real_Betis_Balompié	T_72
 Sakhalinskaya_Oblast'	Located_in_the_administrative_territorial_entity	Оросын_Холбооны_Улс	T_72
 Fernando_Arce	Member_of_sports_team	Santos_Laguna_Current_Roster	T_72
 Iso_3166-1:Fr	Member_of	Ifc	T_72
-Jeffren_Isaas_Suarez_Bermudez	Member_of_sports_team	"Fútbol_Club_Barcelona_""B"""	T_72
+Jeffren_Isaas_Suarez_Bermudez	Member_of_sports_team	Fútbol_Club_Barcelona_B	T_72
 Wolfsberg_Im_Schwarzautal	Instance_of	Municipality_(Austria)	T_72
 Crevechamps	Located_in_the_administrative_territorial_entity	Meurthe-Et-Moselle	T_72
 Maxim_Lvovich_Kontsevich	Country_of_citizenship	Iso_3166-1:Fr	T_72
@@ -1890,7 +1890,7 @@ Peter_Robert_Lamont_Brown	Award_received	Kluge_Prize	T_72
 Birkenwald	Instance_of	Communes_In_France	T_72
 Lord_Reid_Of_Cardowan	Position_held	Uk_Mp	T_72
 Alun_Milburn	Position_held	Uk_Mp	T_72
-Chico_(Footballer_Born_March_1987)	Member_of_sports_team	"Fútbol_Club_Barcelona_""B"""	T_72
+Chico_(Footballer_Born_March_1987)	Member_of_sports_team	Fútbol_Club_Barcelona_B	T_72
 Sondheim_Vor_Der_Rhon	Award_received	Living_Legend_Medal	T_72
 Luis_Alberto_Suárez_Diaz	Member_of_sports_team	Ajax_Fc	T_72
 Charles-Alexis-Henri-Maurice-Clerel_De_Tocqueville	Member_of	Academie_Francaise	T_72
@@ -2043,7 +2043,7 @@ San_Germano_Chisone	Located_in_the_administrative_territorial_entity	Torino_(Pro
 Michał_Żewłakow	Member_of_sports_team	Olympiakos_Sfp	T_72
 Junior_Díaz	Member_of_sports_team	Wisla_Kraków	T_72
 Sebastien_Frey	Member_of_sports_team	Acf_Fiorentina	T_72
-Sharon_Cuneta	Spouse	"Francis_""Kiko""_Pangilinan"	T_72
+Sharon_Cuneta	Spouse	Francis_Kiko_Pangilinan	T_72
 Benjamin_Imeh	Member_of_sports_team	Idea_Slask_Wroclaw	T_72
 Grigoris_Makos	Member_of_sports_team	National_Football_Team_Of_Greece	T_72
 Diego_Alfredo_Lugano_Moreno	Member_of_sports_team	Fenerbahçe_S.K._(Football)	T_72
@@ -3598,7 +3598,7 @@ Condoleza_Rice	Position_held	United_States_Secretary_Of_State	T_72
 Jose_Hiber_Ruiz_Nataren	Member_of_sports_team	Papá_De_Los_Tigres	T_72
 Daniel_Offenbacher	Member_of_sports_team	Austria_National_Under-17_Football_Team	T_72
 Gènova	Twinned_administrative_body	Rijeka_Croatia	T_72
-"Robert_William_""Rob""_Hulse"	Member_of_sports_team	Red_And_White_Wizards	T_72
+Robert_William_Rob_Hulse	Member_of_sports_team	Red_And_White_Wizards	T_72
 Governorate_Of_St._Michel	Country	Republic_Of_Finland	T_72
 South-West_Nigeria	Member_of	International_Centre_For_The_Settlement_Of_Investment_Disputes	T_72
 Asoo_Taroo	Position_held	Japan_Prime_Minister	T_72
@@ -3685,7 +3685,7 @@ Bashiru_Gambo	Member_of_sports_team	Stuttgarter_Kickers_Seasons	T_72
 Joan_Burton	Position_held	Teachtaí_Dála	T_72
 Ralf_Fahrmann	Member_of_sports_team	Germany_National_Under-20_Football_Team	T_72
 Dennis_Martin_Daugaard	Position_held	List_Of_Lieutenant_Governors_Of_South_Dakota	T_72
-"Charles_""Charlie""_Mccreevy"	Position_held	European_Commissioner_For_The_Internal_Market	T_72
+Charles_Charlie_Mccreevy	Position_held	European_Commissioner_For_The_Internal_Market	T_72
 Jonathan_Ludovic_Biabiany	Member_of_sports_team	S.S._Ambrosiana	T_72
 Saint-Remy-L'Honore	Located_in_the_administrative_territorial_entity	Yvelines_Department	T_72
 Ali_Abdullah_Harib_Al_Habsi	Member_of_sports_team	Bolton_F.C.	T_72
@@ -3953,7 +3953,7 @@ Iso_3166-1:Ug	Member_of	International_Development_Association	T_72
 Houesville	Instance_of	Communes_In_France	T_72
 Teddy_Lucic	Member_of_sports_team	If_Elfsborg	T_72
 Mettmann_Germany	Country	Germanz	T_72
-Gabriel_Enrique_Gomez_Giron	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_72
+Gabriel_Enrique_Gomez_Giron	Member_of_sports_team	C.F_Os_Beleneneses	T_72
 Paul_Bettany	Spouse	Jennifer_Connelly_Filmography	T_72
 Martin_Vunk	Member_of_sports_team	Tallinna_Fc_Flora	T_72
 Ruben_Lima	Member_of_sports_team	S.L._Benfica_-_Futebol_S.A.D.	T_72
@@ -4446,7 +4446,7 @@ Sean_Murdoch	Member_of_sports_team	Dunfermline_Fc	T_72
 Claudiu_Niculescu	Member_of_sports_team	Omonia_F.C.	T_72
 Marcel_Ritzmaier	Member_of_sports_team	Austria_National_Under-17_Football_Team	T_72
 Faenza	Twinned_administrative_body	Rijeka_Croatia	T_72
-"Geoffrey_Malcolm_""Geoff""_Horsfield"	Member_of_sports_team	Red_And_White_Wizards	T_72
+Geoffrey_Malcolm_Geoff_Horsfield	Member_of_sports_team	Red_And_White_Wizards	T_72
 Wilhelm_Spiegelberg	Member_of	Heidelberg_Academy_For_Sciences_And_Humanities	T_72
 Borja_Valero	Member_of_sports_team	West_Bromwich_Albion_Football_Club	T_72
 Republic_Of_Estonia	Member_of	N.A.T.O	T_72
@@ -4949,7 +4949,7 @@ Marijan_Kovačević	Member_of_sports_team	Vfb_Stuttgart_In_European_Football	T_7
 Chris_Paul	Award_received	Associated_Press_All-Nba_Team	T_72
 Solomon_Islands/Military	Member_of	United_Nations	T_72
 Tony_Kane	Member_of_sports_team	Blackburn_Rovers_F.C.	T_72
-China_(Portuguese_Footballer)	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_72
+China_(Portuguese_Footballer)	Member_of_sports_team	C.F_Os_Beleneneses	T_72
 Zimmerbach	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_72
 Luttenbach-Pres-Munster	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_72
 Adrian_Sikora	Member_of_sports_team	Dyskobolia_Grodzisk_Wlkp.	T_72
@@ -5199,7 +5199,7 @@ Emanuele_Di_Zenzo	Member_of_sports_team	Fc_Sion_Ii	T_72
 Kuwet	Member_of	Multilateral_Investment_Guarantee_Agency	T_72
 Nelson_Rivas	Member_of_sports_team	S.S._Ambrosiana	T_72
 Martin_Reim	Member_of_sports_team	Estonia_National_Football_Team	T_72
-Marc_Crosas_Luque	Member_of_sports_team	"Fútbol_Club_Barcelona_""B"""	T_72
+Marc_Crosas_Luque	Member_of_sports_team	Fútbol_Club_Barcelona_B	T_72
 Mittau	Country	Letland	T_72
 Al_Jumhuriyah_Al_Jaza'Iriyah_Ad_Dimuqratiyah_Ash_Shabiyah	Member_of	Banque_Internationale_Pour_La_Reconstruction_Et_Le_Développement	T_72
 Royaume-Uni	Member_of	World_Trade_Organization_General_Council	T_72
@@ -5532,7 +5532,7 @@ Alexanderalgrim/Players-David_Da_Costa	Member_of_sports_team	F.C._Zurich	T_72
 Murat_Kalkan	Member_of_sports_team	Gençlerbirligi_Sk	T_72
 Juan_Pablo_Pino	Member_of_sports_team	Monaco_Fc	T_72
 Markus_Steinhoefer	Member_of_sports_team	Fc_Bayern_Munich_Amateure	T_72
-Rodrigo_Alvim	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_72
+Rodrigo_Alvim	Member_of_sports_team	C.F_Os_Beleneneses	T_72
 Michael_Jefferson_Nascimento	Member_of_sports_team	Coritiba_Foot_Ball_Club	T_72
 Ibrahim_Aydemir	Member_of_sports_team	Vfb_Stuttgart_Ii	T_72
 Flastroff	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_72
@@ -5590,7 +5590,7 @@ Ammerschwihr	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_7
 Rexingen_Bas-Rhin	Located_in_the_administrative_territorial_entity	Bas-Rhin_(Departement)	T_72
 Orhan_Mustafi	Member_of_sports_team	F.C._Zurich	T_72
 Miroslav_Barčík	Member_of_sports_team	F.C._Spartak_Trnava	T_72
-Rafael_Bastos	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_72
+Rafael_Bastos	Member_of_sports_team	C.F_Os_Beleneneses	T_72
 Adailson_Pereira_Coelho	Member_of_sports_team	Crvg	T_72
 Rhys_Murphy	Member_of_sports_team	England_Under-19_National_Football_Team	T_72
 Volmerange-Les-Boulay	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_72
@@ -5627,7 +5627,7 @@ Vincenzo_Camilleri	Member_of_sports_team	Reggina_Calcio	T_72
 Romeo_Mitrović	Member_of_sports_team	Kecskeméti_Te	T_72
 Ignacio_Novo	Member_of_sports_team	Rangers_F._C.	T_72
 Grand-Dukes_Of_Oldenburg	Located_in_the_administrative_territorial_entity	Deutsches_Kaiserreich	T_72
-"Robert_William_""Rob""_Hulse"	Member_of_sports_team	Derby_County_Fc	T_72
+Robert_William_Rob_Hulse	Member_of_sports_team	Derby_County_Fc	T_72
 Steffen_Iversen	Member_of_sports_team	Norway_Football	T_72
 Prettenthaler_Mark	Member_of_sports_team	Puntigamer_Sturm_Graz	T_72
 Ervand_Kotchar	Residence	Armenian_Soviet_Socialist_Republic	T_72
@@ -5677,7 +5677,7 @@ Second_Impeachment_Process_Against_Pedro_Pablo_Kuczynski	Country_of_citizenship	
 Dale_Jorgenson	Residence	Cambridge_(Massachusetts)	T_72
 Puchegg	Located_in_the_administrative_territorial_entity	Hartberg-Furstenfeld_District	T_72
 Papa_Waigo_N'Diayè	Member_of_sports_team	Teranga_Lions	T_72
-"Geoffrey_Malcolm_""Geoff""_Horsfield"	Member_of_sports_team	Scunthorpe_And_Lindsey_United_F.C.	T_72
+Geoffrey_Malcolm_Geoff_Horsfield	Member_of_sports_team	Scunthorpe_And_Lindsey_United_F.C.	T_72
 Pabillonis	Located_in_the_administrative_territorial_entity	Medio_Campidano	T_72
 Rene_Adler	Member_of_sports_team	West_Germany_National_Football_Team	T_72
 Azar_Karadas	Member_of_sports_team	Sportsklubben_Brann	T_72
@@ -5799,7 +5799,7 @@ Marco_Ambrosio	Member_of_sports_team	A.C._Reggiana_1919	T_72
 The_Niger	Member_of	Ifc	T_72
 Vedran_Runje	Member_of_sports_team	Rc_Lens	T_72
 Róbinson_Zapata	Member_of_sports_team	Colombia_National_Football_Team	T_72
-Gabriel_Enrique_Gomez_Giron	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_72
+Gabriel_Enrique_Gomez_Giron	Member_of_sports_team	C.F_Os_Beleneneses	T_72
 Fink_Michael	Member_of_sports_team	Lg_Eintracht_Frankfurt	T_72
 Atdhe_Nuhiu	Member_of_sports_team	Sk_Kaernten	T_72
 Darcheville	Member_of_sports_team	Rangers_F._C.	T_72
@@ -6346,7 +6346,7 @@ Ricardo_González_Fonseca	Member_of_sports_team	Los_Ticos	T_73
 Avernes	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_73
 Kelme	Instance_of	City_(Kentucky)	T_73
 Nouveau-Rhone	Contains_administrative_territorial_entity	Albigny-Sur-Saone	T_73
-"Francis_""Kiko""_Pangilinan"	Spouse	Sharon_Cuneta	T_73
+Francis_Kiko_Pangilinan	Spouse	Sharon_Cuneta	T_73
 Fontenoy-Le-Château	Instance_of	Communes_In_France	T_73
 Alessandro_Dos_Santos	Member_of_sports_team	Nagoya_Grampus	T_73
 Seyssel_(Ain)	Located_in_the_administrative_territorial_entity	Canton_Of_Seyssel_(Ain)	T_73
@@ -6713,7 +6713,7 @@ Jan_Peter_Peumans	Position_held	Schepen	T_73
 History_Of_Nagoya	Twinned_administrative_body	Los_Angelas	T_73
 Bougherra	Member_of_sports_team	Rangers_F._C.	T_73
 Dino_Fava_Passaro	Member_of_sports_team	Treviso_F.B.C.	T_73
-Manuel_Agudo_Duran	Member_of_sports_team	"Fútbol_Club_Barcelona_""B"""	T_73
+Manuel_Agudo_Duran	Member_of_sports_team	Fútbol_Club_Barcelona_B	T_73
 Reino_Hulandes	Member_of	International_Development_Association	T_73
 Zoltán_Szélesi	Member_of_sports_team	Hungarian_Football_Team	T_73
 Belgorodskaya_Oblast'_Russia	Country	Оросын_Холбооны_Улс	T_73
@@ -7518,7 +7518,7 @@ Das_Weiße_Band	Award_received	Palme_D'Or_1939–1959	T_73
 Gia_Grigalava	Member_of_sports_team	Russia_National_Under-21_Football_Team	T_73
 Fernando_Arce	Member_of_sports_team	Santos_Laguna_Current_Roster	T_73
 Iso_3166-1:Fr	Member_of	Ifc	T_73
-Jeffren_Isaas_Suarez_Bermudez	Member_of_sports_team	"Fútbol_Club_Barcelona_""B"""	T_73
+Jeffren_Isaas_Suarez_Bermudez	Member_of_sports_team	Fútbol_Club_Barcelona_B	T_73
 Wolfsberg_Im_Schwarzautal	Instance_of	Municipality_(Austria)	T_73
 Crevechamps	Located_in_the_administrative_territorial_entity	Meurthe-Et-Moselle	T_73
 Hristu_Chiacu	Member_of_sports_team	Asociația_Club_Sportiv_Poli_Timișoara	T_73
@@ -7726,7 +7726,7 @@ Monor_District	Located_in_the_administrative_territorial_entity	Pest_(County)	T_
 Carlos_Jorge_Neto_Martins	Member_of_sports_team	Portuguese_National_Football_Team	T_73
 Lorenzo_Crisetig	Member_of_sports_team	Italy_National_Under-16_Football_Team	T_73
 Joseph_Alfred_Serret	Member_of	National_Institute_Of_Sciences_And_Arts	T_73
-"Geoffrey_Malcolm_""Geoff""_Horsfield"	Member_of_sports_team	Red_Imps	T_73
+Geoffrey_Malcolm_Geoff_Horsfield	Member_of_sports_team	Red_Imps	T_73
 Benjamin_Baltes	Member_of_sports_team	Bsg_Wismut_Aue	T_73
 Merviller	Located_in_the_administrative_territorial_entity	Department_Of_The_Meurthe	T_73
 Vitrey	Located_in_the_administrative_territorial_entity	Meurthe-Et-Moselle	T_73
@@ -7968,7 +7968,7 @@ Iso_3166-1:Fr	Member_of	Multilateral_Investment_Guarantee_Agency	T_73
 San_Germano_Chisone	Located_in_the_administrative_territorial_entity	Torino_(Province)	T_73
 Michał_Żewłakow	Member_of_sports_team	Olympiakos_Sfp	T_73
 Sebastien_Frey	Member_of_sports_team	Acf_Fiorentina	T_73
-Sharon_Cuneta	Spouse	"Francis_""Kiko""_Pangilinan"	T_73
+Sharon_Cuneta	Spouse	Francis_Kiko_Pangilinan	T_73
 Grigoris_Makos	Member_of_sports_team	National_Football_Team_Of_Greece	T_73
 Diego_Alfredo_Lugano_Moreno	Member_of_sports_team	Fenerbahçe_S.K._(Football)	T_73
 Ludvig_Hammer	Title_of_chess_person	Chess_Grand_Master	T_73
@@ -9299,7 +9299,7 @@ Pakistani_Nation-State	Member_of	Criticism_Of_The_Asian_Development_Bank	T_73
 Chatillon-En-Dunois	Instance_of	Communes_In_France	T_73
 Perparim_Hetemaj	Member_of_sports_team	Finnish_Soccer_Team	T_73
 Remlingen_(Niedersachsen)	Instance_of	Communes_Of_Germany	T_73
-Martín_Montoya	Member_of_sports_team	"Fútbol_Club_Barcelona_""B"""	T_73
+Martín_Montoya	Member_of_sports_team	Fútbol_Club_Barcelona_B	T_73
 Rening	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_73
 Tiefenbach_Bei_Kaindorf	Instance_of	Municipality_(Austria)	T_73
 Bobbi_Star	Nominated_for	Avn_Award_For_Female_Performer_Of_The_Year	T_73
@@ -9631,7 +9631,7 @@ Bashiru_Gambo	Member_of_sports_team	Stuttgarter_Kickers_Seasons	T_73
 Joan_Burton	Position_held	Teachtaí_Dála	T_73
 Dennis_Martin_Daugaard	Position_held	List_Of_Lieutenant_Governors_Of_South_Dakota	T_73
 Euzebiusz_Smolarek	Member_of_sports_team	Nea_Kavala_F.C.	T_73
-"Charles_""Charlie""_Mccreevy"	Position_held	European_Commissioner_For_The_Internal_Market	T_73
+Charles_Charlie_Mccreevy	Position_held	European_Commissioner_For_The_Internal_Market	T_73
 Lewis_Hamilton	Nominated_for	Laureus_World_Sports_Award_For_Sportsman_Of_The_Year	T_73
 Jonathan_Ludovic_Biabiany	Member_of_sports_team	S.S._Ambrosiana	T_73
 Articles_For_Creation/Andre_Frolov	Member_of_sports_team	Tallinna_Fc_Flora	T_73
@@ -10877,7 +10877,7 @@ Solomon_Islands/Military	Member_of	United_Nations	T_73
 Hawar_Mulla_Mohammed	Member_of_sports_team	Persepolis_L.F.C.	T_73
 Rossini_Jonathan	Member_of_sports_team	U_S_Sassuolo_Calcio	T_73
 Tony_Kane	Member_of_sports_team	Blackburn_Rovers_F.C.	T_73
-China_(Portuguese_Footballer)	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_73
+China_(Portuguese_Footballer)	Member_of_sports_team	C.F_Os_Beleneneses	T_73
 Renzo_Revoredo	Member_of_sports_team	Club_Universitario_De_Deportes	T_73
 Zimmerbach	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_73
 Luttenbach-Pres-Munster	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_73
@@ -11544,7 +11544,7 @@ Romeo_Mitrović	Member_of_sports_team	Kecskeméti_Te	T_73
 Ignacio_Novo	Member_of_sports_team	Rangers_F._C.	T_73
 Lm19	Award_received	Onze_D'Or_Coach_Of_The_Year	T_73
 Grand-Dukes_Of_Oldenburg	Located_in_the_administrative_territorial_entity	Deutsches_Kaiserreich	T_73
-"Robert_William_""Rob""_Hulse"	Member_of_sports_team	Derby_County_Fc	T_73
+Robert_William_Rob_Hulse	Member_of_sports_team	Derby_County_Fc	T_73
 Steffen_Iversen	Member_of_sports_team	Norway_Football	T_73
 Ervand_Kotchar	Residence	Armenian_Soviet_Socialist_Republic	T_73
 Alexis_Vidal	Member_of_sports_team	Real_Club_Deportivo_Español	T_73
@@ -11666,7 +11666,7 @@ Adam_Straith	Member_of_sports_team	Canada_U-20_Men'S_National_Soccer_Team	T_73
 Jesper_Ringsborg_Christiansen	Member_of_sports_team	F.C._Kobenhavn	T_73
 Hristu_Chiacu	Member_of_sports_team	Fc_Ploiești_(2007)	T_73
 Fontoy	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_73
-"Edward_Moore_""Ted""_Kennedy"	Award_received	Nansen_Medal	T_73
+Edward_Moore_Ted_Kennedy	Award_received	Nansen_Medal	T_73
 Marco_Martini	Member_of_sports_team	Bellator_Frusino	T_73
 Jason_Brown_(Footballer)	Member_of_sports_team	Blackburn_Rovers_F.C.	T_73
 Margairaz_Xavier	Member_of_sports_team	Swiss_Football_Team	T_73
@@ -11703,7 +11703,7 @@ Marco_Ambrosio	Member_of_sports_team	A.C._Reggiana_1919	T_73
 The_Niger	Member_of	Ifc	T_73
 Vedran_Runje	Member_of_sports_team	Rc_Lens	T_73
 Róbinson_Zapata	Member_of_sports_team	Colombia_National_Football_Team	T_73
-Gabriel_Enrique_Gomez_Giron	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_73
+Gabriel_Enrique_Gomez_Giron	Member_of_sports_team	C.F_Os_Beleneneses	T_73
 Fink_Michael	Member_of_sports_team	Lg_Eintracht_Frankfurt	T_73
 Atdhe_Nuhiu	Member_of_sports_team	Sk_Kaernten	T_73
 Darcheville	Member_of_sports_team	Rangers_F._C.	T_73
@@ -12248,7 +12248,7 @@ David_Cerrajería_Rubio	Member_of_sports_team	Levante_Ud	T_74
 Avernes	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_74
 Kelme	Instance_of	City_(Kentucky)	T_74
 Nouveau-Rhone	Contains_administrative_territorial_entity	Albigny-Sur-Saone	T_74
-"Francis_""Kiko""_Pangilinan"	Spouse	Sharon_Cuneta	T_74
+Francis_Kiko_Pangilinan	Spouse	Sharon_Cuneta	T_74
 Fontenoy-Le-Château	Instance_of	Communes_In_France	T_74
 Alessandro_Dos_Santos	Member_of_sports_team	Nagoya_Grampus	T_74
 Seyssel_(Ain)	Located_in_the_administrative_territorial_entity	Canton_Of_Seyssel_(Ain)	T_74
@@ -12613,7 +12613,7 @@ Sturzelbronn	Located_in_the_administrative_territorial_entity	Moselle_(Départem
 Jan_Peter_Peumans	Position_held	Schepen	T_74
 History_Of_Nagoya	Twinned_administrative_body	Los_Angelas	T_74
 Bougherra	Member_of_sports_team	Rangers_F._C.	T_74
-Manuel_Agudo_Duran	Member_of_sports_team	"Fútbol_Club_Barcelona_""B"""	T_74
+Manuel_Agudo_Duran	Member_of_sports_team	Fútbol_Club_Barcelona_B	T_74
 Reino_Hulandes	Member_of	International_Development_Association	T_74
 Zoltán_Szélesi	Member_of_sports_team	Hungarian_Football_Team	T_74
 Belgorodskaya_Oblast'_Russia	Country	Оросын_Холбооны_Улс	T_74
@@ -13859,7 +13859,7 @@ Iso_3166-1:Fr	Member_of	Multilateral_Investment_Guarantee_Agency	T_74
 San_Germano_Chisone	Located_in_the_administrative_territorial_entity	Torino_(Province)	T_74
 Michał_Żewłakow	Member_of_sports_team	Olympiakos_Sfp	T_74
 Sebastien_Frey	Member_of_sports_team	Acf_Fiorentina	T_74
-Sharon_Cuneta	Spouse	"Francis_""Kiko""_Pangilinan"	T_74
+Sharon_Cuneta	Spouse	Francis_Kiko_Pangilinan	T_74
 Grigoris_Makos	Member_of_sports_team	National_Football_Team_Of_Greece	T_74
 Diego_Alfredo_Lugano_Moreno	Member_of_sports_team	Fenerbahçe_S.K._(Football)	T_74
 Ludvig_Hammer	Title_of_chess_person	Chess_Grand_Master	T_74
@@ -15134,7 +15134,7 @@ Steve_Beleck_Leo	Member_of_sports_team	S._Udinese_G.S.	T_74
 Chatillon-En-Dunois	Instance_of	Communes_In_France	T_74
 Perparim_Hetemaj	Member_of_sports_team	Finnish_Soccer_Team	T_74
 Remlingen_(Niedersachsen)	Instance_of	Communes_Of_Germany	T_74
-Martín_Montoya	Member_of_sports_team	"Fútbol_Club_Barcelona_""B"""	T_74
+Martín_Montoya	Member_of_sports_team	Fútbol_Club_Barcelona_B	T_74
 Rening	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_74
 Tiefenbach_Bei_Kaindorf	Instance_of	Municipality_(Austria)	T_74
 Settimo_Vittone	Located_in_the_administrative_territorial_entity	Torino_(Province)	T_74
@@ -15197,7 +15197,7 @@ Jan_Assmann	Member_of	Heidelberg_Academy_For_Sciences_And_Humanities	T_74
 Dick_Roche	Position_held	Teachtaí_Dála	T_74
 Metzeresche	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_74
 Azoudange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_74
-"Robert_William_""Rob""_Hulse"	Member_of_sports_team	Queens_Park_Rangers_F.C.	T_74
+Robert_William_Rob_Hulse	Member_of_sports_team	Queens_Park_Rangers_F.C.	T_74
 Zvonko_Pamić	Member_of_sports_team	Croatia_National_Under-19_Football_Team	T_74
 Claudiu_Niculescu	Member_of_sports_team	U_Cluj	T_74
 Krohn-Dehli	Member_of_sports_team	Kb'S_Baner	T_74
@@ -15492,7 +15492,7 @@ Lm19	Member_of_sports_team	Argentinian_National_Football_Team	T_74
 Joan_Burton	Position_held	Teachtaí_Dála	T_74
 Dennis_Martin_Daugaard	Position_held	List_Of_Lieutenant_Governors_Of_South_Dakota	T_74
 Euzebiusz_Smolarek	Member_of_sports_team	Nea_Kavala_F.C.	T_74
-"Charles_""Charlie""_Mccreevy"	Position_held	European_Commissioner_For_The_Internal_Market	T_74
+Charles_Charlie_Mccreevy	Position_held	European_Commissioner_For_The_Internal_Market	T_74
 Jonathan_Ludovic_Biabiany	Member_of_sports_team	S.S._Ambrosiana	T_74
 Articles_For_Creation/Andre_Frolov	Member_of_sports_team	Tallinna_Fc_Flora	T_74
 Saint-Remy-L'Honore	Located_in_the_administrative_territorial_entity	Yvelines_Department	T_74
@@ -16783,7 +16783,7 @@ Sukuta-Pasu_Richard	Member_of_sports_team	Bayer_04_Leverkusen_Ii	T_74
 Barst	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_74
 Geim	Award_received	Nobel_Prize_In_Physics_Laureates_1901–1925	T_74
 Luis_Alberto_Suárez_Diaz	Member_of_sports_team	Nacional_Montevideo	T_74
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Republic_Of_Ireland_U-21	T_74
+Robert_Robbie_Brady	Member_of_sports_team	Republic_Of_Ireland_U-21	T_74
 Dedi_Ben-Dayan	Member_of_sports_team	Hapoel_Tel_Aviv_Football_Club	T_74
 Hargarten-Aux-Mines	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_74
 Andrew_Murray_Burnham	Position_held	Shadow_Secretary_Of_State_For_Education	T_74
@@ -17393,7 +17393,7 @@ Dominica	Member_of	United_Nations	T_74
 Pedro_Leon	Member_of_sports_team	Getafe_Fc	T_74
 Ammerschwihr	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_74
 Rexingen_Bas-Rhin	Located_in_the_administrative_territorial_entity	Bas-Rhin_(Departement)	T_74
-"Love_And_War_(Neil_Young_Album_""Le_Noise"")"	Nominated_for	Grammy_Award_For_Best_Rock_Album	T_74
+Love_And_War_(Neil_Young_Album_Le_Noise)	Nominated_for	Grammy_Award_For_Best_Rock_Album	T_74
 Teemu_Tainio	Member_of_sports_team	Ajax_Fc	T_74
 Volmerange-Les-Boulay	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_74
 République_Démocratique_Du_Congo	Member_of	Multilateral_Investment_Guarantee_Agency	T_74
@@ -17428,7 +17428,7 @@ Timo_Hildebrand	Member_of_sports_team	Sporting_Clube_Portugal	T_74
 Romeo_Mitrović	Member_of_sports_team	Kecskeméti_Te	T_74
 Ignacio_Novo	Member_of_sports_team	Rangers_F._C.	T_74
 Grand-Dukes_Of_Oldenburg	Located_in_the_administrative_territorial_entity	Deutsches_Kaiserreich	T_74
-"Robert_William_""Rob""_Hulse"	Member_of_sports_team	Derby_County_Fc	T_74
+Robert_William_Rob_Hulse	Member_of_sports_team	Derby_County_Fc	T_74
 Steffen_Iversen	Member_of_sports_team	Norway_Football	T_74
 Ervand_Kotchar	Residence	Armenian_Soviet_Socialist_Republic	T_74
 Marcos_Roberto_Pereira_Dos_Santos	Member_of_sports_team	Esperance_Sportive_Troyes_Aube_Champagne	T_74
@@ -17592,7 +17592,7 @@ Lewis_Peter_Price	Member_of_sports_team	Wales_National_Football_Team	T_74
 The_Niger	Member_of	Ifc	T_74
 Vedran_Runje	Member_of_sports_team	Rc_Lens	T_74
 Róbinson_Zapata	Member_of_sports_team	Colombia_National_Football_Team	T_74
-Gabriel_Enrique_Gomez_Giron	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_74
+Gabriel_Enrique_Gomez_Giron	Member_of_sports_team	C.F_Os_Beleneneses	T_74
 Atdhe_Nuhiu	Member_of_sports_team	Sk_Kaernten	T_74
 Kim_Nam-Il	Member_of_sports_team	Fc_Sibelektromotor_Tomsk	T_74
 Kazuo_Homma	Member_of_sports_team	Nyiregyhaza_Spartacus_Fc	T_74
@@ -18146,7 +18146,7 @@ David_Cerrajería_Rubio	Member_of_sports_team	Levante_Ud	T_75
 Avernes	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_75
 Kelme	Instance_of	City_(Kentucky)	T_75
 Nouveau-Rhone	Contains_administrative_territorial_entity	Albigny-Sur-Saone	T_75
-"Francis_""Kiko""_Pangilinan"	Spouse	Sharon_Cuneta	T_75
+Francis_Kiko_Pangilinan	Spouse	Sharon_Cuneta	T_75
 Fontenoy-Le-Château	Instance_of	Communes_In_France	T_75
 Markus_Karl	Member_of_sports_team	1._Fc_Union_Berlin_Ii	T_75
 Alessandro_Dos_Santos	Member_of_sports_team	Nagoya_Grampus	T_75
@@ -18197,7 +18197,7 @@ Bellefontaine_Manche	Instance_of	Communes_In_France	T_75
 Maxime_Bouet	Member_of_sports_team	Ag2R–La_Mondiale	T_75
 Aingeray	Located_in_the_administrative_territorial_entity	Meurthe-Et-Moselle	T_75
 Ornex	Located_in_the_administrative_territorial_entity	Canton_Of_Ferney-Voltaire	T_75
-"Love_And_War_(Neil_Young_Album_""Le_Noise"")"	Award_received	Juno_Award_For_Adult_Alternative_Album_Of_The_Year	T_75
+Love_And_War_(Neil_Young_Album_Le_Noise)	Award_received	Juno_Award_For_Adult_Alternative_Album_Of_The_Year	T_75
 Territory_Of_Belfort	Contains_administrative_territorial_entity	Courtelevant	T_75
 Guine–Bissau	Member_of	United_Nations	T_75
 Puy-Du-Dome	Located_in_the_administrative_territorial_entity	Auvergne_(Region)	T_75
@@ -18501,7 +18501,7 @@ Sturzelbronn	Located_in_the_administrative_territorial_entity	Moselle_(Départem
 Jan_Peter_Peumans	Position_held	Schepen	T_75
 History_Of_Nagoya	Twinned_administrative_body	Los_Angelas	T_75
 Bougherra	Member_of_sports_team	Rangers_F._C.	T_75
-Manuel_Agudo_Duran	Member_of_sports_team	"Fútbol_Club_Barcelona_""B"""	T_75
+Manuel_Agudo_Duran	Member_of_sports_team	Fútbol_Club_Barcelona_B	T_75
 Reino_Hulandes	Member_of	International_Development_Association	T_75
 Zoltán_Szélesi	Member_of_sports_team	Hungarian_Football_Team	T_75
 Belgorodskaya_Oblast'_Russia	Country	Оросын_Холбооны_Улс	T_75
@@ -18945,7 +18945,7 @@ Humberto_Suazo	Member_of_sports_team	Papá_De_Los_Tigres	T_75
 Sukuta-Pasu_Richard	Member_of_sports_team	Bavaria_Kaiserslautern	T_75
 Liam_Dominic_Byrne	Position_held	Uk_Mp	T_75
 Симби́Рск	Located_in_the_administrative_territorial_entity	History_Of_Ulyanovsk_Oblast	T_75
-"Love_And_War_(Neil_Young_Album_""Le_Noise"")"	Nominated_for	Juno_Award_For_Adult_Alternative_Album_Of_The_Year	T_75
+Love_And_War_(Neil_Young_Album_Le_Noise)	Nominated_for	Juno_Award_For_Adult_Alternative_Album_Of_The_Year	T_75
 C._N._Yang	Country_of_citizenship	United_Stated	T_75
 Talasskaja_Oblast'	Located_in_the_administrative_territorial_entity	Kyrgysztan	T_75
 Tshād	Member_of	Banque_Internationale_Pour_La_Reconstruction_Et_Le_Développement	T_75
@@ -19022,7 +19022,7 @@ Alexander_Shubladze	Member_of_sports_team	Fc_Baltika-D_Kaliningrad	T_75
 Acquafresca_Robert	Member_of_sports_team	Genoa_Cricket_And_Football_Club_S.P.A	T_75
 Rahling	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_75
 Aiden_Mcgeady	Member_of_sports_team	Mks_Moscow	T_75
-Valeri_Polyakov	Award_received	"Medal_""For_Merit_In_Space_Exploration"""	T_75
+Valeri_Polyakov	Award_received	Medal_For_Merit_In_Space_Exploration	T_75
 Slovak_Football_Association	Member_of	Fifa_Membership	T_75
 Ben_Davies_(Footballer_Born_1981)	Member_of_sports_team	Derby_County_Fc	T_75
 Sergiy_Kryvtsov	Member_of_sports_team	Ukraine_Under-21_Sqaud	T_75
@@ -19347,7 +19347,7 @@ Edin_Džeko	Member_of_sports_team	Vfw_Wolfsburg	T_75
 Ljubomir_Ljubojevic	Title_of_chess_person	Chess_Grand_Master	T_75
 Royaume-Uni	Member_of	Councils_Of_Europe	T_75
 Dragan_Georgiev	Member_of_sports_team	1._Fußball-_Und_Sportverein_Mainz_05_E._V.	T_75
-Valeri_Rozhdestvenski	Award_received	"Medal_""For_Merit_In_Space_Exploration"""	T_75
+Valeri_Rozhdestvenski	Award_received	Medal_For_Merit_In_Space_Exploration	T_75
 Yebda	Member_of_sports_team	Cf_Granada	T_75
 Charles-François_Sturm	Member_of	National_Institute_Of_Sciences_And_Arts	T_75
 Oemer_Sismanoglu	Member_of_sports_team	Türkiye_Millî_Futbol_Takımı	T_75
@@ -19703,7 +19703,7 @@ San_Germano_Chisone	Located_in_the_administrative_territorial_entity	Torino_(Pro
 Ben_Gordon_(Footballer_Born_1991)	Member_of_sports_team	Peterborough_F.C.	T_75
 Kenny_Miller	Member_of_sports_team	Bursaspor_Kulübü_Derneği	T_75
 Sebastien_Frey	Member_of_sports_team	Acf_Fiorentina	T_75
-Sharon_Cuneta	Spouse	"Francis_""Kiko""_Pangilinan"	T_75
+Sharon_Cuneta	Spouse	Francis_Kiko_Pangilinan	T_75
 Grigoris_Makos	Member_of_sports_team	National_Football_Team_Of_Greece	T_75
 Diego_Alfredo_Lugano_Moreno	Member_of_sports_team	Fenerbahçe_S.K._(Football)	T_75
 Ludvig_Hammer	Title_of_chess_person	Chess_Grand_Master	T_75
@@ -20506,7 +20506,7 @@ Kiev/Kyiv	Country	Ucrania	T_75
 Budapest_(Hungary)	Country	Magyar_Köztársaság	T_75
 David_Lafata	Member_of_sports_team	Česká_Fotbalová_Reprezentace	T_75
 Fink_Michael	Member_of_sports_team	Besiktas_Jk	T_75
-Vladimir_A._Lyakhov	Award_received	"Medal_""For_Merit_In_Space_Exploration"""	T_75
+Vladimir_A._Lyakhov	Award_received	Medal_For_Merit_In_Space_Exploration	T_75
 Guémar	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_75
 Daniel_Beichler	Member_of_sports_team	Msv_Duisburg_Matches	T_75
 Department_Of_Somme	Located_in_the_administrative_territorial_entity	Picardy	T_75
@@ -20972,13 +20972,13 @@ Chatillon-En-Dunois	Instance_of	Communes_In_France	T_75
 Perparim_Hetemaj	Member_of_sports_team	Finnish_Soccer_Team	T_75
 Remlingen_(Niedersachsen)	Instance_of	Communes_Of_Germany	T_75
 Marco_Esposito	Member_of_sports_team	Pisa_Sc	T_75
-Martín_Montoya	Member_of_sports_team	"Fútbol_Club_Barcelona_""B"""	T_75
+Martín_Montoya	Member_of_sports_team	Fútbol_Club_Barcelona_B	T_75
 Rening	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_75
 Tiefenbach_Bei_Kaindorf	Instance_of	Municipality_(Austria)	T_75
 Settimo_Vittone	Located_in_the_administrative_territorial_entity	Torino_(Province)	T_75
 Reino_Hulandes	Member_of	Multilateral_Investment_Guarantee_Agency	T_75
 Vitalijs_Maksimenko	Member_of_sports_team	Skonto_Riga	T_75
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Manchester_United_F._C.	T_75
+Robert_Robbie_Brady	Member_of_sports_team	Manchester_United_F._C.	T_75
 Trams_In_Avignon	Heritage_designation	Unesco_World_Heritage_Sites	T_75
 San_Pier_Niceto	Located_in_the_administrative_territorial_entity	Provincia_Di_Messina	T_75
 Dimitrios_Grammozis	Member_of_sports_team	Omonia_F.C.	T_75
@@ -21037,7 +21037,7 @@ Jan_Assmann	Member_of	Heidelberg_Academy_For_Sciences_And_Humanities	T_75
 Dick_Roche	Position_held	Teachtaí_Dála	T_75
 Metzeresche	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_75
 Azoudange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_75
-"Robert_William_""Rob""_Hulse"	Member_of_sports_team	Queens_Park_Rangers_F.C.	T_75
+Robert_William_Rob_Hulse	Member_of_sports_team	Queens_Park_Rangers_F.C.	T_75
 Lady_Day	Award_received	National_Women’S_Hall_Of_Fame	T_75
 Zvonko_Pamić	Member_of_sports_team	Croatia_National_Under-19_Football_Team	T_75
 Calle_13_(Band)	Award_received	Latin_Grammy_Award_For_Best_Tropical_Song	T_75
@@ -21232,7 +21232,7 @@ Governorate_Of_St._Michel	Country	Republic_Of_Finland	T_75
 Dinelson_Dos_Santos_Lima	Member_of_sports_team	Avai_Fc	T_75
 Massimo_Mutarelli	Member_of_sports_team	Bologna_F.C.	T_75
 South-West_Nigeria	Member_of	International_Centre_For_The_Settlement_Of_Investment_Disputes	T_75
-"Patrick_James_""Pat""_Riley"	Award_received	National_Basketball_Association_Executive_Of_The_Year_Award	T_75
+Patrick_James_Pat_Riley	Award_received	National_Basketball_Association_Executive_Of_The_Year_Award	T_75
 Moosbrunn	Located_in_the_administrative_territorial_entity	Wien-Umgebung	T_75
 Tripi	Located_in_the_administrative_territorial_entity	Provincia_Di_Messina	T_75
 Romodanovskii_Raion	Located_in_the_administrative_territorial_entity	Мордовской_Республикась	T_75
@@ -21501,7 +21501,7 @@ Qazaqstan_Respwblïkası	Member_of	Peace_Mission_2007	T_75
 Matuzalém_Francelino	Member_of_sports_team	Lazio_Ss	T_75
 Bargagli	Located_in_the_administrative_territorial_entity	Province_Of_Genoa	T_75
 Ivan_Matveevich_Vinogradov	Member_of	Serbian_Academy_Of_Sciences_And_Arts	T_75
-Valdimir_A._Dzanibekov	Award_received	"Medal_""For_Merit_In_Space_Exploration"""	T_75
+Valdimir_A._Dzanibekov	Award_received	Medal_For_Merit_In_Space_Exploration	T_75
 Tshād	Member_of	International_Centre_For_The_Settlement_Of_Investment_Disputes	T_75
 Thomas_Buffel	Member_of_sports_team	Rc_Genk	T_75
 Egutu_Oliseh	Member_of_sports_team	Ergotelis_F.C._Seasons	T_75
@@ -22414,7 +22414,7 @@ Dániel_Tözsér	Member_of_sports_team	Rc_Genk	T_75
 Wolfsberg_Im_Schwarzautal	Located_in_the_administrative_territorial_entity	Bezirk_Leibnitz	T_75
 Elini_Dimoutsos	Member_of_sports_team	Fotbalový_Klub_Mladá_Boleslav	T_75
 Soleminis	Located_in_the_administrative_territorial_entity	Province_Of_Cagliari	T_75
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Hull_City	T_75
+Robert_Robbie_Brady	Member_of_sports_team	Hull_City	T_75
 Panagiotis_Tachtsidis	Member_of_sports_team	Unione_Sportiva_Grosseto_Football_Club	T_75
 Brectouville	Instance_of	Communes_In_France	T_75
 Gabrovo_Bulgaria	Twinned_administrative_body	Чернигов	T_75
@@ -22558,7 +22558,7 @@ Lawrence_E._Page	Position_held	Administrating_Director	T_75
 Barst	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_75
 Alou_Diarra	Member_of_sports_team	L'Om	T_75
 Luis_Alberto_Suárez_Diaz	Member_of_sports_team	Nacional_Montevideo	T_75
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Republic_Of_Ireland_U-21	T_75
+Robert_Robbie_Brady	Member_of_sports_team	Republic_Of_Ireland_U-21	T_75
 Dedi_Ben-Dayan	Member_of_sports_team	Hapoel_Tel_Aviv_Football_Club	T_75
 Hargarten-Aux-Mines	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_75
 Andrew_Murray_Burnham	Position_held	Shadow_Secretary_Of_State_For_Education	T_75
@@ -22984,7 +22984,7 @@ Cape_Henry_Light	Heritage_designation	Virginia_Historic_Landmark	T_75
 Al_Jumhuriyah_Al_Jaza'Iriyah_Ad_Dimuqratiyah_Ash_Shabiyah	Instance_of	United_Nations_Member_States	T_75
 Maria_Von_Braun	Residence	Wash._D.C.	T_75
 Hirtzbach	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_75
-Yuri_Romanenko	Award_received	"Medal_""For_Merit_In_Space_Exploration"""	T_75
+Yuri_Romanenko	Award_received	Medal_For_Merit_In_Space_Exploration	T_75
 Costa_Rica	Member_of	United_Nations	T_75
 Reino_Hulandes	Instance_of	United_Nations_Member_States	T_75
 Marco_Bresciano	Member_of_sports_team	Lazio_Ss	T_75
@@ -23157,7 +23157,7 @@ Nickclass	Member_of_sports_team	Sunderland_A.F.C.	T_75
 Steffen_Iversen	Member_of_sports_team	Norway_Football	T_75
 Ervand_Kotchar	Residence	Armenian_Soviet_Socialist_Republic	T_75
 Marcos_Roberto_Pereira_Dos_Santos	Member_of_sports_team	Esperance_Sportive_Troyes_Aube_Champagne	T_75
-Alexander_Pavlovich_Alexandrov	Award_received	"Medal_""For_Merit_In_Space_Exploration"""	T_75
+Alexander_Pavlovich_Alexandrov	Award_received	Medal_For_Merit_In_Space_Exploration	T_75
 Hemza_Mihoubi	Member_of_sports_team	Ac_Bellinzona	T_75
 Gressenberg	Instance_of	Municipality_(Austria)	T_75
 Lybya	Instance_of	United_Nations_Member_States	T_75
@@ -23838,7 +23838,7 @@ Kirchberg_Haut-Rhin	Located_in_the_administrative_territorial_entity	Upper_Alsat
 Avernes	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_76
 Kelme	Instance_of	City_(Kentucky)	T_76
 Nouveau-Rhone	Contains_administrative_territorial_entity	Albigny-Sur-Saone	T_76
-"Francis_""Kiko""_Pangilinan"	Spouse	Sharon_Cuneta	T_76
+Francis_Kiko_Pangilinan	Spouse	Sharon_Cuneta	T_76
 Fontenoy-Le-Château	Instance_of	Communes_In_France	T_76
 Markus_Karl	Member_of_sports_team	1._Fc_Union_Berlin_Ii	T_76
 Alessandro_Dos_Santos	Member_of_sports_team	Nagoya_Grampus	T_76
@@ -25342,7 +25342,7 @@ Ernst-Wolfgang_Böckenförde	Award_received	Sigmund_Freud_Prize_For_Scientific_P
 Robert_Marshall_Axelrod	Award_received	Presidential_Medal_Of_Science	T_76
 Eduardo_Gonçalves_De_Oliveira	Member_of_sports_team	Spvgg_Fürth	T_76
 Luciano_Henrique	Member_of_sports_team	Santa_Cruz_(Football_Club)	T_76
-Sharon_Cuneta	Spouse	"Francis_""Kiko""_Pangilinan"	T_76
+Sharon_Cuneta	Spouse	Francis_Kiko_Pangilinan	T_76
 Grigoris_Makos	Member_of_sports_team	National_Football_Team_Of_Greece	T_76
 Ludvig_Hammer	Title_of_chess_person	Chess_Grand_Master	T_76
 Epinay-Sur-Orge	Located_in_the_administrative_territorial_entity	Essonne_(Département)	T_76
@@ -26564,14 +26564,14 @@ Perparim_Hetemaj	Member_of_sports_team	Finnish_Soccer_Team	T_76
 Nicole_Verlinich	Award_received	Angel_Carlyle	T_76
 Remlingen_(Niedersachsen)	Instance_of	Communes_Of_Germany	T_76
 Marco_Esposito	Member_of_sports_team	Pisa_Sc	T_76
-Martín_Montoya	Member_of_sports_team	"Fútbol_Club_Barcelona_""B"""	T_76
+Martín_Montoya	Member_of_sports_team	Fútbol_Club_Barcelona_B	T_76
 Rening	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_76
 Tiefenbach_Bei_Kaindorf	Instance_of	Municipality_(Austria)	T_76
 Settimo_Vittone	Located_in_the_administrative_territorial_entity	Torino_(Province)	T_76
 Reino_Hulandes	Member_of	Multilateral_Investment_Guarantee_Agency	T_76
 Vitalijs_Maksimenko	Member_of_sports_team	Skonto_Riga	T_76
 Paulo_Da_Silva_Barrios	Member_of_sports_team	Pachuca_(Football)	T_76
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Manchester_United_F._C.	T_76
+Robert_Robbie_Brady	Member_of_sports_team	Manchester_United_F._C.	T_76
 Abdul_Razak_(Footballer_Born_1992)	Member_of_sports_team	Brighton_&_Hove_Albion_Fc	T_76
 Trams_In_Avignon	Heritage_designation	Unesco_World_Heritage_Sites	T_76
 Sukuta-Pasu_Richard	Member_of_sports_team	Puntigamer_Sturm_Graz	T_76
@@ -26589,7 +26589,7 @@ Furtei	Located_in_the_administrative_territorial_entity	Medio_Campidano	T_76
 Montalto_Dora	Located_in_the_administrative_territorial_entity	Torino_(Province)	T_76
 Silver_Linings_Playbook	Nominated_for	Critics'_Choice_Movie_Award_For_Best_Comedy	T_76
 Finkielkraut	Country_of_citizenship	Iso_3166-1:Fr	T_76
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Republic_Of_Ireland_National_Football_Team	T_76
+Robert_Robbie_Brady	Member_of_sports_team	Republic_Of_Ireland_National_Football_Team	T_76
 David_Shire	Spouse	Didi_Kahn	T_76
 Calasetta	Located_in_the_administrative_territorial_entity	Carbonia-Iglesias	T_76
 Ben_Gordon_(Footballer_Born_1991)	Member_of_sports_team	1964–65_Kilmarnock_F.C._Season	T_76
@@ -26631,7 +26631,7 @@ Metzeresche	Located_in_the_administrative_territorial_entity	Moselle_(Départeme
 Blazhe_Ilijoski	Member_of_sports_team	Cfr_Bucuresti	T_76
 Bogdan_Mara	Member_of_sports_team	Fcm_Uta	T_76
 Azoudange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_76
-"Robert_William_""Rob""_Hulse"	Member_of_sports_team	Queens_Park_Rangers_F.C.	T_76
+Robert_William_Rob_Hulse	Member_of_sports_team	Queens_Park_Rangers_F.C.	T_76
 Murat_Duruer	Member_of_sports_team	Gençlerbirligi_Sk	T_76
 Andrei_Cordoş	Member_of_sports_team	Fotbal_Club_Vaslui	T_76
 Claudiu_Niculescu	Member_of_sports_team	U_Cluj	T_76
@@ -27105,7 +27105,7 @@ Manuel_Coppola	Member_of_sports_team	Empoli_F_C	T_76
 Bourgheim	Located_in_the_administrative_territorial_entity	Bas-Rhin_(Departement)	T_76
 Simone_Benedetti	Member_of_sports_team	Spezia_Calcio	T_76
 Lukas_Hinterseer	Member_of_sports_team	Fc_Lustenau_1907	T_76
-"Robert_William_""Rob""_Hulse"	Member_of_sports_team	Charlton_A.F.C.	T_76
+Robert_William_Rob_Hulse	Member_of_sports_team	Charlton_A.F.C.	T_76
 The_Niger	Instance_of	United_Nations_Member_States	T_76
 Cidimar	Member_of_sports_team	Vfr_Aalen	T_76
 Bergheim_France	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_76
@@ -27967,7 +27967,7 @@ Dániel_Tözsér	Member_of_sports_team	Rc_Genk	T_76
 Wolfsberg_Im_Schwarzautal	Located_in_the_administrative_territorial_entity	Bezirk_Leibnitz	T_76
 Daniel_Offenbacher	Member_of_sports_team	Fc_Magna_Wiener_Neustadt	T_76
 Soleminis	Located_in_the_administrative_territorial_entity	Province_Of_Cagliari	T_76
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Hull_City	T_76
+Robert_Robbie_Brady	Member_of_sports_team	Hull_City	T_76
 Brectouville	Instance_of	Communes_In_France	T_76
 Gabrovo_Bulgaria	Twinned_administrative_body	Чернигов	T_76
 Villers-La-Montagne	Located_in_the_administrative_territorial_entity	Meurthe-Et-Moselle	T_76
@@ -28109,7 +28109,7 @@ Lawrence_E._Page	Position_held	Administrating_Director	T_76
 Barst	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_76
 Alou_Diarra	Member_of_sports_team	L'Om	T_76
 Luis_Alberto_Suárez_Diaz	Member_of_sports_team	Nacional_Montevideo	T_76
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Republic_Of_Ireland_U-21	T_76
+Robert_Robbie_Brady	Member_of_sports_team	Republic_Of_Ireland_U-21	T_76
 Hargarten-Aux-Mines	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_76
 N14_Road_(France)	Located_in_the_administrative_territorial_entity	Sport_In_Paris	T_76
 Gonzalo_Jara	Member_of_sports_team	West_Bromwich_Albion_Football_Club	T_76
@@ -28521,7 +28521,7 @@ Reino_Hulandes	Instance_of	United_Nations_Member_States	T_76
 Louis_Laurent_Saha	Member_of_sports_team	Tottenham_Hotspur_Football_Club	T_76
 Hazel_Anne_Blears	Position_held	Uk_Mp	T_76
 Wayne_Swan	Position_held	Australian_Treasurer	T_76
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Hull_City	T_76
+Robert_Robbie_Brady	Member_of_sports_team	Hull_City	T_76
 Vrsaljko	Member_of_sports_team	Hrvatska_Nogometna_U-21_Reprezentacija	T_76
 Huttendorf	Located_in_the_administrative_territorial_entity	Bas-Rhin_(Departement)	T_76
 Royaume-Uni	Member_of	Eso.Org	T_76

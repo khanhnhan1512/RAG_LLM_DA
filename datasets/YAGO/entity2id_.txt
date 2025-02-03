@@ -247,7 +247,7 @@ New_York_Film_Critics_Circle_Award_For_Best_Actor	245
 Babett_Peter	246
 Germany_Women'S_National_Under-17_Football_Team	247
 Associated_Press_Nfl_Defensive_Player_Of_The_Year_Award	248
-"Mean"_Joe_Greene	249
+Mean_Joe_Greene	249
 Sncb_Class_12	250
 Belgie	251
 Vigny_Moselle	252
@@ -448,7 +448,7 @@ Francoise_De_Panafieu	446
 Deputy_(Legislator)	447
 Dymokury	448
 Austro_-_Hungary	449
-William_James_"Bill"_Murray	450
+William_James_Bill_Murray	450
 Mark_Twain_Prize_For_Humor	451
 Mała_Moskwa_(Little_Moscow)	452
 Polish_Academy_Award_For_Best_Sound	453
@@ -506,7 +506,7 @@ S.Agata_Li_Battiati	504
 Yehudi_Baron_Menuhin	505
 Confédération_Suisse	506
 San_Pietro_Clarenza	507
-"Babe"_Didrickson_Zaharias	508
+Babe_Didrickson_Zaharias	508
 Colorado_Women_Of_Achievement	509
 Christer_Fuglesang	510
 Nasa_Space_Flight_Medal	511
@@ -1274,7 +1274,7 @@ Sadali_Italy	1272
 Province_Of_Cagliari	1273
 Valerie_Lemercier	1274
 Jorge_Jesus	1275
-C.F_"Os_Beleneneses"	1276
+C.F_Os_Beleneneses	1276
 Lady_Merula_Salaman	1277
 Olivier_Award_For_Actor_Of_The_Year_In_A_New_Play	1278
 Tomáš_Garrigue_Masaryk_Order	1279
@@ -1466,7 +1466,7 @@ Anthony_Asquith_Award	1464
 William_Campbell	1465
 Bruce_Medal	1466
 Vladimir_Cosma	1467
-Eugene_William_"Gene"_Shue'''	1468
+Eugene_William_Gene_Shue	1468
 D._T._Suzuki	1469
 Lotzorai	1470
 Provincia_Dell'Ogliastra	1471
@@ -1653,7 +1653,7 @@ National_Inventors_Hall_Of_Fame	1651
 Harry_Redknapp/Comments	1652
 England_Under-19_National_Football_Team	1653
 Peter_Forgacs	1654
-William_Charles_"Bill"_Fitch	1655
+William_Charles_Bill_Fitch	1655
 Klein-Neusiedl	1656
 Hajji_Firuz_Tepe	1657
 Johneunited/Sandbox	1658
@@ -2239,7 +2239,7 @@ Arzte_Ohne_Grenzen	2237
 Lennonono_Grant_For_Peace	2238
 Kelme	2239
 Albigny-Sur-Saone	2240
-Francis_"Kiko"_Pangilinan	2241
+Francis_Kiko_Pangilinan	2241
 Sharon_Cuneta	2242
 David_Pizanti	2243
 Hapoel_Tel_Aviv_Football_Club	2244
@@ -2519,7 +2519,7 @@ René_Thom	2517
 Brouwer_Medal	2518
 Graţian_Sepi	2519
 U_Cluj	2520
-Love_And_War_(Neil_Young_Album_"Le_Noise")	2521
+Love_And_War_(Neil_Young_Album_Le_Noise)	2521
 Juno_Award_For_Adult_Alternative_Album_Of_The_Year	2522
 Ferdinand_E._Marcos	2523
 Senate_President_Of_The_Philippines	2524
@@ -2573,7 +2573,7 @@ Free_Democratic_Party_(Germany	2571
 Vincenzo_Camilleri	2572
 Italy_National_Under-16_Football_Team	2573
 Angela_Y_Davis	2574
-Jubilee_Medal_"In_Commemoration_Of_The_100Th_Anniversary_Since_The_Birth_Of_Vladimir_Il'Ich_Lenin"	2575
+Jubilee_Medal_In_Commemoration_Of_The_100Th_Anniversary_Since_The_Birth_Of_Vladimir_Il'Ich_Lenin	2575
 Guusje_Ter_Horst	2576
 Labour_Party_(Netherlands)	2577
 Gunnar_Myrdal	2578
@@ -3172,7 +3172,7 @@ Gyldendals_Legat	3170
 Mazzarri	3171
 Empoli_F_C	3172
 Samara_Governorate	3173
-Geoffrey_Malcolm_"Geoff"_Horsfield	3174
+Geoffrey_Malcolm_Geoff_Horsfield	3174
 Fortey_R.	3175
 Lapworth_Medal	3176
 Bet_Centric_Award	3177
@@ -3635,7 +3635,7 @@ Minister_Of_Internal_Affairs_And_Communications_(Japan)	3633
 Teófilo_Gutiérrez	3634
 Trabzonspor	3635
 The_Color_Of_Night	3636
-Razzie_Award_For_Worst_"Original"_Song	3637
+Razzie_Award_For_Worst_Original_Song	3637
 Eemile_Zola	3638
 Giuseppe_Zappella	3639
 Urawa_Reds	3640
@@ -3862,7 +3862,7 @@ Everson_Pereira_Da_Silva	3860
 Xamax_Neuchâtel	3861
 Cordoba_(City_Spain)	3862
 Ramon_Maria_Calderé	3863
-Fútbol_Club_Barcelona_"B"	3864
+Fútbol_Club_Barcelona_B	3864
 Illange	3865
 Honestidad_Brutal	3866
 Latin_Grammy_Award_For_Best_Rock_Song	3867
@@ -3912,7 +3912,7 @@ Noh_Jung-Yoon	3910
 Cerezo_Osaka	3911
 Marijan_Kovačević	3912
 Ismael_Bouzid	3913
-Charles_"Charlie"_Mccreevy	3914
+Charles_Charlie_Mccreevy	3914
 List_Of_Irish_Finance_Ministers	3915
 American_Music_Award_For_Favorite_Country_Female_Artist	3916
 Millery_Meurthe-Et-Moselle	3917
@@ -4140,7 +4140,7 @@ United_Stated	4138
 The_Royal_Swedish_Academy_Of_Sciences	4139
 Zoltán_Harsányi	4140
 Slovak_Under-21_Football_Squad	4141
-Vincent_Peter_"Vinnie"_Jones	4142
+Vincent_Peter_Vinnie_Jones	4142
 Val-De-Bride	4143
 Patrick_Joseph_Healy	4144
 Johnson_Macaba	4145
@@ -4242,7 +4242,7 @@ British_Academy_Television_Award_For_Best_Actor_2000-2019	4240
 Andreas_Ottl	4241
 Pedro_Leon	4242
 Getafe_Fc	4243
-Anthony_Guy_"Tony"_Cascarino	4244
+Anthony_Guy_Tony_Cascarino	4244
 Football_Club_Sochaux-Montbeliard	4245
 Francismar_Carioca_De_Oliveira	4246
 America_Minas_Gerais	4247
@@ -5780,7 +5780,7 @@ Harald_Sverdrup_(Oceanographer)	5778
 David_Gaub_Mccullough	5779
 Biography_Or_Autobiography	5780
 Mauro_Amenta	5781
-Martin_Karl_"Max_Martin"_Sandberg	5782
+Martin_Karl_Max_Martin_Sandberg	5782
 Grammy_Award_For_Producer_Of_The_Year_Non-Classical	5783
 Naacp_Image_Award_For_Outstanding_Actress_In_A_Television_Movie_Mini-Series_Or_Dramatic_Special	5784
 Edmund_Hillary	5785
@@ -5838,7 +5838,7 @@ Clube_Atletico_Bragantino	5836
 Olivier_Sorlin	5837
 The_Birdcage	5838
 Souleyman_Sané	5839
-Robert_"Robbie"_Brady	5840
+Robert_Robbie_Brady	5840
 Thomas_Hickersberger	5841
 Siersthal	5842
 Iceland_Men'S_National_Football_Team	5843
@@ -5970,7 +5970,7 @@ U.D._Las_Palmas	5968
 Kashiwa_Reisoru	5969
 Arthur_Holly_Compton	5970
 Levoncourt_Haut-Rhin	5971
-Reginald_Wayne_"Reggie"_Miller	5972
+Reginald_Wayne_Reggie_Miller	5972
 Best_Moment_Espy_Award	5973
 Vasil_Khamutowski	5974
 Fc_Amkar_Perm	5975
@@ -6012,7 +6012,7 @@ Mengão	6010
 Pauline_Collins	6011
 British_Virgin_Islands_Fa	6012
 Cfu	6013
-Edward_Moore_"Ted"_Kennedy	6014
+Edward_Moore_Ted_Kennedy	6014
 Aguila_Azteca	6015
 Nottingham_Forest_F.C	6016
 Dabney_Coleman	6017
@@ -6503,7 +6503,7 @@ Amelécourt	6501
 Lks_Łódź	6502
 Friedrich_Miquel	6503
 Poniewicz	6504
-Дитяча_Книжкова_Премія_"Нестле"	6505
+Дитяча_Книжкова_Премія_Нестле	6505
 Adam_James_Hammill	6506
 Council_President_(Denmark)	6507
 Alice_Superiore	6508
@@ -6792,7 +6792,7 @@ Coas_(Pakistan)	6790
 Ferdinand_Vicomte_De_Lesseps	6791
 Earle_Christmas_Grafton_Page	6792
 Minister_For_Agriculture_And_Water_Resources_(Australia)	6793
-Sweyn_I_"Forkbeard"	6794
+Sweyn_I_Forkbeard	6794
 Norges_Konge	6795
 Elizabeth_Truss	6796
 Bruno_César	6797
@@ -7102,7 +7102,7 @@ East_German_Footballer_Of_The_Year	7100
 People'S_Commissar_Of_Defence	7101
 Olympiakos_Sfp	7102
 Valeri_Polyakov	7103
-Medal_"For_Merit_In_Space_Exploration"	7104
+Medal_For_Merit_In_Space_Exploration	7104
 Henrich_Benčík	7105
 Richard_Nuñez	7106
 Parolin	7107
@@ -8482,7 +8482,7 @@ Drama_Desk_Award_For_Outstanding_Actor_In_A_Musical	8480
 Rainer_Knizia	8481
 Deutscher_Spiele_Preis	8482
 Mateus_Alberto_Contreiras_Gonçalves	8483
-Patrick_James_"Pat"_Riley	8484
+Patrick_James_Pat_Riley	8484
 Walther_Meissner	8485
 Živko_Živković	8486
 Nika_Piliev	8487
@@ -8514,7 +8514,7 @@ Robert_Conquest	8512
 Dominique_Blanc	8513
 Юрий_Владимирович_Андропов	8514
 Aronson_Prize	8515
-Enrique_De_Castro_González_"Quini"	8516
+Enrique_De_Castro_González_Quini	8516
 Landean	8517
 Grammy_Award_For_Best_Opera_Recording	8518
 President_Of_Czech_Chamber_Of_Deputies	8519
@@ -9287,7 +9287,7 @@ Vebjorn_Rodal	9285
 Piano_Voting	9286
 Seiersberg	9287
 University_Of_Gratz	9288
-"La_Yoya"	9289
+La_Yoya	9289
 Víctor_Torres_Mestre	9290
 Freistaat_Oldenburg	9291
 Altar_Of_Heaven	9292
@@ -9477,7 +9477,7 @@ Grammy_Award_For_Best_Country_Collaboration_With_Vocals	9475
 Naacp_Image_Award_For_Outstanding_Comedy_Series	9476
 Schwarzautal	9477
 Bendt_Bendtsen	9478
-Robert_William_"Rob"_Hulse	9479
+Robert_William_Rob_Hulse	9479
 Les_Abrets	9480
 Independent_Spirit_Award_For_Best_International_Film	9481
 Nestor_Kirshner	9482
@@ -10582,7 +10582,7 @@ Ursula_Jeans	10580
 Robin_Irvine	10581
 Broadcast_Film_Critics_Award_For_Best_Young_Performer	10582
 Saint-Georges-De-Bohon	10583
-Maxwell_Davenport_"Max"_Taylor	10584
+Maxwell_Davenport_Max_Taylor	10584
 Uda_Hagen	10585
 Chaponnay	10586
 Heimersdorf	10587

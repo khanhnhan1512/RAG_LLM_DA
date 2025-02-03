@@ -247,7 +247,7 @@ New_York_Film_Critics_Circle_Award_For_Best_Actor
 Babett_Peter
 Germany_Women'S_National_Under-17_Football_Team
 Associated_Press_Nfl_Defensive_Player_Of_The_Year_Award
-"Mean"_Joe_Greene
+Mean_Joe_Greene
 Sncb_Class_12
 Belgie
 Vigny_Moselle
@@ -448,7 +448,7 @@ Francoise_De_Panafieu
 Deputy_(Legislator)
 Dymokury
 Austro_-_Hungary
-William_James_"Bill"_Murray
+William_James_Bill_Murray
 Mark_Twain_Prize_For_Humor
 Mała_Moskwa_(Little_Moscow)
 Polish_Academy_Award_For_Best_Sound
@@ -506,7 +506,7 @@ S.Agata_Li_Battiati
 Yehudi_Baron_Menuhin
 Confédération_Suisse
 San_Pietro_Clarenza
-"Babe"_Didrickson_Zaharias
+Babe_Didrickson_Zaharias
 Colorado_Women_Of_Achievement
 Christer_Fuglesang
 Nasa_Space_Flight_Medal
@@ -1274,7 +1274,7 @@ Sadali_Italy
 Province_Of_Cagliari
 Valerie_Lemercier
 Jorge_Jesus
-C.F_"Os_Beleneneses"
+C.F_Os_Beleneneses
 Lady_Merula_Salaman
 Olivier_Award_For_Actor_Of_The_Year_In_A_New_Play
 Tomáš_Garrigue_Masaryk_Order
@@ -1466,7 +1466,7 @@ Anthony_Asquith_Award
 William_Campbell
 Bruce_Medal
 Vladimir_Cosma
-Eugene_William_"Gene"_Shue'''
+Eugene_William_Gene_Shue
 D._T._Suzuki
 Lotzorai
 Provincia_Dell'Ogliastra
@@ -1653,7 +1653,7 @@ National_Inventors_Hall_Of_Fame
 Harry_Redknapp/Comments
 England_Under-19_National_Football_Team
 Peter_Forgacs
-William_Charles_"Bill"_Fitch
+William_Charles_Bill_Fitch
 Klein-Neusiedl
 Hajji_Firuz_Tepe
 Johneunited/Sandbox
@@ -2239,7 +2239,7 @@ Arzte_Ohne_Grenzen
 Lennonono_Grant_For_Peace
 Kelme
 Albigny-Sur-Saone
-Francis_"Kiko"_Pangilinan
+Francis_Kiko_Pangilinan
 Sharon_Cuneta
 David_Pizanti
 Hapoel_Tel_Aviv_Football_Club
@@ -2519,7 +2519,7 @@ René_Thom
 Brouwer_Medal
 Graţian_Sepi
 U_Cluj
-Love_And_War_(Neil_Young_Album_"Le_Noise")
+Love_And_War_(Neil_Young_Album_Le_Noise)
 Juno_Award_For_Adult_Alternative_Album_Of_The_Year
 Ferdinand_E._Marcos
 Senate_President_Of_The_Philippines
@@ -2573,7 +2573,7 @@ Free_Democratic_Party_(Germany
 Vincenzo_Camilleri
 Italy_National_Under-16_Football_Team
 Angela_Y_Davis
-Jubilee_Medal_"In_Commemoration_Of_The_100Th_Anniversary_Since_The_Birth_Of_Vladimir_Il'Ich_Lenin"
+Jubilee_Medal_In_Commemoration_Of_The_100Th_Anniversary_Since_The_Birth_Of_Vladimir_Il'Ich_Lenin
 Guusje_Ter_Horst
 Labour_Party_(Netherlands)
 Gunnar_Myrdal
@@ -3172,7 +3172,7 @@ Gyldendals_Legat
 Mazzarri
 Empoli_F_C
 Samara_Governorate
-Geoffrey_Malcolm_"Geoff"_Horsfield
+Geoffrey_Malcolm_Geoff_Horsfield
 Fortey_R.
 Lapworth_Medal
 Bet_Centric_Award
@@ -3635,7 +3635,7 @@ Minister_Of_Internal_Affairs_And_Communications_(Japan)
 Teófilo_Gutiérrez
 Trabzonspor
 The_Color_Of_Night
-Razzie_Award_For_Worst_"Original"_Song
+Razzie_Award_For_Worst_Original_Song
 Eemile_Zola
 Giuseppe_Zappella
 Urawa_Reds
@@ -3862,7 +3862,7 @@ Everson_Pereira_Da_Silva
 Xamax_Neuchâtel
 Cordoba_(City_Spain)
 Ramon_Maria_Calderé
-Fútbol_Club_Barcelona_"B"
+Fútbol_Club_Barcelona_B
 Illange
 Honestidad_Brutal
 Latin_Grammy_Award_For_Best_Rock_Song
@@ -3912,7 +3912,7 @@ Noh_Jung-Yoon
 Cerezo_Osaka
 Marijan_Kovačević
 Ismael_Bouzid
-Charles_"Charlie"_Mccreevy
+Charles_Charlie_Mccreevy
 List_Of_Irish_Finance_Ministers
 American_Music_Award_For_Favorite_Country_Female_Artist
 Millery_Meurthe-Et-Moselle
@@ -4140,7 +4140,7 @@ United_Stated
 The_Royal_Swedish_Academy_Of_Sciences
 Zoltán_Harsányi
 Slovak_Under-21_Football_Squad
-Vincent_Peter_"Vinnie"_Jones
+Vincent_Peter_Vinnie_Jones
 Val-De-Bride
 Patrick_Joseph_Healy
 Johnson_Macaba
@@ -4242,7 +4242,7 @@ British_Academy_Television_Award_For_Best_Actor_2000-2019
 Andreas_Ottl
 Pedro_Leon
 Getafe_Fc
-Anthony_Guy_"Tony"_Cascarino
+Anthony_Guy_Tony_Cascarino
 Football_Club_Sochaux-Montbeliard
 Francismar_Carioca_De_Oliveira
 America_Minas_Gerais
@@ -5780,7 +5780,7 @@ Harald_Sverdrup_(Oceanographer)
 David_Gaub_Mccullough
 Biography_Or_Autobiography
 Mauro_Amenta
-Martin_Karl_"Max_Martin"_Sandberg
+Martin_Karl_Max_Martin_Sandberg
 Grammy_Award_For_Producer_Of_The_Year_Non-Classical
 Naacp_Image_Award_For_Outstanding_Actress_In_A_Television_Movie_Mini-Series_Or_Dramatic_Special
 Edmund_Hillary
@@ -5838,7 +5838,7 @@ Clube_Atletico_Bragantino
 Olivier_Sorlin
 The_Birdcage
 Souleyman_Sané
-Robert_"Robbie"_Brady
+Robert_Robbie_Brady
 Thomas_Hickersberger
 Siersthal
 Iceland_Men'S_National_Football_Team
@@ -5970,7 +5970,7 @@ U.D._Las_Palmas
 Kashiwa_Reisoru
 Arthur_Holly_Compton
 Levoncourt_Haut-Rhin
-Reginald_Wayne_"Reggie"_Miller
+Reginald_Wayne_Reggie_Miller
 Best_Moment_Espy_Award
 Vasil_Khamutowski
 Fc_Amkar_Perm
@@ -6012,7 +6012,7 @@ Mengão
 Pauline_Collins
 British_Virgin_Islands_Fa
 Cfu
-Edward_Moore_"Ted"_Kennedy
+Edward_Moore_Ted_Kennedy
 Aguila_Azteca
 Nottingham_Forest_F.C
 Dabney_Coleman
@@ -6503,7 +6503,7 @@ Amelécourt
 Lks_Łódź
 Friedrich_Miquel
 Poniewicz
-Дитяча_Книжкова_Премія_"Нестле"
+Дитяча_Книжкова_Премія_Нестле
 Adam_James_Hammill
 Council_President_(Denmark)
 Alice_Superiore
@@ -6792,7 +6792,7 @@ Coas_(Pakistan)
 Ferdinand_Vicomte_De_Lesseps
 Earle_Christmas_Grafton_Page
 Minister_For_Agriculture_And_Water_Resources_(Australia)
-Sweyn_I_"Forkbeard"
+Sweyn_I_Forkbeard
 Norges_Konge
 Elizabeth_Truss
 Bruno_César
@@ -7102,7 +7102,7 @@ East_German_Footballer_Of_The_Year
 People'S_Commissar_Of_Defence
 Olympiakos_Sfp
 Valeri_Polyakov
-Medal_"For_Merit_In_Space_Exploration"
+Medal_For_Merit_In_Space_Exploration
 Henrich_Benčík
 Richard_Nuñez
 Parolin
@@ -8482,7 +8482,7 @@ Drama_Desk_Award_For_Outstanding_Actor_In_A_Musical
 Rainer_Knizia
 Deutscher_Spiele_Preis
 Mateus_Alberto_Contreiras_Gonçalves
-Patrick_James_"Pat"_Riley
+Patrick_James_Pat_Riley
 Walther_Meissner
 Živko_Živković
 Nika_Piliev
@@ -8514,7 +8514,7 @@ Robert_Conquest
 Dominique_Blanc
 Юрий_Владимирович_Андропов
 Aronson_Prize
-Enrique_De_Castro_González_"Quini"
+Enrique_De_Castro_González_Quini
 Landean
 Grammy_Award_For_Best_Opera_Recording
 President_Of_Czech_Chamber_Of_Deputies
@@ -9287,7 +9287,7 @@ Vebjorn_Rodal
 Piano_Voting
 Seiersberg
 University_Of_Gratz
-"La_Yoya"
+La_Yoya
 Víctor_Torres_Mestre
 Freistaat_Oldenburg
 Altar_Of_Heaven
@@ -9477,7 +9477,7 @@ Grammy_Award_For_Best_Country_Collaboration_With_Vocals
 Naacp_Image_Award_For_Outstanding_Comedy_Series
 Schwarzautal
 Bendt_Bendtsen
-Robert_William_"Rob"_Hulse
+Robert_William_Rob_Hulse
 Les_Abrets
 Independent_Spirit_Award_For_Best_International_Film
 Nestor_Kirshner
@@ -10582,7 +10582,7 @@ Ursula_Jeans
 Robin_Irvine
 Broadcast_Film_Critics_Award_For_Best_Young_Performer
 Saint-Georges-De-Bohon
-Maxwell_Davenport_"Max"_Taylor
+Maxwell_Davenport_Max_Taylor
 Uda_Hagen
 Chaponnay
 Heimersdorf

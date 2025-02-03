@@ -399,7 +399,7 @@ Kirchberg_Haut-Rhin	Located_in_the_administrative_territorial_entity	Upper_Alsat
 Avernes	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_77
 Kelme	Instance_of	City_(Kentucky)	T_77
 Nouveau-Rhone	Contains_administrative_territorial_entity	Albigny-Sur-Saone	T_77
-"Francis_""Kiko""_Pangilinan"	Spouse	Sharon_Cuneta	T_77
+Francis_Kiko_Pangilinan	Spouse	Sharon_Cuneta	T_77
 Seyssel_(Ain)	Located_in_the_administrative_territorial_entity	Canton_Of_Seyssel_(Ain)	T_77
 Algrange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_77
 Eurocorps	Country	Hellada	T_77
@@ -960,7 +960,7 @@ Alvaro_Luiz_Maior_De_Aquino	Member_of_sports_team	Clube_Atletico_Bragantino	T_77
 Milan_Mišůn	Member_of_sports_team	Fc_Dukla	T_77
 Saint_Charles_De_Percy	Instance_of	Communes_In_France	T_77
 Dietersdorf_Am_Gnasbach	Located_in_the_administrative_territorial_entity	Southeast_Styria	T_77
-Helgi_Valur_Daníelsson	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_77
+Helgi_Valur_Daníelsson	Member_of_sports_team	C.F_Os_Beleneneses	T_77
 Iso_3166-1:Fr	Contains_administrative_territorial_entity	Midi_Pyrenees	T_77
 Attendorf	Located_in_the_administrative_territorial_entity	Graz-Umgebung_(District)	T_77
 La_Boisse	Located_in_the_administrative_territorial_entity	Canton_Of_Montluel	T_77
@@ -1850,7 +1850,7 @@ Rudolf_Boltman	Member_of	Heidelberg_Academy_For_Sciences_And_Humanities	T_77
 Senator_Patrick_Leahy	Position_held	President_Pro_Tempore_Emeritus_Of_The_United_States_Senate	T_77
 Iso_3166-1:Fr	Member_of	Multilateral_Investment_Guarantee_Agency	T_77
 San_Germano_Chisone	Located_in_the_administrative_territorial_entity	Torino_(Province)	T_77
-Sharon_Cuneta	Spouse	"Francis_""Kiko""_Pangilinan"	T_77
+Sharon_Cuneta	Spouse	Francis_Kiko_Pangilinan	T_77
 Ludvig_Hammer	Title_of_chess_person	Chess_Grand_Master	T_77
 Matías_Vitkieviez	Member_of_sports_team	Fussballclub_St._Gallen_1879	T_77
 Epinay-Sur-Orge	Located_in_the_administrative_territorial_entity	Essonne_(Département)	T_77
@@ -2874,7 +2874,7 @@ Luciano_Zauri	Member_of_sports_team	Pescara	T_77
 Meyong	Member_of_sports_team	V._Setubal	T_77
 Ermont	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_77
 Aaron_Staton	Nominated_for	Screen_Actors_Guild_Award_For_Outstanding_Performance_By_An_Ensemble_In_A_Drama_Series	T_77
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Hull_City	T_77
+Robert_Robbie_Brady	Member_of_sports_team	Hull_City	T_77
 Andre_Vingt_Trois	Position_held	Cardinal_(The_Roman_Catholic_Church)	T_77
 Mirco_Born	Member_of_sports_team	Football_Club_Twente	T_77
 Pak_Kwang-Ryong	Member_of_sports_team	Ac_Bellinzona	T_77
@@ -3032,7 +3032,7 @@ Tiefenbach_Bei_Kaindorf	Instance_of	Municipality_(Austria)	T_77
 Settimo_Vittone	Located_in_the_administrative_territorial_entity	Torino_(Province)	T_77
 Reino_Hulandes	Member_of	Multilateral_Investment_Guarantee_Agency	T_77
 Paulo_Da_Silva_Barrios	Member_of_sports_team	Pachuca_(Football)	T_77
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Manchester_United_F._C.	T_77
+Robert_Robbie_Brady	Member_of_sports_team	Manchester_United_F._C.	T_77
 Trams_In_Avignon	Heritage_designation	Unesco_World_Heritage_Sites	T_77
 Sukuta-Pasu_Richard	Member_of_sports_team	Puntigamer_Sturm_Graz	T_77
 San_Pier_Niceto	Located_in_the_administrative_territorial_entity	Provincia_Di_Messina	T_77
@@ -3050,7 +3050,7 @@ Milan_Kundera	Residence	Iso_3166-1:Fr	T_77
 Furtei	Located_in_the_administrative_territorial_entity	Medio_Campidano	T_77
 Montalto_Dora	Located_in_the_administrative_territorial_entity	Torino_(Province)	T_77
 Finkielkraut	Country_of_citizenship	Iso_3166-1:Fr	T_77
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Republic_Of_Ireland_National_Football_Team	T_77
+Robert_Robbie_Brady	Member_of_sports_team	Republic_Of_Ireland_National_Football_Team	T_77
 David_Shire	Spouse	Didi_Kahn	T_77
 Calasetta	Located_in_the_administrative_territorial_entity	Carbonia-Iglesias	T_77
 Neuss	Twinned_administrative_body	Rijeka_Croatia	T_77
@@ -3089,7 +3089,7 @@ Lääne_Maakond	Country	Republic_Of_Estonia	T_77
 Jan_Assmann	Member_of	Heidelberg_Academy_For_Sciences_And_Humanities	T_77
 Metzeresche	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_77
 Azoudange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_77
-"Robert_William_""Rob""_Hulse"	Member_of_sports_team	Queens_Park_Rangers_F.C.	T_77
+Robert_William_Rob_Hulse	Member_of_sports_team	Queens_Park_Rangers_F.C.	T_77
 Un/Locode:Frmrs	Award_received	European_City_Of_Culture	T_77
 George_Boyd_(Footballer)	Member_of_sports_team	Hull_City	T_77
 Andrei_Cordoş	Member_of_sports_team	Fotbal_Club_Vaslui	T_77
@@ -3549,7 +3549,7 @@ Pulnoy	Located_in_the_administrative_territorial_entity	Meurthe-Et-Moselle	T_77
 Craig_Mccracken	Spouse	Medusa_(Film)	T_77
 Bourgheim	Located_in_the_administrative_territorial_entity	Bas-Rhin_(Departement)	T_77
 Simone_Benedetti	Member_of_sports_team	Spezia_Calcio	T_77
-"Robert_William_""Rob""_Hulse"	Member_of_sports_team	Charlton_A.F.C.	T_77
+Robert_William_Rob_Hulse	Member_of_sports_team	Charlton_A.F.C.	T_77
 The_Niger	Instance_of	United_Nations_Member_States	T_77
 Cidimar	Member_of_sports_team	Vfr_Aalen	T_77
 Bergheim_France	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_77
@@ -4509,7 +4509,7 @@ Lawrence_E._Page	Position_held	Administrating_Director	T_77
 Barst	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_77
 Luis_Alberto_Suárez_Diaz	Member_of_sports_team	Nacional_Montevideo	T_77
 Cha_Doo-Ri	Member_of_sports_team	Anyang_Lg_Cheetahs	T_77
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Republic_Of_Ireland_U-21	T_77
+Robert_Robbie_Brady	Member_of_sports_team	Republic_Of_Ireland_U-21	T_77
 Poisk_Module	Significant_event	Docking_(Spacecraft)	T_77
 Hargarten-Aux-Mines	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_77
 N14_Road_(France)	Located_in_the_administrative_territorial_entity	Sport_In_Paris	T_77
@@ -4882,7 +4882,7 @@ Hazel_Anne_Blears	Position_held	Uk_Mp	T_77
 Marco_Fortuné	Member_of_sports_team	Wigan_Athletic_Fc	T_77
 Taner_Yalcin	Member_of_sports_team	Kayserispor	T_77
 Wayne_Swan	Position_held	Australian_Treasurer	T_77
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Hull_City	T_77
+Robert_Robbie_Brady	Member_of_sports_team	Hull_City	T_77
 Vrsaljko	Member_of_sports_team	Hrvatska_Nogometna_U-21_Reprezentacija	T_77
 Huttendorf	Located_in_the_administrative_territorial_entity	Bas-Rhin_(Departement)	T_77
 Royaume-Uni	Member_of	Eso.Org	T_77
@@ -5287,7 +5287,7 @@ Juergen_Colin	Member_of_sports_team	Hapoel_Tel_Aviv_Football_Club	T_77
 Emiliano_Dudar	Member_of_sports_team	Fc_Chiasso	T_77
 Bzhezinsky	Country_of_citizenship	United_Stated	T_77
 Nurri	Located_in_the_administrative_territorial_entity	Province_Of_Cagliari	T_77
-"Robert_William_""Rob""_Hulse"	Member_of_sports_team	Milwall_Fc	T_77
+Robert_William_Rob_Hulse	Member_of_sports_team	Milwall_Fc	T_77
 Rostislaw_Kaischew	Member_of	Leopoldina_Academy	T_77
 Andreas_Granskov_Hansen	Member_of_sports_team	Lyngby_Boldklub	T_77
 Pakistani_Nation-State	Member_of	Banque_Internationale_Pour_La_Reconstruction_Et_Le_Développement	T_77
@@ -5708,7 +5708,7 @@ The_Grandmasters	Award_received	Hong_Kong_Film_Awards_For_Best_Actress	T_78
 Avernes	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_78
 Kelme	Instance_of	City_(Kentucky)	T_78
 Nouveau-Rhone	Contains_administrative_territorial_entity	Albigny-Sur-Saone	T_78
-"Francis_""Kiko""_Pangilinan"	Spouse	Sharon_Cuneta	T_78
+Francis_Kiko_Pangilinan	Spouse	Sharon_Cuneta	T_78
 One_Chance_To_Dance	Award_received	People'S_Choice_Award_For_Favorite_Band	T_78
 Seyssel_(Ain)	Located_in_the_administrative_territorial_entity	Canton_Of_Seyssel_(Ain)	T_78
 Phil_Hogan	Position_held	European_Commissioner_For_Agriculture_And_Rural_Development	T_78
@@ -6236,7 +6236,7 @@ Guillermo_Garcia_Gonzales	Title_of_chess_person	Chess_Grand_Master	T_78
 Milan_Mišůn	Member_of_sports_team	Fc_Dukla	T_78
 Saint_Charles_De_Percy	Instance_of	Communes_In_France	T_78
 Dietersdorf_Am_Gnasbach	Located_in_the_administrative_territorial_entity	Southeast_Styria	T_78
-Helgi_Valur_Daníelsson	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_78
+Helgi_Valur_Daníelsson	Member_of_sports_team	C.F_Os_Beleneneses	T_78
 Iso_3166-1:Fr	Contains_administrative_territorial_entity	Midi_Pyrenees	T_78
 Attendorf	Located_in_the_administrative_territorial_entity	Graz-Umgebung_(District)	T_78
 La_Boisse	Located_in_the_administrative_territorial_entity	Canton_Of_Montluel	T_78
@@ -7094,7 +7094,7 @@ Senator_Patrick_Leahy	Position_held	President_Pro_Tempore_Emeritus_Of_The_United
 Iso_3166-1:Fr	Member_of	Multilateral_Investment_Guarantee_Agency	T_78
 San_Germano_Chisone	Located_in_the_administrative_territorial_entity	Torino_(Province)	T_78
 Nathan_Kabasele	Member_of_sports_team	Rsc_Anderlechtois	T_78
-Sharon_Cuneta	Spouse	"Francis_""Kiko""_Pangilinan"	T_78
+Sharon_Cuneta	Spouse	Francis_Kiko_Pangilinan	T_78
 Ludvig_Hammer	Title_of_chess_person	Chess_Grand_Master	T_78
 Epinay-Sur-Orge	Located_in_the_administrative_territorial_entity	Essonne_(Département)	T_78
 Maria_Lanzendorf	Located_in_the_administrative_territorial_entity	Wien-Umgebung	T_78
@@ -8087,7 +8087,7 @@ Māoria	Member_of	United_Nations	T_78
 Assemini	Located_in_the_administrative_territorial_entity	Province_Of_Cagliari	T_78
 Luciano_Zauri	Member_of_sports_team	Pescara	T_78
 Ermont	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_78
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Hull_City	T_78
+Robert_Robbie_Brady	Member_of_sports_team	Hull_City	T_78
 Francis_Dickoh	Member_of_sports_team	Midtjylland_Fc	T_78
 Andre_Vingt_Trois	Position_held	Cardinal_(The_Roman_Catholic_Church)	T_78
 Mirco_Born	Member_of_sports_team	Football_Club_Twente	T_78
@@ -8245,7 +8245,7 @@ Milan_Kundera	Residence	Iso_3166-1:Fr	T_78
 Furtei	Located_in_the_administrative_territorial_entity	Medio_Campidano	T_78
 Montalto_Dora	Located_in_the_administrative_territorial_entity	Torino_(Province)	T_78
 Finkielkraut	Country_of_citizenship	Iso_3166-1:Fr	T_78
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Republic_Of_Ireland_National_Football_Team	T_78
+Robert_Robbie_Brady	Member_of_sports_team	Republic_Of_Ireland_National_Football_Team	T_78
 David_Shire	Spouse	Didi_Kahn	T_78
 Calasetta	Located_in_the_administrative_territorial_entity	Carbonia-Iglesias	T_78
 Neuss	Twinned_administrative_body	Rijeka_Croatia	T_78
@@ -9625,7 +9625,7 @@ Barst	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_
 Anna_Netrebko	Award_received	Echo_Klassik	T_78
 Luis_Alberto_Suárez_Diaz	Member_of_sports_team	Nacional_Montevideo	T_78
 Cha_Doo-Ri	Member_of_sports_team	Anyang_Lg_Cheetahs	T_78
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Republic_Of_Ireland_U-21	T_78
+Robert_Robbie_Brady	Member_of_sports_team	Republic_Of_Ireland_U-21	T_78
 Poisk_Module	Significant_event	Docking_(Spacecraft)	T_78
 Hargarten-Aux-Mines	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_78
 Carlos_Edwards	Member_of_sports_team	Milwall_Fc	T_78
@@ -10766,7 +10766,7 @@ Kirchberg_Haut-Rhin	Located_in_the_administrative_territorial_entity	Upper_Alsat
 Avernes	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_79
 Kelme	Instance_of	City_(Kentucky)	T_79
 Nouveau-Rhone	Contains_administrative_territorial_entity	Albigny-Sur-Saone	T_79
-"Francis_""Kiko""_Pangilinan"	Spouse	Sharon_Cuneta	T_79
+Francis_Kiko_Pangilinan	Spouse	Sharon_Cuneta	T_79
 Seyssel_(Ain)	Located_in_the_administrative_territorial_entity	Canton_Of_Seyssel_(Ain)	T_79
 Phil_Hogan	Position_held	European_Commissioner_For_Agriculture_And_Rural_Development	T_79
 Algrange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_79
@@ -11212,7 +11212,7 @@ South-West_Nigeria	Member_of	Banque_Internationale_Pour_La_Reconstruction_Et_Le_
 Arnouville-Lès-Gonesse	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_79
 Deniz_Yılmaz	Member_of_sports_team	Trabzonspor	T_79
 Casalborgone	Located_in_the_administrative_territorial_entity	Metropolitan_City_Of_Turin	T_79
-"Martin_Karl_""Max_Martin""_Sandberg"	Award_received	Grammy_Award_For_Producer_Of_The_Year_Non-Classical	T_79
+Martin_Karl_Max_Martin_Sandberg	Award_received	Grammy_Award_For_Producer_Of_The_Year_Non-Classical	T_79
 Edmund_Hillary	Member_of	Order_Of_New_Zealand	T_79
 Bori_Gabor	Member_of_sports_team	Diosgyori_Vtk_Bfc	T_79
 Catholics_In_Sumy	Twinned_administrative_body	Vraca_Vratza	T_79
@@ -11806,7 +11806,7 @@ David_Goodwillie	Member_of_sports_team	Angus_The_Bull	T_79
 Isernhagen	Country	Germanz	T_79
 Uckange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_79
 Moskva	Country	Оросын_Холбооны_Улс	T_79
-Carlos_Jorge_Neto_Martins	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_79
+Carlos_Jorge_Neto_Martins	Member_of_sports_team	C.F_Os_Beleneneses	T_79
 Monastery_Of_Gracanica	Heritage_designation	Unesco_World_Heritage_Sites	T_79
 Crehange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_79
 Military_Of_Liechtenstein	Member_of	Helsinki_Protocol	T_79
@@ -12020,7 +12020,7 @@ Iso_3166-1:Fr	Member_of	Multilateral_Investment_Guarantee_Agency	T_79
 Alen_Stevanović	Member_of_sports_team	Spezia_Calcio	T_79
 Nathan_Kabasele	Member_of_sports_team	Rsc_Anderlechtois	T_79
 Hilary_Benn	Position_held	Shadow_Secretary_Of_State_For_Foreign_Affairs	T_79
-Sharon_Cuneta	Spouse	"Francis_""Kiko""_Pangilinan"	T_79
+Sharon_Cuneta	Spouse	Francis_Kiko_Pangilinan	T_79
 Fougères	Located_in_the_administrative_territorial_entity	Canton_Of_Fougères-2	T_79
 Ludvig_Hammer	Title_of_chess_person	Chess_Grand_Master	T_79
 Epinay-Sur-Orge	Located_in_the_administrative_territorial_entity	Essonne_(Département)	T_79
@@ -12948,7 +12948,7 @@ Māoria	Member_of	United_Nations	T_79
 Assemini	Located_in_the_administrative_territorial_entity	Province_Of_Cagliari	T_79
 Montrevel-En-Bresse	Located_in_the_administrative_territorial_entity	Canton_Of_Attignat	T_79
 Ermont	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_79
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Hull_City	T_79
+Robert_Robbie_Brady	Member_of_sports_team	Hull_City	T_79
 Francis_Dickoh	Member_of_sports_team	Midtjylland_Fc	T_79
 Andre_Vingt_Trois	Position_held	Cardinal_(The_Roman_Catholic_Church)	T_79
 Fredrik_Sorensen	Member_of_sports_team	1._Fc_Koln	T_79
@@ -13093,7 +13093,7 @@ Belize	Member_of	The_Caribbean_Community	T_79
 Milan_Kundera	Residence	Iso_3166-1:Fr	T_79
 Furtei	Located_in_the_administrative_territorial_entity	Medio_Campidano	T_79
 Finkielkraut	Country_of_citizenship	Iso_3166-1:Fr	T_79
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Republic_Of_Ireland_National_Football_Team	T_79
+Robert_Robbie_Brady	Member_of_sports_team	Republic_Of_Ireland_National_Football_Team	T_79
 David_Shire	Spouse	Didi_Kahn	T_79
 Calasetta	Located_in_the_administrative_territorial_entity	Carbonia-Iglesias	T_79
 Neuss	Twinned_administrative_body	Rijeka_Croatia	T_79
@@ -14335,7 +14335,7 @@ Coume	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_
 Rossini_Jonathan	Member_of_sports_team	Savona_1907_F._B._C.	T_79
 Refugees_In_South_Sudan	Member_of	International_Development_Association	T_79
 Solomon_Islands/Military	Member_of	United_Nations	T_79
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Norwich_City_Fc	T_79
+Robert_Robbie_Brady	Member_of_sports_team	Norwich_City_Fc	T_79
 Emmanuel_Rivière	Member_of_sports_team	Newcastle_United_F.C.	T_79
 Luke_Steele_(Footballer)	Member_of_sports_team	Panagiotis_Vlachos	T_79
 Zimmerbach	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_79
@@ -14387,7 +14387,7 @@ Clément_Grenier	Member_of_sports_team	France_National_Football_Team_Kits	T_79
 Inge_Höger	Member_of_political_party	Linkspartei	T_79
 As-Sumal	Member_of	Banque_Internationale_Pour_La_Reconstruction_Et_Le_Développement	T_79
 Wieda	Located_in_the_administrative_territorial_entity	Osterode_District	T_79
-António_Leonel_Vilar_Nogueira_Sousa	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_79
+António_Leonel_Vilar_Nogueira_Sousa	Member_of_sports_team	C.F_Os_Beleneneses	T_79
 Alexis_Vidal	Member_of_sports_team	Sevilla_Fc	T_79
 Ezequiel_Oscar_Scarione	Member_of_sports_team	Kasımpaşa_S.K.	T_79
 Zimming	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_79
@@ -15049,7 +15049,7 @@ Hamburg_Altona	Located_in_the_administrative_territorial_entity	The_Free_And_Han
 Yordan_Minev	Member_of_sports_team	Bulgaria_Football_Team	T_80
 Montalto_Dora	Located_in_the_administrative_territorial_entity	Metropolitan_City_Of_Turin	T_80
 Propata	Located_in_the_administrative_territorial_entity	Metropolitan_City_Of_Genoa	T_80
-"William_James_""Bill""_Murray"	Award_received	Mark_Twain_Prize_For_Humor	T_80
+William_James_Bill_Murray	Award_received	Mark_Twain_Prize_For_Humor	T_80
 Cona_Veneto	Located_in_the_administrative_territorial_entity	Metropolitan_City_Of_Venice	T_80
 Quily	Located_in_the_administrative_territorial_entity	Canton_Of_Moréac	T_80
 American_Somoa_Fc	Member_of	Oceanian_Football_Confederation	T_80
@@ -15366,7 +15366,7 @@ Eaubonne	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_80
 Kirchberg_Haut-Rhin	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_80
 Avernes	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_80
 Kelme	Instance_of	City_(Kentucky)	T_80
-"Francis_""Kiko""_Pangilinan"	Spouse	Sharon_Cuneta	T_80
+Francis_Kiko_Pangilinan	Spouse	Sharon_Cuneta	T_80
 Phil_Hogan	Position_held	European_Commissioner_For_Agriculture_And_Rural_Development	T_80
 Algrange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_80
 Eurocorps	Country	Hellada	T_80
@@ -16012,7 +16012,7 @@ Ferdinand_Of_Bavaria	Position_held	Kurfiřt	T_80
 History_Of_Bender_Moldova	Located_in_the_administrative_territorial_entity	Moldowa	T_80
 Ochey	Located_in_the_administrative_territorial_entity	Meurthe-Et-Moselle	T_80
 Luis_Leloir_Aguirre	Member_of	National_Institute_Of_Sciences_And_Arts	T_80
-"Martin_Karl_""Max_Martin""_Sandberg"	Award_received	Polar_Music_Prize	T_80
+Martin_Karl_Max_Martin_Sandberg	Award_received	Polar_Music_Prize	T_80
 Albin_Kenneth_Dahrup_Zohore	Member_of_sports_team	K_V_Kortrijk	T_80
 Paulo_Da_Silva_Barrios	Member_of_sports_team	Diablos_Rojos	T_80
 Budapest_(Hungary)	Twinned_administrative_body	New_York_City	T_80
@@ -16293,7 +16293,7 @@ David_Goodwillie	Member_of_sports_team	Angus_The_Bull	T_80
 Isernhagen	Country	Germanz	T_80
 Uckange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_80
 Moskva	Country	Оросын_Холбооны_Улс	T_80
-Carlos_Jorge_Neto_Martins	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_80
+Carlos_Jorge_Neto_Martins	Member_of_sports_team	C.F_Os_Beleneneses	T_80
 Monastery_Of_Gracanica	Heritage_designation	Unesco_World_Heritage_Sites	T_80
 Crehange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_80
 Military_Of_Liechtenstein	Member_of	Helsinki_Protocol	T_80
@@ -16481,7 +16481,7 @@ Cote_D'Lvoire	Member_of	Banque_Internationale_Pour_La_Reconstruction_Et_Le_Déve
 Rudolf_Boltman	Member_of	Heidelberg_Academy_For_Sciences_And_Humanities	T_80
 Iso_3166-1:Fr	Member_of	Multilateral_Investment_Guarantee_Agency	T_80
 Hilary_Benn	Position_held	Shadow_Secretary_Of_State_For_Foreign_Affairs	T_80
-Sharon_Cuneta	Spouse	"Francis_""Kiko""_Pangilinan"	T_80
+Sharon_Cuneta	Spouse	Francis_Kiko_Pangilinan	T_80
 Fougères	Located_in_the_administrative_territorial_entity	Canton_Of_Fougères-2	T_80
 Ludvig_Hammer	Title_of_chess_person	Chess_Grand_Master	T_80
 Department_Of_Somme	Located_in_the_administrative_territorial_entity	Nord-Pas-De-Calais-Picardie	T_80
@@ -17408,7 +17408,7 @@ Belize	Member_of	The_Caribbean_Community	T_80
 Milan_Kundera	Residence	Iso_3166-1:Fr	T_80
 Furtei	Located_in_the_administrative_territorial_entity	Medio_Campidano	T_80
 Finkielkraut	Country_of_citizenship	Iso_3166-1:Fr	T_80
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Republic_Of_Ireland_National_Football_Team	T_80
+Robert_Robbie_Brady	Member_of_sports_team	Republic_Of_Ireland_National_Football_Team	T_80
 David_Shire	Spouse	Didi_Kahn	T_80
 Calasetta	Located_in_the_administrative_territorial_entity	Carbonia-Iglesias	T_80
 Neuss	Twinned_administrative_body	Rijeka_Croatia	T_80
@@ -18498,7 +18498,7 @@ Coume	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_
 Rossini_Jonathan	Member_of_sports_team	Savona_1907_F._B._C.	T_80
 Refugees_In_South_Sudan	Member_of	International_Development_Association	T_80
 Solomon_Islands/Military	Member_of	United_Nations	T_80
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Norwich_City_Fc	T_80
+Robert_Robbie_Brady	Member_of_sports_team	Norwich_City_Fc	T_80
 Emmanuel_Rivière	Member_of_sports_team	Newcastle_United_F.C.	T_80
 Luke_Steele_(Footballer)	Member_of_sports_team	Panagiotis_Vlachos	T_80
 Zimmerbach	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_80
@@ -18545,7 +18545,7 @@ Clément_Grenier	Member_of_sports_team	France_National_Football_Team_Kits	T_80
 Inge_Höger	Member_of_political_party	Linkspartei	T_80
 As-Sumal	Member_of	Banque_Internationale_Pour_La_Reconstruction_Et_Le_Développement	T_80
 Wieda	Located_in_the_administrative_territorial_entity	Osterode_District	T_80
-António_Leonel_Vilar_Nogueira_Sousa	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_80
+António_Leonel_Vilar_Nogueira_Sousa	Member_of_sports_team	C.F_Os_Beleneneses	T_80
 Ezequiel_Oscar_Scarione	Member_of_sports_team	Kasımpaşa_S.K.	T_80
 Zimming	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_80
 Ungvar	Located_in_the_administrative_territorial_entity	Cities_In_Zakarpattia_Oblast	T_80
@@ -19411,7 +19411,7 @@ Eaubonne	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_81
 Kirchberg_Haut-Rhin	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_81
 Avernes	Located_in_the_administrative_territorial_entity	Val_D'Oise	T_81
 Kelme	Instance_of	City_(Kentucky)	T_81
-"Francis_""Kiko""_Pangilinan"	Spouse	Sharon_Cuneta	T_81
+Francis_Kiko_Pangilinan	Spouse	Sharon_Cuneta	T_81
 Phil_Hogan	Position_held	European_Commissioner_For_Agriculture_And_Rural_Development	T_81
 Algrange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_81
 Eurocorps	Country	Hellada	T_81
@@ -20249,7 +20249,7 @@ David_Goodwillie	Member_of_sports_team	Angus_The_Bull	T_81
 Isernhagen	Country	Germanz	T_81
 Uckange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_81
 Moskva	Country	Оросын_Холбооны_Улс	T_81
-Carlos_Jorge_Neto_Martins	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_81
+Carlos_Jorge_Neto_Martins	Member_of_sports_team	C.F_Os_Beleneneses	T_81
 Monastery_Of_Gracanica	Heritage_designation	Unesco_World_Heritage_Sites	T_81
 Crehange	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_81
 Military_Of_Liechtenstein	Member_of	Helsinki_Protocol	T_81
@@ -20415,7 +20415,7 @@ Christopher_Drazan	Member_of_sports_team	Austria_National_Football_Team	T_81
 Cote_D'Lvoire	Member_of	Banque_Internationale_Pour_La_Reconstruction_Et_Le_Développement	T_81
 Rudolf_Boltman	Member_of	Heidelberg_Academy_For_Sciences_And_Humanities	T_81
 Iso_3166-1:Fr	Member_of	Multilateral_Investment_Guarantee_Agency	T_81
-Sharon_Cuneta	Spouse	"Francis_""Kiko""_Pangilinan"	T_81
+Sharon_Cuneta	Spouse	Francis_Kiko_Pangilinan	T_81
 Fougères	Located_in_the_administrative_territorial_entity	Canton_Of_Fougères-2	T_81
 Ludvig_Hammer	Title_of_chess_person	Chess_Grand_Master	T_81
 Department_Of_Somme	Located_in_the_administrative_territorial_entity	Nord-Pas-De-Calais-Picardie	T_81
@@ -21254,7 +21254,7 @@ Jérémie_Bréchet	Member_of_sports_team	Gazelec_Fco_Ajaccio	T_81
 Belize	Member_of	The_Caribbean_Community	T_81
 Milan_Kundera	Residence	Iso_3166-1:Fr	T_81
 Finkielkraut	Country_of_citizenship	Iso_3166-1:Fr	T_81
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Republic_Of_Ireland_National_Football_Team	T_81
+Robert_Robbie_Brady	Member_of_sports_team	Republic_Of_Ireland_National_Football_Team	T_81
 David_Shire	Spouse	Didi_Kahn	T_81
 Neuss	Twinned_administrative_body	Rijeka_Croatia	T_81
 Miroslav_Barčík	Member_of_sports_team	Zsolnai_Testgyakorlók_Köre	T_81
@@ -21750,7 +21750,7 @@ Climate_Of_Nauru	Member_of	United_Nations	T_81
 Germanus_Brixius	Position_held	Lay_Canon	T_81
 Richard_Chartres_Baron_Chartres	Position_held	Bishop_Of_London_And_Westminster	T_81
 B.B._King'S_Blues_Club	Award_received	Living_Legend_Medal	T_81
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Burnley_Fc	T_81
+Robert_Robbie_Brady	Member_of_sports_team	Burnley_Fc	T_81
 Ronchin	Located_in_the_administrative_territorial_entity	Canton_Of_Lille-4	T_81
 Auditorium_Theatre_Chicago	Heritage_designation	List_Of_Landmarks_In_Chicago	T_81
 Volyn_Region	Located_in_the_administrative_territorial_entity	Ucrania	T_81
@@ -22249,7 +22249,7 @@ Coume	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_
 Rossini_Jonathan	Member_of_sports_team	Savona_1907_F._B._C.	T_81
 Refugees_In_South_Sudan	Member_of	International_Development_Association	T_81
 Solomon_Islands/Military	Member_of	United_Nations	T_81
-"Robert_""Robbie""_Brady"	Member_of_sports_team	Norwich_City_Fc	T_81
+Robert_Robbie_Brady	Member_of_sports_team	Norwich_City_Fc	T_81
 Emmanuel_Rivière	Member_of_sports_team	Newcastle_United_F.C.	T_81
 Luke_Steele_(Footballer)	Member_of_sports_team	Panagiotis_Vlachos	T_81
 Zimmerbach	Located_in_the_administrative_territorial_entity	Upper_Alsatian	T_81
@@ -22291,7 +22291,7 @@ Minenburg	Country	Belorusi	T_81
 Clément_Grenier	Member_of_sports_team	France_National_Football_Team_Kits	T_81
 Inge_Höger	Member_of_political_party	Linkspartei	T_81
 As-Sumal	Member_of	Banque_Internationale_Pour_La_Reconstruction_Et_Le_Développement	T_81
-António_Leonel_Vilar_Nogueira_Sousa	Member_of_sports_team	"C.F_""Os_Beleneneses"""	T_81
+António_Leonel_Vilar_Nogueira_Sousa	Member_of_sports_team	C.F_Os_Beleneneses	T_81
 Klaas_Jan_Huntelaar	Member_of_sports_team	Ajax_Fc	T_81
 Ezequiel_Oscar_Scarione	Member_of_sports_team	Kasımpaşa_S.K.	T_81
 Zimming	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_81
