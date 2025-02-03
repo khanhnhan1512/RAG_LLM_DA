@@ -5088,7 +5088,7 @@ Valentin_Nastase	Member_of_sports_team	Eintracht_Braunschweig	T_72
 Aleksandar_Luković	Member_of_sports_team	S._Udinese_G.S.	T_72
 Salih_Altın	Member_of_sports_team	Sg_Ordnungspolizei_Lübeck	T_72
 Dédeling	Located_in_the_administrative_territorial_entity	Moselle_(Département)	T_72
-Glenn_“Doc”_Rivers	Nominated_for	Best_Coach/Manager_Espy_Award	T_72
+Glenn_Doc_Rivers	Nominated_for	Best_Coach/Manager_Espy_Award	T_72
 Andrey_Pereplotkin	Member_of_sports_team	Latvia_National_Football_Team	T_72
 Zbynek_Pospech	Member_of_sports_team	Zťs_Petržalka	T_72
 Beto_(Brazilian_Footballer_Born_1976)	Member_of_sports_team	Ergotelis_F.C._Seasons	T_72
