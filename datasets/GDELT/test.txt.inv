@@ -4112,8 +4112,8 @@ Congress	Demand	The_Opposition	T_4650
 The_Opposition	inv_Demand	Congress	T_4650
 Government	Make_statement	Bank	T_4650
 Bank	inv_Make_statement	Government	T_4650
-Russia	Meet_at_a_”third”_location	Kurd	T_4650
-Kurd	inv_Meet_at_a_”third”_location	Russia	T_4650
+Russia	Meet_at_a_'third'_location	Kurd	T_4650
+Kurd	inv_Meet_at_a_'third'_location	Russia	T_4650
 Ethiopia	Return_release_person(s)	Political_Prisoner	T_4650
 Political_Prisoner	inv_Return_release_person(s)	Ethiopia	T_4650
 Prime_Minister	Consult	New_Delhi	T_4650

@@ -25,8 +25,19 @@ def save_dict_to_json(data, output_file):
     with open(output_file, 'w', encoding='utf-8') as json_file:
         json.dump(data, json_file, ensure_ascii=False, indent=4)
 
-input_file_path = 'result\icews14\stage_2\common_rule_heads_historical_data.csv'
-output_file_path = 'result\icews14\stage_2\historical_data_rule_dict_output.json'
+# input_file_path = 'result\icews14\stage_2\common_rule_heads_historical_data.csv'
+# output_file_path = 'result\icews14\stage_2\historical_data_rule_dict_output.json'
+
+# # input_file_path = r'result\icews14\stage_2\merged_results\merged_historical_rules_and_current_rules_0,4.csv'
+# # output_file_path = 'result/icews14/stage_2/high_quality_example_rules.json'
+
+
+# input_file_path = 'result\GDELT\stage_2\common_rule_heads_historical_data.csv'
+# output_file_path = 'result\GDELT\stage_2\historical_data_rule_dict_output.json'
+
+
+input_file_path = 'result\YAGO\stage_2\common_rule_heads_historical_data.csv'
+output_file_path = 'result\YAGO\stage_2\historical_data_rule_dict_output.json'
 
 # input_file_path = r'result\icews14\stage_2\merged_results\merged_historical_rules_and_current_rules_0,4.csv'
 # output_file_path = 'result/icews14/stage_2/high_quality_example_rules.json'

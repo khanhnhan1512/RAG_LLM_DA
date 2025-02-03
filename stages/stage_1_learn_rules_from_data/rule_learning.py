@@ -88,7 +88,9 @@ class RuleLearner(object):
         rule["example_entities"] = [self.id2entity[entity_id] for entity_id in walk["entities"][1:][::-1]]
         rule["example"] = verbalize_example_rule(rule, self.id2relation)
         del rule["example_entities"]
-        
+
+        # Initialize conf to 0
+        rule["conf"] = 0
 
         if rule not in self.found_rules:
             self.found_rules.append(rule.copy())
@@ -96,16 +98,12 @@ class RuleLearner(object):
                 rule["conf"],
                 rule["rule_supp_count"],
                 rule["body_supp_count"],
-                # rule["head_supp_count"],
-                # rule["lift"],
-                # rule["conviction"],
-                # rule["kulczynski"],
-                # rule["IR_score"]
             ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
 
         rule["llm_confidence"] = confidence
 
-        if rule["conf"] or confidence:
+        # Now 'conf' is guaranteed to exist in the rule dictionary
+        if rule["conf"] > 0 or confidence > 0:
             self.update_rules_dict(rule)
 
     def create_llm_rule(self, verbalized_rule, rule_regex, confidence=0, use_relax_time=False):

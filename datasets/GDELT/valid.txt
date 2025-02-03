@@ -543,7 +543,7 @@ Prosecutor	Disapprove	Criminal	T_4230
 Egypt	Demand	Jewish	T_4230
 Police	Engage_in_material_cooperation	Protester	T_4230
 Russian	Consult	Russia	T_4230
-Judge	Meet_at_a_”third”_location	Media	T_4230
+Judge	Meet_at_a_'third'_location	Media	T_4230
 Syrian	Accuse	Iran	T_4230
 Mayor	Praise_or_endorse	Immigrant	T_4230
 Guam	Make_a_visit	Company	T_4230
@@ -5900,7 +5900,7 @@ Turkey	Occupy_territory	Europe	T_4395
 China	Make_an_appeal_or_request	Community	T_4395
 Judge	Reject	Jewish	T_4395
 California	Make_statement	President	T_4395
-Mormon	Meet_at_a_”third”_location	Preacher	T_4395
+Mormon	Meet_at_a_'third'_location	Preacher	T_4395
 Mumbai	Make_a_visit	School	T_4395
 Hospital	Make_a_visit	Victoria	T_4395
 Marche	Make_a_visit	Warsaw	T_4395
@@ -5954,7 +5954,7 @@ Senate	Make_statement	The_White_House	T_4395
 Government	Express_intent_to_cooperate	Nigerian	T_4395
 President	Make_an_appeal_or_request	Community	T_4395
 Dhaka	Make_statement	Freedom_Fighter	T_4395
-Utah	Meet_at_a_”third”_location	Preacher	T_4395
+Utah	Meet_at_a_'third'_location	Preacher	T_4395
 King	Return_release_person(s)	Portugal	T_4395
 Senator	Return_release	Government	T_4395
 China	Reject	United_States	T_4395
@@ -7307,7 +7307,7 @@ Activist	Express_intent_to_meet_or_negotiate	Judge	T_4440
 Zimbabwe	Make_pessimistic_comment	President	T_4440
 Prisoner	Provide_humanitarian_aid	San_Diego	T_4440
 Singapore	Make_pessimistic_comment	Lawyer	T_4440
-Philadelphia	Meet_at_a_”third”_location	College	T_4440
+Philadelphia	Meet_at_a_'third'_location	College	T_4440
 Hospital	Provide_humanitarian_aid	Tourist	T_4440
 Worker	Make_statement	Corporation	T_4440
 Singapore	Arrest_detain_or_charge_with_legal_action	Tycoon	T_4440

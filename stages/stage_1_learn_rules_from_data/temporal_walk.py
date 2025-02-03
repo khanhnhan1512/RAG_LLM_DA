@@ -36,27 +36,20 @@ class TemporalWalker(object):
         return rel_edges[np.random.choice(len(rel_edges))]
     
     def sample_next_edge(self, filtered_edges, cur_ts):
-        """
-        Define next edge distribution.
-
-        Parameters:
-            filtered_edges (np.ndarray): filtered (according to time) edges
-            cur_ts (int): current timestamp
-
-        Returns:
-            next_edge (np.ndarray): next edge
-        """
         if self.transition_choice == "unif":
             next_edge = filtered_edges[np.random.choice(len(filtered_edges))]
         elif self.transition_choice == "exp":
             tss = filtered_edges[:, 3]
             prob = np.exp(tss - cur_ts)
-            try:
-                prob = prob  / np.sum(prob)
+            sum_prob = np.sum(prob)
+            if sum_prob > 0 and not np.isnan(sum_prob):
+                prob = prob / sum_prob
                 next_edge = filtered_edges[np.random.choice(range(len(filtered_edges)), p=prob)]
-            except ValueError:
+            else:
+                # Fallback to uniform distribution if sum is zero or NaN
                 next_edge = filtered_edges[np.random.choice(len(filtered_edges))]
         return next_edge
+
     
     def transition_step(self, cur_node, cur_ts, prev_edge, start_node, step, L, target_cur_ts=None):
         """

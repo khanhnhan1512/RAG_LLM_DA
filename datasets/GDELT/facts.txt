@@ -290,7 +290,7 @@ United_States	Make_optimistic_comment	Student	T_0
 United_States	Fight_with_small_arms_and_light_weapons	Police	T_0
 Egypt	Make_an_appeal_or_request	Imam	T_0
 Supreme_Court	Disapprove	House_Of_Assembly	T_0
-Chief_Executive	Meet_at_a_”third”_location	Singapore	T_0
+Chief_Executive	Meet_at_a_'third'_location	Singapore	T_0
 West_Bank	Use_conventional_military_force	Village	T_0
 Nigeria	Abduct_hijack_or_take_hostage	School	T_0
 Nigeria	Ease_administrative_sanctions	Senate_President	T_0
@@ -2895,9 +2895,9 @@ New_South_Wales	Make_an_appeal_or_request	Australia	T_195
 Supreme_Court	Use_conventional_military_force	Islamic	T_195
 Tanker	Express_intent_to_meet_or_negotiate	Aotearoa	T_195
 Gujarat	Accuse	Chief_Minister	T_195
-President	Meet_at_a_”third”_location	Ellen_Johnson_Sirleaf	T_195
+President	Meet_at_a_'third'_location	Ellen_Johnson_Sirleaf	T_195
 Yemen	Yield	President	T_195
-Ellen_Johnson_Sirleaf	Meet_at_a_”third”_location	President	T_195
+Ellen_Johnson_Sirleaf	Meet_at_a_'third'_location	President	T_195
 Russia	Mobilize_or_increase_armed_forces	Military	T_195
 Turkish	Host_a_visit	Qatari	T_195
 Militant	Use_conventional_military_force	Student	T_195
@@ -3487,7 +3487,7 @@ Refugee	Host_a_visit	United_Kingdom	T_240
 United_States	Accuse_of_aggression	France	T_240
 Detective	Fight_with_small_arms_and_light_weapons	United_States	T_240
 Amit	Conduct_suicide_car_or_other_non-military_bombing	Sydney	T_240
-Canada	Meet_at_a_”third”_location	Islamic	T_240
+Canada	Meet_at_a_'third'_location	Islamic	T_240
 Japan	Praise_or_endorse	Government	T_240
 Columnist	Consult	North_Korea	T_240
 Columnist	Praise_or_endorse	United_States	T_240
@@ -6285,7 +6285,7 @@ Foreign_Office	Yield	Pakistani	T_495
 Florida	Engage_in_negotiation	Physician	T_495
 Politician	Make_a_visit	Australia	T_495
 Vijayawada	Praise_or_endorse	Andhra_Pradesh	T_495
-Africa	Meet_at_a_”third”_location	Lebanon	T_495
+Africa	Meet_at_a_'third'_location	Lebanon	T_495
 Detective	Make_pessimistic_comment	New_South_Wales	T_495
 United_States	Fight_with_small_arms_and_light_weapons	Singapore	T_495
 Male	Host_a_visit	Police	T_495
@@ -8520,7 +8520,7 @@ Authorities	Arrest_detain_or_charge_with_legal_action	Mexico	T_660
 Turkey	Engage_in_diplomatic_cooperation	Germany	T_660
 Palestine	Engage_in_symbolic_act	Greek	T_660
 Minist	Cooperate_economically	Turkey	T_660
-Rabbi	Meet_at_a_”third”_location	Philadelphia	T_660
+Rabbi	Meet_at_a_'third'_location	Philadelphia	T_660
 Student	Engage_in_material_cooperation	New_York_City	T_660
 Egypt	Return_release	Turkey	T_660
 Bahrain	Demonstrate_or_rally	Persian_Gulf	T_660
@@ -13689,7 +13689,7 @@ Police	Consult	Russia	T_1005
 Drug_Gang	Cooperate_economically	Tourist	T_1005
 Chicago	Express_intent_to_cooperate	Priest	T_1005
 Chile	Sign_formal_agreement	Israel	T_1005
-Russian	Meet_at_a_”third”_location	University	T_1005
+Russian	Meet_at_a_'third'_location	University	T_1005
 Uruguayan	Praise_or_endorse	Uruguay	T_1005
 Government	Appeal_for_humanitarian_aid	Africa	T_1005
 Israel	Sign_formal_agreement	Chile	T_1005
@@ -14318,7 +14318,7 @@ Poland	Grant_diplomatic_recognition	Russia	T_1050
 President	Use_conventional_military_force	Iran	T_1050
 Pakistan	Make_pessimistic_comment	Afghanistan	T_1050
 President	Provide_economic_aid	Pakistan	T_1050
-Orlando	Meet_at_a_”third”_location	Business	T_1050
+Orlando	Meet_at_a_'third'_location	Business	T_1050
 Health_Minist	Make_statement	Television	T_1050
 Conservationist	Make_pessimistic_comment	Ontario	T_1050
 Judiciary	Threaten	Rioter	T_1050
@@ -14327,7 +14327,7 @@ Minist	Make_an_appeal_or_request	Residents	T_1050
 Michigan	Acknowledge_or_claim_responsibility	China	T_1050
 Security_Force	Use_conventional_military_force	Jammu_And_Kashmir	T_1050
 Traveller	Reduce_relations	United_States	T_1050
-United_States	Meet_at_a_”third”_location	Business	T_1050
+United_States	Meet_at_a_'third'_location	Business	T_1050
 Pakistan	Accuse	Washington	T_1050
 United_States	Provide_economic_aid	Pakistan	T_1050
 Fighter_Jet	Sign_formal_agreement	Canada	T_1050
@@ -17982,7 +17982,7 @@ Israel	Express_intent_to_cooperate	Iranian	T_1335
 Karachi	Engage_in_symbolic_act	Employee	T_1335
 Ariana	Engage_in_material_cooperation	New_York	T_1335
 Israeli	Reject	Iran	T_1335
-Mexican	Meet_at_a_”third”_location	Amsterdam	T_1335
+Mexican	Meet_at_a_'third'_location	Amsterdam	T_1335
 Chad	Express_intent_to_meet_or_negotiate	University	T_1335
 Spokesman	Make_statement	Irish	T_1335
 Israel	Make_statement	Reuters	T_1335
@@ -18028,7 +18028,7 @@ Ireland	Host_a_visit	Hospital	T_1335
 Worker	Reject	China	T_1335
 Hospital	Make_statement	Ireland	T_1335
 Jerusalem	Criticize_or_denounce	Pakistan	T_1335
-Brazil	Meet_at_a_”third”_location	Netherlands	T_1335
+Brazil	Meet_at_a_'third'_location	Netherlands	T_1335
 Hospital	Make_a_visit	Ireland	T_1335
 Police	Make_an_appeal_or_request	Criminal	T_1335
 Police	Investigate	Criminal	T_1335
@@ -20057,7 +20057,7 @@ Chinese	Make_optimistic_comment	South_Asia	T_1500
 Chinese	Mobilize_or_increase_armed_forces	Bhutan	T_1500
 Hospital	Host_a_visit	Louisville	T_1500
 Activist	Praise_or_endorse	Mayor	T_1500
-Sioux	Meet_at_a_”third”_location	Iowa	T_1500
+Sioux	Meet_at_a_'third'_location	Iowa	T_1500
 Muslim	Praise_or_endorse	New_Delhi	T_1500
 Manmohan_Singh	Engage_in_negotiation	Myanmar	T_1500
 Ukrainian	Express_intent_to_engage_in_diplomatic_cooperation_(such_as_policy_support)	Russia	T_1500
@@ -20082,7 +20082,7 @@ Senator	Praise_or_endorse	Mayor	T_1500
 Pittsburgh	Complain_officially	Police_Officials	T_1500
 Website	Consult	Judge	T_1500
 Congress	Make_pessimistic_comment	Muslim	T_1500
-Iowa	Meet_at_a_”third”_location	Sioux	T_1500
+Iowa	Meet_at_a_'third'_location	Sioux	T_1500
 Sri_Lankan	Arrest_detain_or_charge_with_legal_action	Trincomalee	T_1500
 New_Zealand	Consult	New_Zealander	T_1500
 Afghanistan	Threaten_with_military_force	Pakistan	T_1500
@@ -20210,7 +20210,7 @@ Ukrainian	Express_intent_to_engage_in_diplomatic_cooperation_(such_as_policy_sup
 Afghanistan	Make_optimistic_comment	Pakistan	T_1500
 Us_Ambassador	Consult	Pakistan	T_1500
 United_States	Host_a_visit	Louisville	T_1500
-United_States	Meet_at_a_”third”_location	Sioux	T_1500
+United_States	Meet_at_a_'third'_location	Sioux	T_1500
 Police	Arrest_detain_or_charge_with_legal_action	Gujarat	T_1500
 Hafiz_Saeed	Appeal_to_others_to_meet_or_negotiate	Pakistan	T_1500
 United_States	Express_intent_to_meet_or_negotiate	Israel	T_1500
@@ -33434,11 +33434,11 @@ Police	Use_conventional_military_force	Toronto	T_2280
 University	Impose_administrative_sanctions	Dhaka	T_2280
 School	Host_a_visit	Guinea	T_2280
 Doctor	Express_intent_to_meet_or_negotiate	New_Delhi	T_2280
-Vancouver	Meet_at_a_”third”_location	Calif	T_2280
+Vancouver	Meet_at_a_'third'_location	Calif	T_2280
 China	Cooperate_economically	News_Agency	T_2280
 Russia	Make_statement	Pole	T_2280
 Manila	Express_intent_to_meet_or_negotiate	Philippine	T_2280
-Calif	Meet_at_a_”third”_location	Vancouver	T_2280
+Calif	Meet_at_a_'third'_location	Vancouver	T_2280
 Pakistan	Consult	Prime_Minister	T_2280
 Deputy	Accuse	Jersey	T_2280
 Manchester	Demand	Spain	T_2280
@@ -33466,7 +33466,7 @@ Residents	Make_an_appeal_or_request	Business	T_2280
 Kenya	Arrest_detain_or_charge_with_legal_action	Ghana	T_2280
 Iranian	Disapprove	Government	T_2280
 Israel	Make_statement	Palestinian	T_2280
-Delegate	Meet_at_a_”third”_location	Canada	T_2280
+Delegate	Meet_at_a_'third'_location	Canada	T_2280
 Hospital	Investigate	Multan	T_2280
 Government	Use_conventional_military_force	Gunman	T_2280
 College	Accuse	Muslim	T_2280
@@ -35995,7 +35995,7 @@ Panama_City	Praise_or_endorse	Florida	T_2400
 Top_Executive	Express_intent_to_meet_or_negotiate	New_York	T_2400
 Pennsylvania	Make_pessimistic_comment	Trooper	T_2400
 Israel	Praise_or_endorse	Egypt	T_2400
-Guadeloupe	Meet_at_a_”third”_location	France	T_2400
+Guadeloupe	Meet_at_a_'third'_location	France	T_2400
 Demonstrator	Use_conventional_military_force	Iran	T_2400
 Media	Consult	Company	T_2400
 Afghanistan	Investigate	Pakistan	T_2400
@@ -36019,7 +36019,7 @@ Iranian	Fight_with_small_arms_and_light_weapons	Iran	T_2400
 Islamic	Criticize_or_denounce	Rasht	T_2400
 The_Us	Praise_or_endorse	Syria	T_2400
 Afghanistan	Appeal_for_military_aid	Government	T_2400
-Guadeloupe	Meet_at_a_”third”_location	West_Germany	T_2400
+Guadeloupe	Meet_at_a_'third'_location	West_Germany	T_2400
 Chinese	Express_intent_to_engage_in_material_cooperation	Pakistan	T_2400
 Australian	Make_statement	Newspaper	T_2400
 Natural_Resources_Defense_Council	Make_statement	Website	T_2400
@@ -36201,7 +36201,7 @@ Abu_Salem	Carry_out_suicide_bombing	Jerusalem	T_2400
 Afghanistan	Host_a_visit	Pakistan	T_2400
 Senate	Make_an_appeal_or_request	The_White_House	T_2400
 Regime	Express_intent_to_cooperate	Politician	T_2400
-Guadeloupe	Meet_at_a_”third”_location	The_Us	T_2400
+Guadeloupe	Meet_at_a_'third'_location	The_Us	T_2400
 Abu_Salem	Use_conventional_military_force	Israeli	T_2400
 Austrian	Make_an_appeal_or_request	Jerusalem	T_2400
 Gunmen	Fight_with_small_arms_and_light_weapons	Security_Force	T_2400
@@ -36267,7 +36267,7 @@ Fire_Service	Use_conventional_military_force	Lagos	T_2400
 Pakistan	Threaten	Islamabad	T_2400
 President	Make_an_appeal_or_request	Russia	T_2400
 Pakistan	Consult	Minist	T_2400
-Guadeloupe	Meet_at_a_”third”_location	Germany	T_2400
+Guadeloupe	Meet_at_a_'third'_location	Germany	T_2400
 Australia	Make_statement	Hillary_Clinton	T_2400
 North_America	Engage_in_material_cooperation	Bermudian	T_2400
 Political_Parties	Demand	Military_Government	T_2400
@@ -36325,7 +36325,7 @@ Student	Provide_humanitarian_aid	United_States	T_2400
 Creativity	Make_statement	New_Zealand	T_2400
 Trooper	Cooperate_economically	United_States	T_2400
 Prison	Arrest_detain_or_charge_with_legal_action	Russia	T_2400
-Guadeloupe	Meet_at_a_”third”_location	United_Kingdom	T_2400
+Guadeloupe	Meet_at_a_'third'_location	United_Kingdom	T_2400
 United_Kingdom	Express_intent_to_meet_or_negotiate	Business	T_2400
 United_States	Make_an_appeal_or_request	France	T_2400
 New_Zealand	Deny_responsibility	Corporation	T_2400
@@ -42186,7 +42186,7 @@ Iraq	Use_conventional_military_force	Iran	T_2640
 Louisiana	Praise_or_endorse	Mexico	T_2640
 Media	Host_a_visit	Blog	T_2640
 Senate	Express_intent_to_meet_or_negotiate	Minnesota	T_2640
-North_America	Meet_at_a_”third”_location	Canada	T_2640
+North_America	Meet_at_a_'third'_location	Canada	T_2640
 Sweden	Engage_in_negotiation	Canada	T_2640
 University	Host_a_visit	United_States	T_2640
 Army	Make_statement	School	T_2640
@@ -43780,8 +43780,8 @@ Tennessee	Make_a_visit	Student	T_2715
 Palestinian	Engage_in_negotiation	Islamic	T_2715
 Munich	Make_a_visit	Europe	T_2715
 Scholar	Appeal_for_material_cooperation	Iran	T_2715
-Iran	Meet_at_a_”third”_location	North_Korea	T_2715
-North_Korea	Meet_at_a_”third”_location	Iran	T_2715
+Iran	Meet_at_a_'third'_location	North_Korea	T_2715
+North_Korea	Meet_at_a_'third'_location	Iran	T_2715
 Moldova	Reject	Minist	T_2715
 Senator	Appeal_to_others_to_meet_or_negotiate	North_Korean	T_2715
 Iran	Make_an_appeal_or_request	Pakistan	T_2715
@@ -43806,7 +43806,7 @@ Amit	Make_a_visit	Chicago	T_2715
 Utah	Make_a_visit	Alabama	T_2715
 New_Zealand	Express_intent_to_provide_material_aid	Samoa	T_2715
 Japanese	Make_an_appeal_or_request	Republic_Of_Korea	T_2715
-North_Korea	Meet_at_a_”third”_location	Pakistan	T_2715
+North_Korea	Meet_at_a_'third'_location	Pakistan	T_2715
 Settlement	Engage_in_diplomatic_cooperation	Israel	T_2715
 Islamic	Engage_in_negotiation	Israel	T_2715
 Italy	Make_a_visit	Europe	T_2715
@@ -43895,7 +43895,7 @@ Luxor	Host_a_visit	Egyptian	T_2715
 Medina	Host_a_visit	Egypt	T_2715
 Egyptian	Make_a_visit	Egypt	T_2715
 United_States	Praise_or_endorse	Immigrant	T_2715
-Omar_Abdullah	Meet_at_a_”third”_location	Legislature	T_2715
+Omar_Abdullah	Meet_at_a_'third'_location	Legislature	T_2715
 Saudi	Impose_administrative_sanctions	Saudi_Arabia	T_2715
 Chinese	Praise_or_endorse	Russia	T_2715
 Iran	Reject	Pakistan	T_2715
@@ -43905,7 +43905,7 @@ Settlement	Engage_in_ethnic_cleansing	Israel	T_2715
 Russian	Consult	Russia	T_2715
 Ministry	Make_optimistic_comment	Reuters	T_2715
 United_States	Arrest_detain_or_charge_with_legal_action	Police	T_2715
-Iran	Meet_at_a_”third”_location	Pakistan	T_2715
+Iran	Meet_at_a_'third'_location	Pakistan	T_2715
 United_States	Yield	Police	T_2715
 Terrorist	Make_a_visit	United_States	T_2715
 Jerusalem	Express_intent_to_cooperate	Iranian	T_2715
@@ -43918,7 +43918,7 @@ Turkey	Make_statement	Qatar	T_2715
 Chinese	Praise_or_endorse	Russian	T_2715
 Egypt	Make_a_visit	Medina	T_2715
 Tennessee	Praise_or_endorse	Government	T_2715
-Pakistan	Meet_at_a_”third”_location	North_Korea	T_2715
+Pakistan	Meet_at_a_'third'_location	North_Korea	T_2715
 Media	Use_conventional_military_force	Security_Force	T_2715
 Governor	Engage_in_material_cooperation	Worker	T_2715
 Armed_Forces	Engage_in_diplomatic_cooperation	Gang	T_2715
@@ -43934,7 +43934,7 @@ Government	Disapprove	Uprising	T_2715
 Iraq	Make_optimistic_comment	Iran	T_2715
 Tourism_Industry	Make_pessimistic_comment	Government	T_2715
 Government	Make_statement	Commander	T_2715
-Pakistan	Meet_at_a_”third”_location	Iran	T_2715
+Pakistan	Meet_at_a_'third'_location	Iran	T_2715
 Canadian	Ease_administrative_sanctions	Washington	T_2715
 Ohio	Occupy_territory	Company	T_2715
 American_Geophysical_Union	Consult	New_Orleans	T_2715
@@ -44608,7 +44608,7 @@ President	Occupy_territory	First_Lady	T_2745
 Vietnam	Assassinate	Germany	T_2745
 Syria	Use_conventional_military_force	New_York	T_2745
 Turkey	Engage_in_diplomatic_cooperation	Saudi_Arabia	T_2745
-Catholic	Meet_at_a_”third”_location	German	T_2745
+Catholic	Meet_at_a_'third'_location	German	T_2745
 Turkey	Reject	Saudi	T_2745
 Student	Provide_economic_aid	Employer	T_2745
 Hindu	Use_unconventional_violence	Muslim	T_2745
@@ -45334,7 +45334,7 @@ Deputy	Arrest_detain_or_charge_with_legal_action	Politician	T_2775
 Prime_Minister	Accede_to_demands_for_change_in_leadership	Israel	T_2775
 Judge	Bring_lawsuit_against	United_States	T_2775
 United_Arab_Emirates	Host_a_visit	Echelon	T_2775
-Authorities	Meet_at_a_”third”_location	United_States	T_2775
+Authorities	Meet_at_a_'third'_location	United_States	T_2775
 Deputy	Make_a_visit	Beirut	T_2775
 United_Kingdom	Make_optimistic_comment	Magazine	T_2775
 Police	Physically_assault	Bangladesh	T_2775
@@ -46476,7 +46476,7 @@ China	Make_an_appeal_or_request	Business	T_2835
 United_Nations	Use_conventional_military_force	Central_African_Republic	T_2835
 Canada	Make_a_visit	Japan	T_2835
 Ambassador	Make_optimistic_comment	The_Un	T_2835
-Victoria	Meet_at_a_”third”_location	Yoga	T_2835
+Victoria	Meet_at_a_'third'_location	Yoga	T_2835
 Niger	Arrest_detain_or_charge_with_legal_action	Nigerian	T_2835
 Terrorist	Make_a_visit	Hassan	T_2835
 Bangladeshi	Appeal_for_military_protection_or_peacekeeping	Pakistani	T_2835
@@ -49718,7 +49718,7 @@ World_Community	Accuse	International_Labor_Organization	T_2940
 President	Reject	Greek	T_2940
 Counsel	Make_an_appeal_or_request	Government	T_2940
 Iraqi	Use_conventional_military_force	American	T_2940
-China	Meet_at_a_”third”_location	Baloch	T_2940
+China	Meet_at_a_'third'_location	Baloch	T_2940
 Boston	Host_a_visit	Dublin	T_2940
 Activist	Use_unconventional_violence	Israel	T_2940
 Toronto	Consult	Afghanistan	T_2940
@@ -50009,7 +50009,7 @@ United_Kingdom	Host_a_visit	Theresa_May	T_2940
 United_Kingdom	Host_a_visit	Prince	T_2940
 Police	Refuse_to_release_persons_or_property	Canada	T_2940
 Pakistan	Host_a_visit	Government	T_2940
-China	Meet_at_a_”third”_location	France	T_2940
+China	Meet_at_a_'third'_location	France	T_2940
 Rwanda	Make_an_appeal_or_request	Student	T_2940
 French	Bring_lawsuit_against	France	T_2940
 United_States	Make_an_appeal_or_request	Spanish	T_2940
@@ -51284,7 +51284,7 @@ Iran	Accuse	The_Us	T_3000
 Prince	Use_unconventional_violence	Police	T_3000
 Deputy	Express_intent_to_meet_or_negotiate	President	T_3000
 Myanmar	Coerce	Indonesia	T_3000
-Hamas	Meet_at_a_”third”_location	Islamic	T_3000
+Hamas	Meet_at_a_'third'_location	Islamic	T_3000
 Lawmaker	Make_an_appeal_or_request	Michigan	T_3000
 Deputy	Make_statement	The_Associated_Press	T_3000
 Palestinian	Make_pessimistic_comment	American	T_3000
@@ -51296,7 +51296,7 @@ Jewish	Yield	Syrian	T_3000
 American	Consult	North_Korean	T_3000
 London	Fight_with_small_arms_and_light_weapons	Correspondent	T_3000
 Government	Provide_aid	Displaced_Person	T_3000
-Islamic	Meet_at_a_”third”_location	Hamas	T_3000
+Islamic	Meet_at_a_'third'_location	Hamas	T_3000
 Bahama	Engage_in_material_cooperation	Community	T_3000
 New_Jersey	Make_optimistic_comment	Lawyer	T_3000
 Indigenous_People	Yield	United_States	T_3000
@@ -62587,7 +62587,7 @@ Army	Use_conventional_military_force	Russia	T_3555
 Daewoo	Engage_in_material_cooperation	Naval	T_3555
 Hawaii	Make_an_appeal_or_request	Employer	T_3555
 World_Bank	Praise_or_endorse	Uttar_Pradesh	T_3555
-The_European_Union	Meet_at_a_”third”_location	Ireland	T_3555
+The_European_Union	Meet_at_a_'third'_location	Ireland	T_3555
 Rashtriya_Swayamsevak_Sangh	Criticize_or_denounce	Pune	T_3555
 Israel	Provide_economic_aid	Palestinian	T_3555
 Minist	Praise_or_endorse	Community	T_3555
@@ -62938,7 +62938,7 @@ Kerala	Demonstrate_or_rally	Catholic	T_3585
 Company	Threaten	Chief_Executive	T_3585
 Bank	Praise_or_endorse	King	T_3585
 Gujarat	Host_a_visit	Congress	T_3585
-Egypt	Meet_at_a_”third”_location	Delegate	T_3585
+Egypt	Meet_at_a_'third'_location	Delegate	T_3585
 Ethiopia	Engage_in_negotiation	President	T_3585
 Germany	Cooperate_economically	Reuters	T_3585
 Paramount_Ruler	Fight_with_small_arms_and_light_weapons	Killers	T_3585
@@ -68216,7 +68216,7 @@ Israel	Use_conventional_military_force	Iranian	T_3795
 Pearnel_Charles	Praise_or_endorse	Jamaica	T_3795
 Website	Make_a_visit	College	T_3795
 Prime_Minister	Express_intent_to_meet_or_negotiate	Israel	T_3795
-Egypt	Meet_at_a_”third”_location	Israel	T_3795
+Egypt	Meet_at_a_'third'_location	Israel	T_3795
 New_South_Wales	Sign_formal_agreement	Company	T_3795
 Hamas	Criticize_or_denounce	Palestinian	T_3795
 Firefighter	Provide_aid	Cleveland	T_3795
@@ -72641,7 +72641,7 @@ Haryana	Use_unconventional_violence	Hospital	T_3945
 Judge	Praise_or_endorse	Indiana	T_3945
 Nebraska	Engage_in_negotiation	Corporation	T_3945
 Iran	Make_statement	United_States	T_3945
-Employer	Meet_at_a_”third”_location	Employee	T_3945
+Employer	Meet_at_a_'third'_location	Employee	T_3945
 President	Sign_formal_agreement	Canada	T_3945
 Business	Make_statement	Regulator	T_3945
 New_York	Make_a_visit	German	T_3945
@@ -72924,7 +72924,7 @@ Business	Engage_in_negotiation	Danish	T_3945
 Vermont	Praise_or_endorse	Hospital	T_3945
 Iran	Reduce_relations	President	T_3945
 Voter	Disapprove	School	T_3945
-Employee	Meet_at_a_”third”_location	Employer	T_3945
+Employee	Meet_at_a_'third'_location	Employer	T_3945
 Hindu	Engage_in_negotiation	Activist	T_3945
 Bihar	Arrest_detain_or_charge_with_legal_action	Police	T_3945
 Yantai	Host_a_visit	New_Zealand	T_3945
@@ -75139,7 +75139,7 @@ President	Praise_or_endorse	Canada	T_4035
 Judge	Threaten	Prison	T_4035
 Credit_Union	Provide_aid	Arizona	T_4035
 New_York	Consult	Russia	T_4035
-Cypriot	Meet_at_a_”third”_location	Saudi	T_4035
+Cypriot	Meet_at_a_'third'_location	Saudi	T_4035
 Palestinian	Express_intent_to_meet_or_negotiate	President	T_4035
 France	Make_a_visit	Media	T_4035
 Syrian	Provide_military_aid	Damascus	T_4035
@@ -75257,7 +75257,7 @@ Israel	Return_release_person(s)	President	T_4035
 Iran	Make_a_visit	Islamic	T_4035
 Protester	Make_an_appeal_or_request	Magistrate	T_4035
 Kentucky	Express_intent_to_meet_or_negotiate	Minist	T_4035
-Riyadh	Meet_at_a_”third”_location	Saudi	T_4035
+Riyadh	Meet_at_a_'third'_location	Saudi	T_4035
 Merchant	Bring_lawsuit_against	New_York	T_4035
 Jing	Disapprove	China	T_4035
 Minist	Consult	United_States	T_4035
@@ -75318,7 +75318,7 @@ Dublin	Make_a_visit	Airline	T_4035
 Doctor	Make_an_appeal_or_request	Australian	T_4035
 Syrian	Use_conventional_military_force	Rebel	T_4035
 Kentucky	Make_a_visit	United_States	T_4035
-Saudi	Meet_at_a_”third”_location	Cyprus	T_4035
+Saudi	Meet_at_a_'third'_location	Cyprus	T_4035
 North_America	Make_a_visit	Alaska	T_4035
 President	Praise_or_endorse	Pakistan	T_4035
 United_States	Make_a_visit	Minist	T_4035
@@ -75333,7 +75333,7 @@ Kano	Make_a_visit	Abidjan	T_4035
 United_States	Impose_restrictions_on_political_freedoms	President	T_4035
 Delaware	Make_an_appeal_or_request	Media	T_4035
 Syria	Accuse	Turkey	T_4035
-Cyprus	Meet_at_a_”third”_location	Saudi	T_4035
+Cyprus	Meet_at_a_'third'_location	Saudi	T_4035
 Pole	Yield	Air_Force	T_4035
 Scottish	Investigate	Scotland	T_4035
 Pune	Praise_or_endorse	British	T_4035
@@ -75375,7 +75375,7 @@ Citizen	Provide_aid	Vermont	T_4035
 Employee	Make_an_appeal_or_request	Doctor	T_4035
 German	Use_unconventional_violence	Belgium	T_4035
 Entrepreneur	Consult	Sweden	T_4035
-Saudi	Meet_at_a_”third”_location	Riyadh	T_4035
+Saudi	Meet_at_a_'third'_location	Riyadh	T_4035
 Native_American	Investigate	Population	T_4035
 Companies	Disapprove	American	T_4035
 Israeli	Consult	Palestinian	T_4035
@@ -75385,7 +75385,7 @@ Toledo	Make_a_visit	Ohio	T_4035
 Jing	Acknowledge_or_claim_responsibility	China	T_4035
 Police	Make_an_appeal_or_request	Dalit	T_4035
 Police_Force	Consult	Crime_Syndicate	T_4035
-Saudi	Meet_at_a_”third”_location	Cypriot	T_4035
+Saudi	Meet_at_a_'third'_location	Cypriot	T_4035
 American	Consult	European	T_4035
 Palestinian	Use_conventional_military_force	Israeli	T_4035
 Syria	Accuse	Israel	T_4035
@@ -76167,7 +76167,7 @@ Company	Make_an_appeal_or_request	Vancouver	T_4065
 Protester	Use_conventional_military_force	Policemen	T_4065
 Political_Parties	Express_intent_to_cooperate	Bank	T_4065
 Roman_Catholic	Make_a_visit	Methodist_Church	T_4065
-Minist	Meet_at_a_”third”_location	University	T_4065
+Minist	Meet_at_a_'third'_location	University	T_4065
 Police	Use_conventional_military_force	Germany	T_4065
 Muslim	Sign_formal_agreement	Sikh	T_4065
 Entrepreneur	Make_optimistic_comment	Ministry	T_4065
@@ -76299,7 +76299,7 @@ Spokesman	Return_release	Police	T_4065
 Delhi	Reduce_relations	Upper_House	T_4065
 Rebel_Force	Accuse	The_European_Union	T_4065
 The_White_House	Engage_in_negotiation	Congress	T_4065
-University	Meet_at_a_”third”_location	Minist	T_4065
+University	Meet_at_a_'third'_location	Minist	T_4065
 Delhi	Criticize_or_denounce	Upper_House	T_4065
 Congress	Engage_in_negotiation	The_White_House	T_4065
 Yemen	Retreat_or_surrender_militarily	Syria	T_4065
@@ -77901,7 +77901,7 @@ Health_Minist	Criticize_or_denounce	New_Zealand	T_4125
 Mexican	Engage_in_diplomatic_cooperation	Canada	T_4140
 American	Investigate	Industry	T_4140
 Representatives	Engage_in_diplomatic_cooperation	Prison	T_4140
-Student	Meet_at_a_”third”_location	Representatives	T_4140
+Student	Meet_at_a_'third'_location	Representatives	T_4140
 Dalit	Engage_in_symbolic_act	Ruler	T_4140
 Paris	Express_intent_to_meet_or_negotiate	New_York	T_4140
 Student	Criticize_or_denounce	Dalit	T_4140
@@ -79862,7 +79862,7 @@ Prosecutor	Disapprove	Criminal	T_4230
 Egypt	Demand	Jewish	T_4230
 Police	Engage_in_material_cooperation	Protester	T_4230
 Russian	Consult	Russia	T_4230
-Judge	Meet_at_a_”third”_location	Media	T_4230
+Judge	Meet_at_a_'third'_location	Media	T_4230
 Syrian	Accuse	Iran	T_4230
 Mayor	Praise_or_endorse	Immigrant	T_4230
 Guam	Make_a_visit	Company	T_4230
@@ -85219,7 +85219,7 @@ Turkey	Occupy_territory	Europe	T_4395
 China	Make_an_appeal_or_request	Community	T_4395
 Judge	Reject	Jewish	T_4395
 California	Make_statement	President	T_4395
-Mormon	Meet_at_a_”third”_location	Preacher	T_4395
+Mormon	Meet_at_a_'third'_location	Preacher	T_4395
 Mumbai	Make_a_visit	School	T_4395
 Hospital	Make_a_visit	Victoria	T_4395
 Marche	Make_a_visit	Warsaw	T_4395
@@ -85273,7 +85273,7 @@ Senate	Make_statement	The_White_House	T_4395
 Government	Express_intent_to_cooperate	Nigerian	T_4395
 President	Make_an_appeal_or_request	Community	T_4395
 Dhaka	Make_statement	Freedom_Fighter	T_4395
-Utah	Meet_at_a_”third”_location	Preacher	T_4395
+Utah	Meet_at_a_'third'_location	Preacher	T_4395
 King	Return_release_person(s)	Portugal	T_4395
 Senator	Return_release	Government	T_4395
 China	Reject	United_States	T_4395
@@ -86626,7 +86626,7 @@ Activist	Express_intent_to_meet_or_negotiate	Judge	T_4440
 Zimbabwe	Make_pessimistic_comment	President	T_4440
 Prisoner	Provide_humanitarian_aid	San_Diego	T_4440
 Singapore	Make_pessimistic_comment	Lawyer	T_4440
-Philadelphia	Meet_at_a_”third”_location	College	T_4440
+Philadelphia	Meet_at_a_'third'_location	College	T_4440
 Hospital	Provide_humanitarian_aid	Tourist	T_4440
 Worker	Make_statement	Corporation	T_4440
 Singapore	Arrest_detain_or_charge_with_legal_action	Tycoon	T_4440

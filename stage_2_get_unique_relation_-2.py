@@ -16,8 +16,15 @@ def extract_unique_relations(input_file_path, output_file_path):
         for relation in unique_relations:
             outfile.write(f"{relation}\n")  # Write each relation on a new line
 
-input_file_path = r'datasets\icews14\valid.txt'
-output_file_path = r'result\icews14\stage_2\unique_relations.txt'
+# input_file_path = r'datasets\icews14\valid.txt'
+# output_file_path = r'result\icews14\stage_2\unique_relations.txt'
+
+
+# input_file_path = r'datasets\GDELT\valid.txt'
+# output_file_path = r'result\GDELT\stage_2\unique_relations.txt'
+
+input_file_path = r'datasets\YAGO\valid.txt'
+output_file_path = r'result\YAGO\stage_2\unique_relations.txt'
 
 # Extract unique relations and save to file
 extract_unique_relations(input_file_path, output_file_path)
