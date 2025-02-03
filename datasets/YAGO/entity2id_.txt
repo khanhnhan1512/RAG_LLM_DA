@@ -1596,7 +1596,7 @@ Bremerhavn	1594
 Kaliningrad	1595
 André_Wiwerink	1596
 Rot-Weiss_Essen_Squad	1597
-Glenn_“Doc”_Rivers	1598
+Glenn_Doc_Rivers	1598
 J._Walter_Kennedy_Citizenship_Award	1599
 Marilu_Henner	1600
 Frederic_Forrest	1601
