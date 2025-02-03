@@ -10,9 +10,13 @@
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
-            "args": [
-                "-d", "icews14",
-            ]
+        },
+        {
+            "name": "embedding",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "./process_embedding/main_process_data.py",
+            "console": "integratedTerminal",
         },
         {
             "name": "test",

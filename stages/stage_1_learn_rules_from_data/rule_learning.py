@@ -10,6 +10,20 @@ import re
 import traceback
 from utils import save_json_data, write_to_file
 
+COLUMNS_MAPPING = {
+    'kulczynski': 'kulczynski',
+    'IR_score': 'IR_score',
+    'lift_score': 'lift',
+    'conviction_score': 'conviction',
+    'confidence_score': 'conf', 
+    'rule_supp_count': 'rule_supp_count', 
+    'body_supp_count': 'body_supp_count',
+    'head_supp_count': 'head_supp_count', 
+    'rule': 'body_rels', 
+    'head_rel': 'head_rel',
+    'example': 'example',
+}
+
 class RuleLearner(object):
     def __init__(self, edges, relation2id, id2entity, id2relation, inv_relation_id, dataset, total_num_fact, output_dir):
         """
@@ -75,24 +89,21 @@ class RuleLearner(object):
         rule["example"] = verbalize_example_rule(rule, self.id2relation)
         del rule["example_entities"]
         
+        (
+            rule["conf"],
+            rule["rule_supp_count"],
+            rule["body_supp_count"],
+            rule["head_supp_count"],
+            rule["lift"],
+            rule["conviction"],
+            rule["kulczynski"],
+            rule["IR_score"]
+        ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
 
-        if rule not in self.found_rules:
-            self.found_rules.append(rule.copy())
-            (
-                rule["conf"],
-                rule["rule_supp_count"],
-                rule["body_supp_count"],
-                rule["head_supp_count"],
-                rule["lift"],
-                rule["conviction"],
-                rule["kulczynski"],
-                rule["IR_score"]
-            ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
+        rule["llm_confidence"] = confidence
 
-            rule["llm_confidence"] = confidence
-
-            if rule["conf"] or confidence:
-                self.update_rules_dict(rule)
+        if rule["conf"] or confidence:
+            self.update_rules_dict(rule)
 
     def create_llm_rule(self, verbalized_rule, rule_regex, confidence=0, use_relax_time=False):
         """
@@ -108,23 +119,38 @@ class RuleLearner(object):
             walk["entities"][1:][::-1]
         )
 
-        if rule not in self.found_rules:
-            self.found_rules.append(rule.copy())
-            (
-                rule["conf"],
-                rule["rule_supp_count"],
-                rule["body_supp_count"],
-                rule["head_supp_count"],
-                rule["lift"],
-                rule["conviction"],
-                rule["kulczynski"],
-                rule["IR_score"]
-            ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
+        (
+            rule["conf"],
+            rule["rule_supp_count"],
+            rule["body_supp_count"],
+            rule["head_supp_count"],
+            rule["lift"],
+            rule["conviction"],
+            rule["kulczynski"],
+            rule["IR_score"]
+        ) = self.estimate_metrics(rule, is_relax_time=use_relax_time)
 
-            rule["llm_confidence"] = confidence
+        rule["llm_confidence"] = confidence
 
-            if rule["conf"] or confidence:
-                self.update_rules_dict(rule)
+        if rule["conf"] or confidence:
+            self.update_rules_dict(rule)
+
+    def create_rule_from_series_df(self, entry, rule_regex):
+        rule = dict()
+        for col in COLUMNS_MAPPING:
+            if col in entry:
+                if col == 'rule':
+                    rule[COLUMNS_MAPPING[col]] = get_body_rels_from_verbalized_rule(entry[col], self.relation2id, rule_regex)
+                    rule['verbalized_rule'] = entry[col]
+                    walk = parse_verbalized_rule_to_walk(entry['rule'], self.relation2id, self.inv_relation_id, rule_regex)
+                    rule["var_constraints"], _ = self.define_var_constraints(walk["entities"][1:][::-1])
+                elif col == 'head_rel':
+                    rule[COLUMNS_MAPPING[col]] = self.relation2id[entry[col]]
+                else:
+                    rule[COLUMNS_MAPPING[col]] = entry[col]
+        
+        if rule['conf']:
+            self.update_rules_dict(rule)
 
     def define_var_constraints(self, entities):
         """
@@ -410,28 +436,6 @@ class RuleLearner(object):
         df.to_csv(output_path, index=False)
         print(f"Rules have been saved to {output_path}")
 
-    def rules_statistics(self):
-        """
-        Show statistics of the rules.
-
-        Parameters:
-            rules_dict (dict): rules
-
-        Returns:
-            None
-        """
-
-        print(
-            "Number of relations with rules: ", len(self.rules_dict)
-        )  # Including inverse relations
-        print("Total number of rules: ", sum([len(v) for k, v in self.rules_dict.items()]))
-
-        lengths = []
-        for rel in self.rules_dict:
-            lengths += [len(x["body_rels"]) for x in self.rules_dict[rel]]
-        rule_lengths = [(k, v) for k, v in Counter(lengths).items()]
-        print("Number of rules by length: ", sorted(rule_lengths))
-
 def verbalize_rule(rule, id2relation, rule_type):
     """
     Verbalize the rule to be in a human-readable format.
@@ -539,4 +543,41 @@ def parse_verbalized_rule_to_walk(verbalized_rule, relation2id, inverse_rel_idx,
 
     walk["entities"].append(walk["entities"][0])
     return walk
+
+def get_body_rels_from_verbalized_rule(verbalized_rule, relation2id, rule_regex):
+    """
+    
+    """
+    body_rels = []
+    head, body = verbalized_rule.split("<-")
+    
+    parts = body.split("&")
+    for part in parts:
+        match = re.search(rule_regex, part)
+        if match:
+            body_rels.append(relation2id[match.groups()[0].strip()])
+        
+    return body_rels
+
+def rules_statistics(rules_dict):
+    """
+    Show statistics of the rules.
+
+    Parameters:
+        rules_dict (dict): rules
+
+    Returns:
+        None
+    """
+
+    print(
+        "Number of relations with rules: ", len(rules_dict)
+    )  # Including inverse relations
+    print("Total number of rules: ", sum([len(v) for k, v in rules_dict.items()]))
+
+    lengths = []
+    for rel in rules_dict:
+        lengths += [len(x["body_rels"]) for x in rules_dict[rel]]
+    rule_lengths = [(k, v) for k, v in Counter(lengths).items()]
+    print("Number of rules by length: ", sorted(rule_lengths))
 

@@ -1,0 +1,10 @@
+{
+    "chat_model":
+    {
+        "model": "gpt-4o-mini"
+    },
+    "embedding_model":
+    {
+        "model": "text-embedding-3-large"
+    }
+}
