@@ -14,7 +14,7 @@ from utils import load_json_data, copy__file
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dir', type=str, default='datasets', help='path to the dataset')
-    parser.add_argument('--dataset', type=str, default='GDELT', help='name of the dataset')
+    parser.add_argument('--dataset', type=str, default='YAGO', help='name of the dataset')
     parser = vars(parser.parse_args())
     return parser
 
