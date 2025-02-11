@@ -8,4 +8,3 @@ if __name__ == '__main__':
     # stage_3_main()
     stage_4_main()
     # stage_5_main()
-    # stage_6_main()

@@ -9,15 +9,15 @@ from utils import filter_candidates, calculate_rank
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='datasets', help='path to the dataset')
-    parser.add_argument('--dataset', "-d", type=str, default='GDELT', help='dataset name')
+    parser.add_argument('--dataset', "-d", type=str, default='icews14', help='dataset name')
     parser.add_argument("--test_data", default="test", type=str)
     parser.add_argument('--graph_reasoning_type', type=str,
                         choices=['transformer', 'timestamp', 'based_source_with_timestamp', 'origin', 'fusion',
                                  'fusion_with_weight', 'fusion_with_source', 'fusion_with_relation', 'TADistmult',
                                  'TADistmult_with_recent', 'frequcy_only', 'new_origin_frequency', 'TiRGN', 'REGCN'],
                         default='timestamp')
-    parser.add_argument("--rule_weight", default=0.7, type=float)
-    parser.add_argument("--llm_weight", default=0.3, type=float)
+    parser.add_argument("--rule_weight", default=0.99, type=float)
+    parser.add_argument("--llm_weight", default=0.01, type=float)
     parser = vars(parser.parse_args())
     return parser
 
@@ -25,7 +25,7 @@ def stage_5_main():
     args = parse_args()
     data_dir = args['data_path']
     dataset = args['dataset']
-    rule_candidates_file = "reasoning_result_3_full.json"
+    rule_candidates_file = "reasoning_result_4_full.json"
     llm_candidates_file = "candidates_score.json"
 
     dataset_path = os.path.join(data_dir, dataset)
@@ -35,7 +35,7 @@ def stage_5_main():
 
     data = DataLoader(dataset_path)
     num_entities = len(data.id2entity)
-    test_data = data.test_data_idx[:2000] if (args['test_data'] == "test") else data.valid_idx
+    test_data = data.test_data_idx if (args['test_data'] == "test") else data.valid_idx
 
     all_rule_candidates = load_candidates(rule_reasoning_result_dir, rule_candidates_file)
     all_llm_candidates = load_candidates(llm_reasoning_result_dir, llm_candidates_file)
@@ -77,6 +77,7 @@ def load_test_and_score_data(dataset, dataset_dir, graph_reasoning_type):
 def evaluate(args, test_data, all_llm_candidates, all_rule_candidates, num_entities, test_numpy, score_numpy):
     hits_1 = hits_3 = hits_10 = mrr = 0
     num_samples = len(test_data)
+    print(num_samples)
 
     for i in range(num_samples):
         test_query = test_data[i]
@@ -93,8 +94,8 @@ def get_final_candidates(args, test_query, all_llm_candidates, all_rule_candidat
     #     return get_candidates(args, test_query, all_rule_candidates, i, num_entities, test_numpy, score_numpy)
     # else:
     # return get_rule_llm_candidates(args, i, all_llm_candidates, all_rule_candidates, num_entities)
-    return all_llm_candidates[i]
-    # return all_rule_candidates[i]
+    # return all_llm_candidates[i]
+    return all_rule_candidates[i]
 
 def get_rule_llm_candidates(args, i, all_llm_candidates, all_rule_candidates, num_entities):
     temp_candidates = {k: 0 for k in range(num_entities)}
