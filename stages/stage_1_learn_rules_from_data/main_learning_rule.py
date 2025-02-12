@@ -7,7 +7,7 @@ from joblib import Parallel, delayed
 from datetime import datetime
 
 from stages.stage_1_learn_rules_from_data.data_loader import DataLoader
-from utils import load_learn_data, calculate_similarity, transform_relations
+from utils import load_learn_data, calculate_similarity, transform_relations, load_json_data
 from openai_llm.llm_init import LLM_Model
 from stages.stage_1_learn_rules_from_data.temporal_walk import TemporalWalker
 from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner, rules_statistics
@@ -15,7 +15,7 @@ from stages.stage_1_learn_rules_from_data.rule_learning import RuleLearner, rule
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='datasets', help='path to the dataset')
-    parser.add_argument('--dataset', "-d", type=str, default='GDELT', help='dataset name')
+    parser.add_argument('--dataset', "-d", type=str, default='YAGO', help='dataset name')
     parser.add_argument('--transition_choice', type=str, default='exp', help='transition choice')
     parser.add_argument('--max_rule_length', type=int, default=3, help='Maximum length of a rule')
     parser.add_argument('--random_walk', type=int, default=200, help='Number of random walks')
@@ -112,6 +112,7 @@ def stage_1_main():
     all_rels_text = list(data_loader.relation2id.keys())
     num_rels = len(all_rels_text)
     relations = transform_relations(all_rels_text[:num_rels//2], llm_instance, rl.output_dir)
+    relations = list(load_json_data('result/YAGO/stage_1/transformed_relations.json').values())
     calculate_similarity(llm_instance, relations, rl.output_dir, 'relation_similarity.npy')
     all_entities = list(data_loader.entity2id.keys())
     calculate_similarity(llm_instance, all_entities, rl.output_dir, 'entity_similarity.npy')

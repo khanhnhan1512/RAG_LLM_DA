@@ -323,7 +323,7 @@ def scoring_candidates(candidates_id, i, test_data_dict, data):
 def apply_llm_reasonging_parallel(test_data_dict, process, num_queries, transformed_relations, vector_db, llm_instance, 
                                   data, entity_similarity_matrix, num_process, test_data_start_ts=0, test_size=None):
     result = dict()
-    base_filename = f"result/GDELT/stage_4/candidates_part_{process}.jsonl"
+    base_filename = f"result/YAGO/stage_4/candidates_part_{process}.jsonl"
     test_query_idx = range(process * num_queries, (process + 1) * num_queries) if process < num_process-1 else range(process * num_queries, len(test_data_dict))
     for j in test_query_idx:
         test_id, test_query = next(iter(test_data_dict[j].items()))
@@ -346,11 +346,11 @@ def scoring_candidates_parallel(query_cands_dict, process, num_queries, test_dat
 
 def stage_4_main():
     # number of processes
-    num_process = 4
+    num_process = 2
 
     # Load LLm model
     llm_instance = LLM_Model()
-    dataset_dir = os.path.join(".", "datasets", 'GDELT')
+    dataset_dir = os.path.join(".", "datasets", 'YAGO')
 
     # Load data and test data
     data = DataLoader(dataset_dir)
@@ -360,15 +360,15 @@ def stage_4_main():
     test_data_start_timestamp = data.ts2id[test_data[0][3]]
 
     test_data_dict = [{i:v} for i, v in enumerate(test_data)]
-    test_data_dict = test_data_dict[18770:]
+    test_data_dict = test_data_dict
 
     # Load similarity matrix
-    relation_similarity_matrix = np.load('result/GDELT/stage_1/relation_similarity.npy')
-    entity_similarity_matrix = np.load('result/GDELT/stage_1/entity_similarity.npy')
-    transformed_relations = load_json_data('result/GDELT/stage_1/transformed_relations.json')
+    relation_similarity_matrix = np.load('result/YAGO/stage_1/relation_similarity.npy')
+    entity_similarity_matrix = np.load('result/YAGO/stage_1/entity_similarity.npy')
+    transformed_relations = load_json_data('result/YAGO/stage_1/transformed_relations.json')
 
     # Load vectorstore db
-    vector_db = load_vectorstore_db(llm_instance, 'GDELT')
+    vector_db = load_vectorstore_db(llm_instance, 'YAGO')
     for collection in vector_db:
         print(f"{collection}: {len(vector_db[collection]['vector_db'].get()['documents'])} documents")
 
@@ -385,27 +385,27 @@ def stage_4_main():
     #     for future in as_completed(futures):
     #         result = future.result()
 
-    # Sau khi chạy xong, merge các file kết quả  
-    def merge_result_files():  
-        final_results = {}  
-        for i in range(num_process):  
-            filename = f"result/GDELT/stage_4/candidates_part_{i}.jsonl"  
-            if os.path.exists(filename):  
-                with open(filename, 'r') as f:  
-                    for line in f:  
-                        part_result = json.loads(line)  
-                        final_results.update(part_result)  
+    # # Sau khi chạy xong, merge các file kết quả  
+    # def merge_result_files():  
+    #     final_results = {}  
+    #     for i in range(num_process):  
+    #         filename = f"result/YAGO/stage_4/candidates_part_{i}.jsonl"  
+    #         if os.path.exists(filename):  
+    #             with open(filename, 'r') as f:  
+    #                 for line in f:  
+    #                     part_result = json.loads(line)  
+    #                     final_results.update(part_result)  
         
-        # Sắp xếp và lưu kết quả cuối cùng  
-        sorted_results = dict(sorted(final_results.items(), key=lambda x: int(x[0])))  
-        with open("result/GDELT/stage_4/final_candidates.json", 'w') as f:  
-            json.dump(sorted_results, f, indent=4)  
+    #     # Sắp xếp và lưu kết quả cuối cùng  
+    #     sorted_results = dict(sorted(final_results.items(), key=lambda x: int(x[0])))  
+    #     with open("result/YAGO/stage_4/final_candidates.json", 'w') as f:  
+    #         json.dump(sorted_results, f, indent=4)  
 
-    # Gọi hàm merge kết quả  
-    merge_result_files()
+    # # Gọi hàm merge kết quả  
+    # merge_result_files()
 
     # scoring for candidates
-    query_cands_dict = load_json_data("result/GDELT/stage_4/final_candidates.json")
+    query_cands_dict = load_json_data("result/YAGO/stage_4/final_candidates.json")
     query_cands_score_dict = {}
     scoring = []
     with ThreadPoolExecutor(max_workers=4) as executor:
@@ -417,4 +417,4 @@ def stage_4_main():
             
     ##################################################################################################
     query_cands_score_dict = dict(sorted(query_cands_score_dict.items(), key=lambda item: int(item[0])))
-    save_json_data(query_cands_score_dict, "result/GDELT/stage_4/candidates_score.json")
+    save_json_data(query_cands_score_dict, "result/YAGO/stage_4/candidates_score.json")

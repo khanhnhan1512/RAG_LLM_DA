@@ -254,9 +254,9 @@ def parse_arguments():
     global parsed
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", "-d", default="icews14", type=str)
-    parser.add_argument("--result_rules_path", default="./result/icews14/stage_2/merged_historical_rules_and_current_rules_0_4.csv", type=str)
+    parser.add_argument("--result_rules_path", default="./result/icews14/stage_2/our_rules_1.csv", type=str)
     parser.add_argument("--test_data", default="test", type=str)
-    parser.add_argument("--rules", "-r", default="reasoning_result_3_half", type=str)
+    parser.add_argument("--rules", "-r", default="reasoning_result_7_full", type=str)
     parser.add_argument("--max_rule_length", "-l", default=3, type=int, nargs="+")
     parser.add_argument("--window", "-w", default=0, type=int)
     parser.add_argument("--gpu", default=0, type=int)
@@ -292,7 +292,7 @@ def stage_3_main():
     dir_path = os.path.join(".", "result", parsed["dataset"], "stage_3")
 
     data = DataLoader(dataset_dir, parsed)
-    test_data = data.test_data_idx[:7371] if parsed["test_data"] == "test" else data.valid_data_idx
+    test_data = data.test_data_idx if parsed["test_data"] == "test" else data.valid_data_idx
 
     # Load rules
     rule_regex = load_json_data("config/rule_regex.json")['icews14']
