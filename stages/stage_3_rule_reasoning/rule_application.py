@@ -223,247 +223,248 @@ def match_body_relations_complete(rule, edges, test_query_sub):
     
     return walk_edges
 
-# def get_walks(rule, walk_edges, is_relax_time=False):
-#     """
-#     Get walks for a given rule. Take the time constraints into account.
-#     Memory-efficient implementation.
+def get_walks(rule, walk_edges, is_relax_time=False):
+    """
+    Get walks for a given rule. Take the time constraints into account.
+    Memory-efficient implementation.
 
-#     Parameters:
-#         rule (dict): rule from rules_dict
-#         walk_edges (list of np.ndarrays): edges from match_body_relations
+    Parameters:
+        rule (dict): rule from rules_dict
+        walk_edges (list of np.ndarrays): edges from match_body_relations
 
-#     Returns:
-#         rule_walks (pd.DataFrame): all walks matching the rule
-#     """
-#     df_edges = []
-#     df = pd.DataFrame(
-#         walk_edges[0],
-#         columns=["entity_"+str(0), "entity_"+str(1), "timestamp_"+str(0)],
-#         dtype=np.uint16,
-#     )
-#     if not rule["var_constraints"]:
-#         del df["entity_" + str(0)]
-#     df_edges.append(df)
-#     df = df[0:0] #  the original df DataFrame is cleared of all its data while retaining its column structure
+    Returns:
+        rule_walks (pd.DataFrame): all walks matching the rule
+    """
+    df_edges = []
+    df = pd.DataFrame(
+        walk_edges[0],
+        columns=["entity_"+str(0), "entity_"+str(1), "timestamp_"+str(0)],
+        dtype=np.uint16,
+    )
+    if not rule["var_constraints"]:
+        del df["entity_" + str(0)]
+    df_edges.append(df)
+    df = df[0:0] #  the original df DataFrame is cleared of all its data while retaining its column structure
 
-#     for i in range(1, len(walk_edges)):
-#         df = pd.DataFrame(
-#             walk_edges[i],
-#             columns=["entity_"+str(i), "entity_"+str(i+1), "timestamp_"+str(i)],
-#             dtype=np.uint16
-#         )
-#         df_edges.append(df)
-#         df = df[0:0]
+    for i in range(1, len(walk_edges)):
+        df = pd.DataFrame(
+            walk_edges[i],
+            columns=["entity_"+str(i), "entity_"+str(i+1), "timestamp_"+str(i)],
+            dtype=np.uint16
+        )
+        df_edges.append(df)
+        df = df[0:0]
 
-#     rule_walks = df_edges[0]
-#     df_edges[0] = df_edges[0][0:0]
-#     for i in range(1, len(df_edges)):
-#         rule_walks = pd.merge(rule_walks, df_edges[i], on=["entity_"+str(i)])
-#         if is_relax_time is False:
-#             rule_walks = rule_walks[
-#                 rule_walks["timestamp_"+str(i-1)] <= rule_walks["timestamp_"+str(i)]
-#             ]
+    rule_walks = df_edges[0]
+    df_edges[0] = df_edges[0][0:0]
+    for i in range(1, len(df_edges)):
+        rule_walks = pd.merge(rule_walks, df_edges[i], on=["entity_"+str(i)])
+        if is_relax_time is False:
+            rule_walks = rule_walks[
+                rule_walks["timestamp_"+str(i-1)] <= rule_walks["timestamp_"+str(i)]
+            ]
     
-#         if not rule["var_constraints"]:
-#             del rule_walks["entity_"+str(i)]
-#         df_edges[i] = df_edges[i][0:0]
+        if not rule["var_constraints"]:
+            del rule_walks["entity_"+str(i)]
+        df_edges[i] = df_edges[i][0:0]
     
-#     for i in range(1, len(rule["body_rels"])):
-#         del rule_walks["timestamp_"+str(i)]
-    
-#     return rule_walks
-
-# def get_walks_end(rule, walk_edges, is_relax_time=False):
-#     """
-#     Get walks for a given rule. Take the time constraints into account.
-#     Memory-efficient implementation.
-
-#     Parameters:
-#         rule (dict): rule from rules_dict
-#         walk_edges (list of np.ndarrays): edges from match_body_relations
-
-#     Returns:
-#         rule_walks (pd.DataFrame): all walks matching the rule
-#     """
-#     df_edges = []
-#     df = pd.DataFrame(
-#         walk_edges[0],
-#         columns=["entity_"+str(0), "entity_"+str(1), "timestamp_"+str(0)],
-#         dtype=np.uint16,
-#     )
-#     if not rule["var_constraints"]:
-#         del df["entity_" + str(0)]
-    
-#     df_edges.append(df)
-#     df = df[0:0]
-
-#     for i in range(1, len(walk_edges)):
-#         df = pd.DataFrame(
-#             walk_edges[i],
-#             columns=["entity_"+str(i), "entity_"+str(i+1), "timestamp_"+str(i)],
-#             dtype=np.uint16,
-#         )
-#         df_edges.append(df)
-#         df = df[0:0]
-
-#     rule_walks = df_edges[0]
-#     df_edges[0] = df_edges[0][0:0]
-#     for i in range(1, len(df_edges)):
-#         rule_walks = pd.merge(rule_walks, df_edges[i], on=["entity_"+str(i)])
-#         if is_relax_time is False:
-#             rule_walks = rule_walks[
-#                 rule_walks["timestamp_"+str(i-1)] <= rule_walks["timestamp_"+str(i)]
-#             ]
-#         if not rule["var_constraints"]:
-#             del rule_walks["entity_"+str(i)]
-#         df_edges[i] = df_edges[i][0:0]
-    
-#     for i in range(0, len(rule["body_rels"]) - 1):
-#         del rule_walks["timestamp_"+str(i)]
-    
-#     return rule_walks
-
-# def get_walks_complete(rule, walk_edges):
-#     """
-#     Get complete walks for a given rule. Take the time constraints into account.
-
-#     Parameters:
-#         rule (dict): rule from rules_dict
-#         walk_edges (list of np.ndarrays): edges from match_body_relations
-
-#     Returns:
-#         rule_walks (pd.DataFrame): all walks matching the rule
-#     """
-
-#     df_edges = []
-#     df = pd.DataFrame(
-#         walk_edges[0],
-#         columns=["entity_"+str(0), "relation_"+str(0), "entity_"+str(1), "timestamp_"+str(0)],
-#         dtype=np.uint16,
-#     )
-#     df_edges.append(df)
-
-#     for i in range(1, len(walk_edges)):
-#         df =pd.DataFrame(
-#             walk_edges[i],
-#             columns=["entity_"+str(i), "relation_"+str(i), "entity_"+str(i+1), "timestamp_"+str(i)],
-#             dtype=np.uint16,
-#         )
-#         df_edges.append(df)
-
-#     rule_walks = df_edges[0]
-#     for i in range(1, len(df_edges)):
-#         rule_walks = pd.merge(rule_walks, df_edges[i], on=["entity_"+str(i)])
-#         rule_walks = rule_walks[
-#             rule_walks["timestamp_"+str(i-1)] <= rule_walks["timestamp_"+str(i)]
-#         ]
-    
-#     return rule_walks
-def get_walks(rule, walk_edges, is_relax_time=False):  
-    """  
-    Optimized memory-efficient version with incremental merging and type optimization  
-    """  
-    # Initialize with first edge  
-    rule_walks = pd.DataFrame(  
-        walk_edges[0],  
-        columns=["entity_0", "entity_1", "timestamp_0"],  
-        dtype=np.uint32  # Use uint32 for better timestamp compatibility  
-    )  
-    
-    if not rule["var_constraints"]:  
-        rule_walks.drop(columns=["entity_0"], inplace=True)  
-
-    # Process subsequent edges incrementally  
-    for i in range(1, len(walk_edges)):  
-        # Create and immediately merge next edge  
-        next_edge = pd.DataFrame(  
-            walk_edges[i],  
-            columns=[f"entity_{i}", f"entity_{i+1}", f"timestamp_{i}"],  
-            dtype=np.uint32  
-        )  
-        
-        # Merge with existing walks and immediately clean up  
-        rule_walks = pd.merge(  
-            rule_walks,  
-            next_edge,  
-            on=[f"entity_{i}"],  
-            copy=False  # Reduce memory overhead  
-        )  
-        
-        # Apply time constraint before next iteration  
-        if not is_relax_time:  
-            rule_walks = rule_walks.query(f"timestamp_{i-1} <= timestamp_{i}")  
-        
-        # Clean up columns early  
-        if not rule["var_constraints"]:  
-            rule_walks.drop(columns=[f"entity_{i}"], inplace=True)  
-        
-        # Explicit memory cleanup  
-        del next_edge  
-        if i > 1:  # Keep previous timestamp for constraints  
-            rule_walks.drop(columns=[f"timestamp_{i-2}"], inplace=True)  
-    
-    # Final timestamp cleanup  
-    keep_timestamps = [f"timestamp_{len(walk_edges)-1}"]  
-    if len(walk_edges) > 1:  
-        keep_timestamps.append(f"timestamp_{len(walk_edges)-2}")  
-    
-    return rule_walks[rule_walks.columns.difference(  
-        [c for c in rule_walks if c.startswith('timestamp_') and c not in keep_timestamps]  
-    )]  
-
-def get_walks_end(rule, walk_edges, is_relax_time=False):  
-    """  
-    Optimized version for end walks with early column dropping  
-    """  
-    # Reuse the main get_walks logic  
-    rule_walks = get_walks(rule, walk_edges, is_relax_time)  
-    
-    # Different timestamp cleanup pattern  
-    ts_to_keep = [f"timestamp_{len(rule['body_rels'])-1}"]  
-    return rule_walks[rule_walks.columns.difference(  
-        [c for c in rule_walks if c.startswith('timestamp_') and c not in ts_to_keep]  
-    )]  
-
-def get_walks_complete(rule, walk_edges):  
-    """  
-    Memory-optimized complete walks with relation tracking  
-    """  
-    rule_walks = None  
-    for i, edges in enumerate(walk_edges):  
-        # Build edge with relation information  
-        edge_df = pd.DataFrame(  
-            edges,  
-            columns=[  
-                f"entity_{i}",  
-                f"relation_{i}",  
-                f"entity_{i+1}",   
-                f"timestamp_{i}"  
-            ],  
-            dtype=np.uint32  
-        )  
-        
-        if rule_walks is None:  
-            rule_walks = edge_df  
-        else:  
-            # Merge incrementally  
-            rule_walks = pd.merge(  
-                rule_walks,  
-                edge_df,  
-                on=[f"entity_{i}"],  
-                copy=False  
-            )  
-            # Apply time constraint and clean previous timestamp  
-            rule_walks = rule_walks.query(f"timestamp_{i-1} <= timestamp_{i}")  
-            rule_walks.drop(columns=[f"timestamp_{i-1}"], inplace=True)  
-        
-        # Clean up previous edge data  
-        if i > 0:  
-            rule_walks.drop(columns=[f"entity_{i}"], inplace=True)  
-        
-        del edge_df  
+    for i in range(1, len(rule["body_rels"])):
+        del rule_walks["timestamp_"+str(i)]
     
     return rule_walks
+
+def get_walks_end(rule, walk_edges, is_relax_time=False):
+    """
+    Get walks for a given rule. Take the time constraints into account.
+    Memory-efficient implementation.
+
+    Parameters:
+        rule (dict): rule from rules_dict
+        walk_edges (list of np.ndarrays): edges from match_body_relations
+
+    Returns:
+        rule_walks (pd.DataFrame): all walks matching the rule
+    """
+    df_edges = []
+    df = pd.DataFrame(
+        walk_edges[0],
+        columns=["entity_"+str(0), "entity_"+str(1), "timestamp_"+str(0)],
+        dtype=np.uint16,
+    )
+    if not rule["var_constraints"]:
+        del df["entity_" + str(0)]
+    
+    df_edges.append(df)
+    df = df[0:0]
+
+    for i in range(1, len(walk_edges)):
+        df = pd.DataFrame(
+            walk_edges[i],
+            columns=["entity_"+str(i), "entity_"+str(i+1), "timestamp_"+str(i)],
+            dtype=np.uint16,
+        )
+        df_edges.append(df)
+        df = df[0:0]
+
+    rule_walks = df_edges[0]
+    df_edges[0] = df_edges[0][0:0]
+    for i in range(1, len(df_edges)):
+        rule_walks = pd.merge(rule_walks, df_edges[i], on=["entity_"+str(i)])
+        if is_relax_time is False:
+            rule_walks = rule_walks[
+                rule_walks["timestamp_"+str(i-1)] <= rule_walks["timestamp_"+str(i)]
+            ]
+        if not rule["var_constraints"]:
+            del rule_walks["entity_"+str(i)]
+        df_edges[i] = df_edges[i][0:0]
+    
+    for i in range(0, len(rule["body_rels"]) - 1):
+        del rule_walks["timestamp_"+str(i)]
+    
+    return rule_walks
+
+def get_walks_complete(rule, walk_edges):
+    """
+    Get complete walks for a given rule. Take the time constraints into account.
+
+    Parameters:
+        rule (dict): rule from rules_dict
+        walk_edges (list of np.ndarrays): edges from match_body_relations
+
+    Returns:
+        rule_walks (pd.DataFrame): all walks matching the rule
+    """
+
+    df_edges = []
+    df = pd.DataFrame(
+        walk_edges[0],
+        columns=["entity_"+str(0), "relation_"+str(0), "entity_"+str(1), "timestamp_"+str(0)],
+        dtype=np.uint16,
+    )
+    df_edges.append(df)
+
+    for i in range(1, len(walk_edges)):
+        df =pd.DataFrame(
+            walk_edges[i],
+            columns=["entity_"+str(i), "relation_"+str(i), "entity_"+str(i+1), "timestamp_"+str(i)],
+            dtype=np.uint16,
+        )
+        df_edges.append(df)
+
+    rule_walks = df_edges[0]
+    for i in range(1, len(df_edges)):
+        rule_walks = pd.merge(rule_walks, df_edges[i], on=["entity_"+str(i)])
+        rule_walks = rule_walks[
+            rule_walks["timestamp_"+str(i-1)] <= rule_walks["timestamp_"+str(i)]
+        ]
+    
+    return rule_walks
+
+# def get_walks(rule, walk_edges, is_relax_time=False):  
+#     """  
+#     Optimized memory-efficient version with incremental merging and type optimization  
+#     """  
+#     # Initialize with first edge  
+#     rule_walks = pd.DataFrame(  
+#         walk_edges[0],  
+#         columns=["entity_0", "entity_1", "timestamp_0"],  
+#         dtype=np.uint32  # Use uint32 for better timestamp compatibility  
+#     )  
+    
+#     if not rule["var_constraints"]:  
+#         rule_walks.drop(columns=["entity_0"], inplace=True)  
+
+#     # Process subsequent edges incrementally  
+#     for i in range(1, len(walk_edges)):  
+#         # Create and immediately merge next edge  
+#         next_edge = pd.DataFrame(  
+#             walk_edges[i],  
+#             columns=[f"entity_{i}", f"entity_{i+1}", f"timestamp_{i}"],  
+#             dtype=np.uint32  
+#         )  
+        
+#         # Merge with existing walks and immediately clean up  
+#         rule_walks = pd.merge(  
+#             rule_walks,  
+#             next_edge,  
+#             on=[f"entity_{i}"],  
+#             copy=False  # Reduce memory overhead  
+#         )  
+        
+#         # Apply time constraint before next iteration  
+#         if not is_relax_time:  
+#             rule_walks = rule_walks.query(f"timestamp_{i-1} <= timestamp_{i}")  
+        
+#         # Clean up columns early  
+#         if not rule["var_constraints"]:  
+#             rule_walks.drop(columns=[f"entity_{i}"], inplace=True)  
+        
+#         # Explicit memory cleanup  
+#         del next_edge  
+#         if i > 1:  # Keep previous timestamp for constraints  
+#             rule_walks.drop(columns=[f"timestamp_{i-2}"], inplace=True)  
+    
+#     # Final timestamp cleanup  
+#     keep_timestamps = [f"timestamp_{len(walk_edges)-1}"]  
+#     if len(walk_edges) > 1:  
+#         keep_timestamps.append(f"timestamp_{len(walk_edges)-2}")  
+    
+#     return rule_walks[rule_walks.columns.difference(  
+#         [c for c in rule_walks if c.startswith('timestamp_') and c not in keep_timestamps]  
+#     )]  
+
+# def get_walks_end(rule, walk_edges, is_relax_time=False):  
+#     """  
+#     Optimized version for end walks with early column dropping  
+#     """  
+#     # Reuse the main get_walks logic  
+#     rule_walks = get_walks(rule, walk_edges, is_relax_time)  
+    
+#     # Different timestamp cleanup pattern  
+#     ts_to_keep = [f"timestamp_{len(rule['body_rels'])-1}"]  
+#     return rule_walks[rule_walks.columns.difference(  
+#         [c for c in rule_walks if c.startswith('timestamp_') and c not in ts_to_keep]  
+#     )]  
+
+# def get_walks_complete(rule, walk_edges):  
+#     """  
+#     Memory-optimized complete walks with relation tracking  
+#     """  
+#     rule_walks = None  
+#     for i, edges in enumerate(walk_edges):  
+#         # Build edge with relation information  
+#         edge_df = pd.DataFrame(  
+#             edges,  
+#             columns=[  
+#                 f"entity_{i}",  
+#                 f"relation_{i}",  
+#                 f"entity_{i+1}",   
+#                 f"timestamp_{i}"  
+#             ],  
+#             dtype=np.uint32  
+#         )  
+        
+#         if rule_walks is None:  
+#             rule_walks = edge_df  
+#         else:  
+#             # Merge incrementally  
+#             rule_walks = pd.merge(  
+#                 rule_walks,  
+#                 edge_df,  
+#                 on=[f"entity_{i}"],  
+#                 copy=False  
+#             )  
+#             # Apply time constraint and clean previous timestamp  
+#             rule_walks = rule_walks.query(f"timestamp_{i-1} <= timestamp_{i}")  
+#             rule_walks.drop(columns=[f"timestamp_{i-1}"], inplace=True)  
+        
+#         # Clean up previous edge data  
+#         if i > 0:  
+#             rule_walks.drop(columns=[f"entity_{i}"], inplace=True)  
+        
+#         del edge_df  
+    
+#     return rule_walks
 
 def check_var_constraints(var_constraints, rule_walks):
     """
