@@ -176,22 +176,30 @@ def candidate_reasoning( question, related_facts, top_k_entity, facts_between_en
     - The query will always include a subject, a relation, and a timestamp.
     - Example: "Malaysia expressed intent to cooperate to/with whom on 2014-12-09?"
     - Your task is to predict the missing object (e.g., a country, organization, or entity) that best fits the query.
-    2. Leverage Multi-Hop Reasoning (Group 1):
+    2. Apply Temporal Logic Rules (Group 1):
+    - You will receive temporal logic rules and facts that satisfy these rules. These rules capture temporal dependencies between events.
+    - Example rules:
+        + Make_a_visit(X0,X1,T1) <- inv_Host_a_visit(X0,X1,T0)
+        + Make_a_visit(X0,X1,T3) <- Praise_or_endorse(X0,X1,T0) & inv_Make_a_visit(X1,X0,T1) & inv_Host_a_visit(X0,X1,T2)
+    - Example facts:
+        + Malaysia inv_host_a_visit Thailand on 2014-1-28
+    - You should check if any temporal logic rule applies to the query's relation and map the retrieved facts to the rule's premises to infer new conclusions.
+    3. Leverage Multi-Hop Reasoning (Group 2):
     - You will be provided with a sequence of multi-hop facts related to the subject entity. These facts are connected directly or indirectly to the subject and share a semantic similarity with the query's relation.
     - Example facts:
         + "Malaysia were the recipients of expressed intent to cooperate to/with Thailand on 2014-12-02"
         + "Malaysia expressed intent to cooperate to/with China on 2014-04-11"
     - Perform multi-hop reasoning by analyzing these facts and their relationships. Pay close attention to the timestamps of the facts to ensure temporal consistency with the query.
-    3. Expand Candidate Entities (Group 2):
+    4. Expand Candidate Entities (Group 3):
     - If the multi-hop facts are insufficient, use additional facts involving semantically similar entities to the subject.
     - Example: For "Malaysia", semantically similar entities might include "Men_(Malaysia)", "Police_(Malaysia)", etc.
     - Example fact: "Police_(Malaysia) Made a statement to/with Malaysia on 2014-12-08".
     - Use these facts to expand the list of candidate objects for the query.
-    4. Infer from Semantically Similar Entities (Group 3):
+    5. Infer from Semantically Similar Entities (Group 3):
     - If no direct facts about the subject entity exist before the query's timestamp, infer the missing object by analyzing patterns from semantically similar entities.
     - Example: If "Police_(Malaysia) Expressed intent to meet or negotiate to/with Citizen_(Malaysia) on 2014-02-21", you can infer that "Malaysia" might have a similar pattern of cooperation with "Citizen_(Malaysia)".
     - Use this approach to make educated predictions when direct evidence is lacking.
-    5. Learn from Historical Query Patterns (Group 4):
+    6. Learn from Historical Query Patterns (Group 4):
     - If the query is part of a series of similar queries with different timestamps, you will be provided with ground truth answers for previous queries.
     - Example:
         + Query: "Malaysia expressed intent to cooperate to/with whom on 2014-12-09?"
