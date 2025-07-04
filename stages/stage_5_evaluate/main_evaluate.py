@@ -9,15 +9,15 @@ from utils import filter_candidates, calculate_rank
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='datasets', help='path to the dataset')
-    parser.add_argument('--dataset', "-d", type=str, default='YAGO', help='dataset name')
+    parser.add_argument('--dataset', "-d", type=str, default='icews14', help='dataset name')
     parser.add_argument("--test_data", default="test", type=str)
     parser.add_argument('--graph_reasoning_type', type=str,
                         choices=['transformer', 'timestamp', 'based_source_with_timestamp', 'origin', 'fusion',
                                  'fusion_with_weight', 'fusion_with_source', 'fusion_with_relation', 'TADistmult',
                                  'TADistmult_with_recent', 'frequcy_only', 'new_origin_frequency', 'TiRGN', 'REGCN'],
                         default='timestamp')
-    parser.add_argument("--rule_weight", default=0.0, type=float)
-    parser.add_argument("--llm_weight", default=1.0, type=float)
+    parser.add_argument("--rule_weight", default=0.9, type=float)
+    parser.add_argument("--llm_weight", default=0.1, type=float)
     parser = vars(parser.parse_args())
     return parser
 
@@ -25,7 +25,7 @@ def stage_5_main():
     args = parse_args()
     data_dir = args['data_path']
     dataset = args['dataset']
-    rule_candidates_file = "reasoning_result_1_full.json"
+    rule_candidates_file = "reasoning_result_4_full.json"
     llm_candidates_file = "candidates_score.json"
 
     dataset_path = os.path.join(data_dir, dataset)
@@ -37,8 +37,8 @@ def stage_5_main():
     num_entities = len(data.id2entity)
     test_data = data.test_data_idx if (args['test_data'] == "test") else data.valid_idx
 
-    # all_rule_candidates = load_candidates(rule_reasoning_result_dir, rule_candidates_file)
-    all_rule_candidates = {i: {} for i in range(len(test_data))}
+    all_rule_candidates = load_candidates(rule_reasoning_result_dir, rule_candidates_file)
+    # all_rule_candidates = {i: {} for i in range(len(test_data))}
     all_llm_candidates = load_candidates(llm_reasoning_result_dir, llm_candidates_file)
 
     if args['graph_reasoning_type'] in ['TiRGN', 'REGCN']:
