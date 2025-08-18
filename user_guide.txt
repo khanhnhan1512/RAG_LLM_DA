@@ -1,0 +1,10 @@
+# Usage Guide:
+- Step 1: Open Visual Studio Code and open the folder containing the thesis source code.
+- Step 2: Open the terminal in Visual Studio Code and activate the virtual environment created during installation:
+    + Run the command: conda activate RAG_LLM-env
+- Step 3: Run the model stages using the following command:
+    + Run the command: python main.py -d <dataset name>. Example: python main.py -d icews14
+- Step 4: The results of each stage will be saved in the "result/<dataset name>" folder. The model has 5 stages, so there will be 5 result folders corresponding to each stage.
+You can view the results of each stage in the .json, .csv, or txt files in these folders. The final results containing evaluation metrics (hit@k, MRR) will be in the file "result/<dataset name>/stage_5/result_eval.txt".
+
+This is the complete usage guide to run the model. If you encounter any issues during usage, please contact the authors via email: nknhan21@clc.fitus.edu.vn or dnthang21@clc.fitus.edu.vn
