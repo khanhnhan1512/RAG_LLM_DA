@@ -1,0 +1,20 @@
+# Installation Guide:
+
+## Operating System: Windows.
+
+## Software Requirements:
+- Code editor: Visual Studio Code.
+- Virtual environment management: Anaconda.
+
+## Virtual Environment Setup Steps:
+- Step 1: Download the src/environment.yml file (this file contains the necessary libraries and packages to run the source code) to your machine and create a virtual environment on Anaconda:
+    + Open Anaconda Prompt and run the command: conda env create -f environment.yml 
+- Step 2: Activate the newly created virtual environment:
+    + Run the command: conda activate RAG_LLM-env
+
+## Steps to Add API Key as Environment Variable for LLMs API Usage:
+- Create an OpenAI account at https://auth.openai.com/create-account 
+- Create an API key, then add an environment variable "OPENAI_API_KEY" with the value being the newly created API key.
+- Restart your computer to activate the environment variable.
+
+The above is the complete installation guide to run the thesis source code. After completing the installation, you can proceed to the HuongDanSuDung.txt file to run the model.
