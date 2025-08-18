@@ -1,6 +1,8 @@
 # MSKGen: Query-Aware Temporal Knowledge Graph Reasoning with Multi-Source Knowledge Based Generation
 
-This is the official repository for the paper "Query-Aware Temporal Knowledge Graph Reasoning with Multi-Source Knowledge Based Generation," which has been accepted and will be published in the **Lecture Notes in Artificial Intelligence** series by **Springer** at the [**ICCCI 2025** conference](https://iccci.pwr.edu.pl/2025/).
+This is the official repository for the paper "Query-Aware Temporal Knowledge Graph Reasoning with Multi-Source Knowledge Based Generation," which has been accepted and will be published in the **Lecture Notes in Artificial Intelligence** series by **Springer** at the [**ICCCI 2025** conference](https://iccci.pwr.edu.pl/2025/). **It will be published in the prestigious Springer series "Lecture Notes in Artificial Intelligence" (LNAI)**. 
+
+We have attached the official acceptance notification below as proof: [Paper Acceptance Notification](iccci2025.pdf)
 
 For a detailed explanation of our methodology, experiments, and results, please refer to our full paper: [Query-Aware Temporal Knowledge Graph Reasoning with Multi-Source Knowledge Based Generation](paper.pdf).
 
@@ -59,9 +61,8 @@ MSKGen without semantic facts completely outperforms TLogic, indicating that the
 
 ## 🛠️ Setup and Usage Guide
 
-### ⚙️ Installation
-Instructions on how to install the required libraries.
-
+- How to setup the environment: [installation](installation.txt)
+- How to run the model: [user guide](user_guide.txt)
 ## ✉️ Contact
 If you have any questions, please feel free to contact the authors:
 - Nhan Khanh Nguyen: nknhan21@clc.fitus.edu.vn
