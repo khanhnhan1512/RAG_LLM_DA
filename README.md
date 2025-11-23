@@ -12,7 +12,7 @@ MSKGen (Multi-Source Knowledge-Based Generation) is a novel query-aware approach
 
 To address these issues, MSKGen integrates rule-based facts with semantically retrieved facts. This approach maintains interpretability while maximizing the semantic capabilities of LLMs, addressing the information load challenges faced by current LLM implementations.
 
-## 🖼️ Model Architecture
+## Model Architecture
 
 The architecture of MSKGen is divided into three main stages: **Retrieving**, **Multi-Source Reasoning**, and **Scoring**.
 
