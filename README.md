@@ -6,7 +6,7 @@ We have attached the official acceptance notification below as proof: [Paper Acc
 
 For a detailed explanation of our methodology, experiments, and results, please refer to our full paper: [Query-Aware Temporal Knowledge Graph Reasoning with Multi-Source Knowledge Based Generation](paper.pdf).
 
-## 💡 Introduction
+## Introduction
 
 MSKGen (Multi-Source Knowledge-Based Generation) is a novel query-aware approach for Temporal Knowledge Graph Reasoning (TKGR) that integrates multiple knowledge sources to generate accurate predictions. Recent TKGR approaches leveraging Large Language Models (LLMs) often face significant limitations, such as relying solely on first-order historical information, struggling with heavy information loads, and underutilizing LLMs' potential for reasoning with semantically similar information.
 
@@ -18,7 +18,7 @@ The architecture of MSKGen is divided into three main stages: **Retrieving**, **
 
 ![MSKGen Model Architecture](./Framework01.png)
 
-## 🚀 Experimental Results
+## Experimental Results
 
 We evaluated MSKGen on three common benchmark datasets: **ICEWS14**, **GDELT**, and **YAGO**. The experimental results demonstrate that MSKGen achieves superior performance over state-of-the-art methods, including graph-based, rule-based, and other LLM-based models.
 
@@ -59,7 +59,7 @@ MSKGen without rule-based facts outperforms previous LLM-based models, highlight
 
 MSKGen without semantic facts completely outperforms TLogic, indicating that the constructed rules are of higher quality and more diverse due to the LLM's semantic layer, which TLogic lacks.
 
-## 🛠️ Setup and Usage Guide
+## Setup and Usage Guide
 
 - How to setup the environment: [installation](installation.txt)
 - How to run the model: [user guide](user_guide.txt)
